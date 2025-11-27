@@ -965,8 +965,10 @@ collections:
               - label: Nội dung học
                 name: curriculum
                 widget: list
-                summary: "{{item}}"
-                field: { label: Mục, name: item, widget: string }
+                summary: "{{fields.item}}"
+                fields:
+                  - { label: Mục, name: item, widget: string }
+
 
           - label: Sections
             name: sections
