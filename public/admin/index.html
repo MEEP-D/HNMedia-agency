@@ -18,6 +18,21 @@
   </style>
 </head>
 <body>
+  <script>
+  window.CMS_CONFIG = {
+    load_config_file: true,
+    config: {
+      backend: {
+        name: "github",
+        repo: "MEEP-D/HNMedia-agency",
+        branch: "main"
+      },
+      local_backend: false,
+      media_folder: "images",
+      public_folder: "/images"
+    }
+  };
+</script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <div id="nc-root"></div>
   <div class="cms-help">
