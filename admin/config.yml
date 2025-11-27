@@ -240,7 +240,7 @@ collections:
         label: Dịch vụ
         name: services
         format: json
-        description: Trang Dịch vụ: danh sách và các khối nội dung
+        description: "Trang Dịch vụ: danh sách và các khối nội dung"
         fields:
           - { label: Tiêu đề, name: title, widget: string }
           - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
