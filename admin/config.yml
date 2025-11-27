@@ -2,8 +2,8 @@ backend:
   name: github
   repo: MEEP-D/HNMedia-agency
   branch: main
-  base_url: https://hn-media-agency.vercel.app
-  auth_endpoint: implicit
+  auth: implicit
+
 local_backend: true
 media_folder: images
 public_folder: /images
