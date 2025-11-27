@@ -2,7 +2,7 @@ backend:
   name: github
   repo: MEEP-D/HNMedia-agency
   branch: main
-  base_url: https://your-oauth-proxy.vercel.app
+  base_url: https://hn-media-agency.vercel.app
   auth_endpoint: /api/auth
 local_backend: true
 media_folder: images
@@ -173,7 +173,7 @@ collections:
         label: Giới thiệu
         name: about
         format: json
-        description: Trang Giới thiệu: tiêu đề, tầm nhìn, sứ mệnh, team và lịch sử
+        description: "Trang Giới thiệu: tiêu đề, tầm nhìn, sứ mệnh, team và lịch sử"
         fields:
           - { label: Tiêu đề, name: title, widget: string }
           - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
