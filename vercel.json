@@ -16,11 +16,11 @@
     },
     {
       "source": "/admin",
-      "destination": "/public/admin/index.html"
+      "destination": "/admin/index.html"
     },
     {
       "source": "/admin/(.*)",
-      "destination": "/public/admin/$1"
+      "destination": "/admin/$1"
     },
     {
       "source": "/images/(.*)",
