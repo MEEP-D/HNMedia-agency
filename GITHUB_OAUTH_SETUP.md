@@ -6,8 +6,8 @@
 2. Click "New OAuth App"
 3. Điền thông tin:
    - **Application name**: HN Media Agency CMS
-   - **Homepage URL**: https://hn-media-agency.vercel.app
-   - **Authorization callback URL**: https://hn-media-agency.vercel.app/api/auth
+   - **Homepage URL**: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
+   - **Authorization callback URL**: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/api/auth
 4. Click "Register application"
 5. Lưu lại **Client ID** và **Client Secret**
 
@@ -22,14 +22,14 @@ GITHUB_CLIENT_SECRET=your_github_client_secret
 
 ## Cấu hình Decap CMS
 
-Trong file `public/admin/config.yml`:
+Trong file `admin/config.yml`:
 
 ```yaml
 backend:
   name: github
-  repo: your-username/your-repo-name
+  repo: MEEP-D/HNMedia-agency
   branch: main
-  base_url: https://your-domain.vercel.app
+  base_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
   auth_endpoint: api/auth
 ```
 

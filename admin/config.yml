@@ -2,7 +2,7 @@ backend:
   name: github
   repo: MEEP-D/HNMedia-agency
   branch: main
-  base_url: https://hn-media-agency.vercel.app
+  base_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
   auth_endpoint: api/auth
   api_root: https://api.github.com
   auth_scope: repo
@@ -13,8 +13,8 @@ public_folder: /images
 publish_mode: editorial_workflow
 
 # Vercel deployment config
-site_url: https://hn-media-agency.vercel.app
-display_url: https://hn-media-agency.vercel.app
+site_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
+display_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
 
 # Collections
 collections:
