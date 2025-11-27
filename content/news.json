@@ -1,0 +1,15 @@
+{
+  "title": "Tin tức",
+  "cover": "",
+  "items": [
+    {
+      "slug": "khai-truong-chi-nhanh-moi",
+      "title": "Khai trương chi nhánh mới",
+      "summary": "Chúng tôi chính thức khai trương chi nhánh tại Hà Nội.",
+      "image": "images/news/sample-1.jpg",
+      "author": "Media Agency",
+      "date": "2025-11-20",
+      "body": "<p>Ngày 20/11/2025, Media Agency khai trương chi nhánh mới tại Hà Nội, mở rộng dịch vụ truyền thông và marketing tới nhiều doanh nghiệp hơn.</p><p>Sự kiện đánh dấu bước phát triển mới trong hành trình đồng hành cùng thương hiệu Việt.</p>"
+    }
+  ]
+}

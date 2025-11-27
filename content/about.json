@@ -1,0 +1,15 @@
+{
+  "title": "Giới thiệu",
+  "vision": "Trở thành đối tác truyền thông đáng tin cậy cho doanh nghiệp Việt.",
+  "mission": "Tạo ra giá trị thực bằng nội dung sáng tạo và đo lường hiệu quả.",
+  "team": [
+    { "name": "Nguyễn An", "role": "CEO", "photo": "images/team/ceo.jpg" },
+    { "name": "Trần Bình", "role": "Head of Strategy", "photo": "images/team/strategy.jpg" },
+    { "name": "Lê Chi", "role": "Creative Lead", "photo": "images/team/creative.jpg" }
+  ],
+  "history": [
+    { "year": "2019", "event": "Thành lập công ty" },
+    { "year": "2021", "event": "Mở rộng dịch vụ Digital" },
+    { "year": "2024", "event": "Đạt 100+ khách hàng" }
+  ]
+}

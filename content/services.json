@@ -1,0 +1,11 @@
+{
+  "title": "Dịch vụ",
+  "items": [
+    { "title": "Chiến lược truyền thông", "description": "Phân tích thị trường, định vị thương hiệu" },
+    { "title": "Sản xuất nội dung", "description": "Copywriting, thiết kế, video" },
+    { "title": "Quảng cáo hiệu suất", "description": "Facebook, Google, TikTok" },
+    { "title": "Quản trị kênh", "description": "Fanpage, YouTube, Website" },
+    { "title": "PR & KOLs", "description": "Chiến dịch lan tỏa" },
+    { "title": "Phân tích dữ liệu", "description": "Dashboard, báo cáo" }
+  ]
+}

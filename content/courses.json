@@ -1,0 +1,23 @@
+{
+  "title": "Khóa học",
+  "items": [
+    {
+      "slug": "content-marketing",
+      "title": "Content Marketing",
+      "summary": "Xây dựng chiến lược nội dung tăng trưởng",
+      "description": "Khóa học tập trung vào nghiên cứu insight, xây dựng chiến lược nội dung và tối ưu hiệu suất.",
+      "duration": "6 buổi",
+      "format": "Online/Offline",
+      "curriculum": ["Nghiên cứu khách hàng", "Lập kế hoạch nội dung", "Đo lường KPI"]
+    },
+    {
+      "slug": "performance-ads",
+      "title": "Performance Ads",
+      "summary": "Thiết lập và tối ưu quảng cáo",
+      "description": "Thực hành trên các nền tảng lớn, tối ưu chuyển đổi và chi phí.",
+      "duration": "8 buổi",
+      "format": "Online",
+      "curriculum": ["Thiết lập chiến dịch", "A/B Testing", "Báo cáo hiệu quả"]
+    }
+  ]
+}

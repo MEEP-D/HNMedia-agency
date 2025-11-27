@@ -1,0 +1,30 @@
+{
+  "index": {
+    "title": "Media Agency | Truyền thông tăng trưởng",
+    "description": "Agency truyền thông xanh sạch, hiện đại. Chiến lược, sản xuất nội dung, quảng cáo hiệu suất."
+  },
+  "about": {
+    "title": "Giới thiệu",
+    "description": "Câu chuyện và năng lực của chúng tôi"
+  },
+  "courses": {
+    "title": "Khóa học",
+    "description": "Danh sách khóa học đào tạo"
+  },
+  "services": {
+    "title": "Dịch vụ",
+    "description": "Các dịch vụ truyền thông"
+  },
+  "portfolio": {
+    "title": "Thành tựu",
+    "description": "Case studies nổi bật"
+  },
+  "careers": {
+    "title": "Tuyển dụng",
+    "description": "Cơ hội nghề nghiệp"
+  },
+  "contact": {
+    "title": "Liên hệ",
+    "description": "Thông tin liên hệ"
+  }
+}

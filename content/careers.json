@@ -1,0 +1,7 @@
+{
+  "title": "Tuyển dụng",
+  "positions": [
+    { "title": "Account Manager", "location": "TP.HCM", "summary": "Quản lý quan hệ khách hàng" },
+    { "title": "Media Planner", "location": "Hà Nội", "summary": "Lập kế hoạch media" }
+  ]
+}
