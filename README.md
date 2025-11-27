@@ -57,7 +57,8 @@ Website tĩnh cho HN Media Agency với Decap CMS để quản lý nội dung.
 2. Import repository vừa fork
 3. Cấu hình Environment Variables:
    ```
-   GITHUB_TOKEN=your_github_personal_access_token
+   GITHUB_CLIENT_ID=Ov23lio2L0EkJ9lpqLt9
+   GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
    ```
 4. Deploy!
 
@@ -70,31 +71,33 @@ GITHUB_CLIENT_ID=your_github_oauth_client_id
 GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
 ```
 
-**Cách lấy GitHub OAuth credentials:**
+**GitHub OAuth App đã tạo:**
+- **Application name**: HNMedia
+- **Client ID**: `Ov23lio2L0EkJ9lpqLt9`
+- **Homepage URL**: `https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app`
+- **Authorization callback URL**: `https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/api/auth`
+
+**Cách lấy GitHub Client Secret:**
 1. Vào GitHub Settings > Developer settings > OAuth Apps
-2. Click "New OAuth App"
-3. Điền thông tin:
-   - **Application name**: HN Media Agency CMS
-   - **Homepage URL**: https://your-domain.vercel.app
-   - **Authorization callback URL**: https://your-domain.vercel.app/api/auth
-4. Lưu lại Client ID và Client Secret
+2. Click vào "HNMedia" app
+3. Tạo mới Client Secret và lưu lại
 
 ### Cấu hình Decap CMS
 
-Sau khi deploy, cập nhật file `public/admin/config.yml`:
+Sau khi deploy, file `admin/config.yml` đã được cấu hình sẵn với:
 
 ```yaml
 backend:
   name: github
-  repo: your-username/your-repo-name  # Thay bằng repo của bạn
+  repo: MEEP-D/HNMedia-agency
   branch: main
-  base_url: https://your-domain.vercel.app
+  base_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
   auth_endpoint: api/auth
 ```
 
 ## Quản lý nội dung
 
-Truy cập `/admin/` để vào giao diện quản lý nội dung với Decap CMS.
+Truy cập `https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/admin/` để vào giao diện quản lý nội dung với Decap CMS.
 
 Các collections có sẵn:
 - **Cài đặt**: Cấu hình chung, thương hiệu, màu sắc
@@ -104,9 +107,10 @@ Các collections có sẵn:
 ## Hỗ trợ
 
 Nếu gặp lỗi khi deploy hoặc sử dụng CMS, kiểm tra:
-1. GitHub OAuth App đã được cấu hình đúng
-2. Environment variables đã được thêm vào Vercel
-3. Repository có quyền truy cập
+1. ✅ GitHub OAuth App đã được cấu hình đúng (HNMedia)
+2. ✅ Environment variables đã được thêm vào Vercel (GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET)
+3. ✅ Repository public và có quyền truy cập
+4. ✅ Admin CMS hoạt động tại `/admin/`
 
 ## License
 

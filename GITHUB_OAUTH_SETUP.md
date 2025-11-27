@@ -1,24 +1,29 @@
 # GitHub OAuth Setup Guide
 
-## Tạo GitHub OAuth App
+## GitHub OAuth App đã tạo ✅
 
-1. Vào GitHub Settings > Developer settings > OAuth Apps
-2. Click "New OAuth App"
-3. Điền thông tin:
-   - **Application name**: HN Media Agency CMS
-   - **Homepage URL**: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
-   - **Authorization callback URL**: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/api/auth
-4. Click "Register application"
-5. Lưu lại **Client ID** và **Client Secret**
+**Application Name**: HNMedia  
+**Client ID**: `Ov23lio2L0EkJ9lpqLt9`  
+**Status**: Ready và đã sử dụng trong tuần qua
+
+## Cấu hình hiện tại
+
+**Homepage URL**: `https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app` ✅  
+**Authorization callback URL**: `https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/api/auth` ✅
 
 ## Cấu hình Vercel Environment Variables
 
-Thêm các biến môi trường trong Vercel:
+1. **Vào Vercel Dashboard**: https://vercel.com/dashboard
+2. **Chọn project**: `hn-media-agency`  
+3. **Click Settings tab** → Environment Variables
+4. **Thêm biến môi trường**:
 
 ```
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
+GITHUB_CLIENT_ID=Ov23lio2L0EkJ9lpqLt9
+GITHUB_CLIENT_SECRET=[Client Secret từ GitHub OAuth App]
 ```
+
+5. **Click Save** và **Redeploy** project
 
 ## Cấu hình Decap CMS
 
@@ -46,3 +51,17 @@ backend:
 - Repository phải public để Decap CMS hoạt động
 - Người dùng phải có quyền write vào repository
 - Các thay đổi sẽ được commit trực tiếp vào branch đã cấu hình
+
+## ✅ Kiểm tra hoàn tất
+
+Sau khi cấu hình xong:
+1. **Truy cập**: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/admin/
+2. **Click "Login with GitHub"**
+3. **Authorize application** và đăng nhập
+4. **Success**: Vào được giao diện quản trị CMS
+
+## 📋 Tình trạng hiện tại
+- ✅ GitHub OAuth App: Đã tạo và cấu hình
+- ✅ Domain Vercel: `hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app`
+- ✅ Admin CMS: Hoạt động tại `/admin/`
+- ⏳ Cần: Cấu hình Environment Variables trong Vercel

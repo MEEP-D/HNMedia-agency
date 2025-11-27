@@ -4,6 +4,24 @@
   "github": {
     "enabled": false
   },
+  "protection": {
+    "enabled": false
+  },
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "X-Frame-Options", 
+          "value": "DENY"
+        }
+      ]
+    }
+  ],
   "functions": {
     "api/auth.js": {
       "runtime": "nodejs18.x"
