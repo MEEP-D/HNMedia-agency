@@ -4,6 +4,8 @@ backend:
   branch: main
   base_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/
   auth_endpoint: api/auth
+  api_root: https://api.github.com
+  auth_scope: repo
 
 media_folder: images
 public_folder: /images
