@@ -1,4 +1,7 @@
 module.exports = async (req, res) => {
+  // Bypass Vercel authentication
+  res.setHeader('X-Vercel-Protection-Bypass', '1');
+  res.setHeader('X-Vercel-Skip-Sso', '1');
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');

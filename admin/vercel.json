@@ -1,0 +1,32 @@
+{
+  "functions": {
+    "api/auth.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/auth",
+      "destination": "/api/auth.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Cache-Control", 
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[build]
+  publish = "."
+  functions = "api"
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "/api/:splat"
+  status = 200
+  force = true
+
+[build.environment]
+  NODE_ENV = "production"
+  VERCEL_PROTECTION_BYPASS = "1"
+  VERCEL_SKIP_SSO = "1"

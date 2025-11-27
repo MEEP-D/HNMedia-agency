@@ -33,12 +33,16 @@
   },
   "rewrites": [
     {
+      "source": "/api/bypass",
+      "destination": "/api/bypass.js"
+    },
+    {
       "source": "/api/auth",
       "destination": "/api/auth.js"
     },
     {
       "source": "/admin",
-      "destination": "/admin/index.html"
+      "destination": "/api/admin.js"
     },
     {
       "source": "/admin/(.*)",
