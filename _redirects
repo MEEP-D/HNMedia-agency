@@ -1,2 +1,0 @@
-# Bypass Vercel authentication for admin
-/admin/* /admin/:splat 200!
