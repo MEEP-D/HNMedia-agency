@@ -11,9 +11,6 @@
       ]
     }
   ],
-  "functions": {
-    "api/auth.js": { "runtime": "nodejs18.x" }
-  },
   "env": {
     "GITHUB_CLIENT_ID": "Ov23lio2L0EkJ9lpqLt9",
     "GITHUB_CLIENT_SECRET": "ed3801bbef7fff65cab3147033a68e659fcb0378"
