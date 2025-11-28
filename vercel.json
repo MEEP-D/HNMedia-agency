@@ -2,11 +2,6 @@
 {
   "version": 2,
   "public": true,
-  "functions": {
-    "api/auth.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "headers": [
     {
       "source": "/admin/(.*)",
