@@ -4,7 +4,7 @@ backend:
   branch: "main"
   auth_type: oauth
   # base_url: "https://hn-media-agency.vercel.app" # sửa thành domain deploy của bạn (không kèm /api)
-  base_url: "https://hn-media-agency.vercel.app/api/"
+  base_url: "https://hn-media-agency.vercel.app/api"
   # auth_endpoint: auth
 
 media_folder: images
