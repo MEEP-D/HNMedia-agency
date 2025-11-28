@@ -20,14 +20,15 @@
     .cms-help-close { position: absolute; top: 8px; right: 8px; background: #fff; border: 1px solid #E2E8F0; border-radius: 999px; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
   </style>
 </head>
-  <script>
+
+<body>
+    <script>
   const PROD = "hn-media-agency.vercel.app";
   if (location.hostname !== PROD) {
     window.location.href = "https://" + PROD + "/admin/";
   }
 </script>
 
-<body>
   <script>
       // Yêu cầu CMS khởi tạo thủ công để chắc chắn config được load từ /admin/config.yml
       window.CMS_MANUAL_INIT = true;
