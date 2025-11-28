@@ -22,11 +22,9 @@
 </head>
 <body>
   <script>
-  window.CMS_CONFIG = {
-    load_config_file: true,
-    config_file: "config.yml"
-  };
-</script>
+      // Yêu cầu CMS khởi tạo thủ công để chắc chắn config được load từ /admin/config.yml
+      window.CMS_MANUAL_INIT = true;
+    </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <div id="nc-root"></div>
   <div class="cms-help">
