@@ -68,10 +68,13 @@
         config: '/admin/config.yml'
       });
     })();
-     const allowed = "hn-media-agency.vercel.app";
-  if (location.hostname !== allowed) {
-    window.location.href = `https://${allowed}/admin/`;
-  }
   </script>
+  <script>
+  const prod = "hn-media-agency.vercel.app";
+  if (location.hostname !== prod) {
+    location.href = `https://${prod}/admin/`;
+  }
+</script>
+
 </body>
 </html>
