@@ -22,15 +22,7 @@
 </head>
 
 <body>
-    <script>
-  const PROD = "hn-media-agency.vercel.app";
-  if (location.hostname !== PROD) {
-    window.location.href = "https://" + PROD + "/admin/";
-  }
-</script>
-
   <script>
-      // Yêu cầu CMS khởi tạo thủ công để chắc chắn config được load từ /admin/config.yml
       window.CMS_MANUAL_INIT = true;
     </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
