@@ -1,13 +1,17 @@
-// Simple OAuth proxy for GitHub (Vercel function)
-// Requires env vars on Vercel: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
-export default async function handler(req, res) {
+// Vercel Node function (CommonJS) - OAuth proxy cho GitHub
+// Yêu cầu trên Vercel: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET (env vars)
+const fetch = global.fetch || require('node-fetch');
+
+module.exports = async (req, res) => {
   const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
   const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
   const VERCEL_URL = process.env.VERCEL_URL || process.env.SITE_URL || null;
-  const host = VERCEL_URL ? `https://${VERCEL_URL.replace(/^https?:\/\//,'')}` : `https://${req.headers.host}`;
+  const host = VERCEL_URL ? (VERCEL_URL.startsWith('http') ? VERCEL_URL.replace(/\/$/, '') : `https://${VERCEL_URL}`) : `https://${req.headers.host}`;
 
   if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
-    res.status(500).json({ error: 'Server not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET.' });
+    res.statusCode = 500;
+    res.setHeader('content-type', 'application/json');
+    res.end(JSON.stringify({ error: 'Server not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET.' }));
     return;
   }
 
@@ -16,15 +20,15 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.status(204).end();
+    res.statusCode = 204;
+    res.end();
     return;
   }
 
-  const code = req.query.code;
-  const state = req.query.state || '';
+  const { code = null, state = '' } = req.query || {};
 
   if (!code) {
-    // Redirect user to GitHub authorize
+    // Chuyển hướng tới GitHub authorize
     const redirect_uri = `${host}/api/auth`;
     const authorizeUrl = `https://github.com/login/oauth/authorize?client_id=${encodeURIComponent(GITHUB_CLIENT_ID)}&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=repo&state=${encodeURIComponent(state)}`;
     res.writeHead(302, { Location: authorizeUrl });
@@ -32,7 +36,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Exchange code for access token
   try {
     const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -49,14 +52,18 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Content-Type', 'application/json');
 
     if (tokenJson.error) {
-      res.status(400).json(tokenJson);
+      res.statusCode = 400;
+      res.end(JSON.stringify(tokenJson));
     } else {
-      // Decap expects JSON with access_token
-      res.status(200).json(tokenJson);
+      res.statusCode = 200;
+      res.end(JSON.stringify(tokenJson));
     }
   } catch (err) {
-    res.status(500).json({ error: String(err) });
+    res.statusCode = 500;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ error: String(err) }));
   }
-}
+};
