@@ -8,7 +8,7 @@ backend:
 
 media_folder: images
 public_folder: /images
-
+local_backend: true
 publish_mode: editorial_workflow
 
 site_url: https://hn-media-agency.vercel.app
