@@ -14,8 +14,6 @@ publish_mode: editorial_workflow
 site_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
 display_url: https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app
 
-# Disable Vercel authentication
-custom_domain: true
 
 # Collections
 collections:
