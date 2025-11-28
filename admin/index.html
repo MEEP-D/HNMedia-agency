@@ -56,5 +56,18 @@
       window.addEventListener('keydown', function(e){ if(e.key==='Escape' && panel && panel.style.display==='block'){ panel.style.display='none'; } });
     })();
   </script>
+   <script>
+    (function () {
+      if (!window.CMS) {
+        console.error('CMS library không load được');
+        return;
+      }
+
+      // Gọi init, chỉ định file config rõ ràng
+      window.CMS.init({
+        config: '/admin/config.yml'
+      });
+    })();
+  </script>
 </body>
 </html>
