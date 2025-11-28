@@ -14,6 +14,8 @@
   "env": {
     "GITHUB_CLIENT_ID": "Ov23lio2L0EkJ9lpqLt9",
     "GITHUB_CLIENT_SECRET": "ed3801bbef7fff65cab3147033a68e659fcb0378"
+    "OAUTH_REDIRECT_URI": "https://hn-media-agency.vercel.app/api/auth/callback"
+
   },
   "rewrites": [
     {
