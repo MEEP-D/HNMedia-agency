@@ -29,10 +29,6 @@
       "destination": "/admin/$1"
     },
     {
-      "source": "/(.*)",
-      "destination": "/$1"
-    },
-    {
       "source": "/admin/config.yml",
       "destination": "/admin/config.yml"
     }
