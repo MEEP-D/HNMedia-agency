@@ -2,7 +2,7 @@
 module.exports = async (req, res) => {
   const clientId = process.env.GITHUB_CLIENT_ID;
   const host = `https://${req.headers.host}`;
-  const callback = `${host}/api/auth/callback`;
+  const callback = `${host}/api/callback`;
 
   const authorizeUrl =
     `https://github.com/login/oauth/authorize` +
