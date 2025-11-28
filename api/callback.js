@@ -1,4 +1,4 @@
-// /api/auth/callback.js -- Exchange code for token
+// /api/callback.js
 const fetch = global.fetch || require("node-fetch");
 
 module.exports = async (req, res) => {
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // Redirect back to Decap CMS with token in hash
+  // Redirect về Decap CMS
   res.writeHead(302, {
     Location: `https://${req.headers.host}/admin/#access_token=${token}`
   });
