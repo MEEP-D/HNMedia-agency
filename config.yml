@@ -1,1 +1,36 @@
 
+{
+  "version": 2,
+  "public": true,
+  "headers": [
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "X-Frame-Options", "value": "DENY" }
+      ]
+    }
+  ],
+  "env": {
+    "GITHUB_CLIENT_ID": "Ov23lio2L0EkJ9lpqLt9",
+    "GITHUB_CLIENT_SECRET": "ed3801bbef7fff65cab3147033a68e659fcb0378"
+  },
+  "rewrites": [
+    {
+      "source": "/api/auth",
+      "destination": "/api/auth.js"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/admin/$1"
+    },
+    {
+      "source": "/admin/config.yml",
+      "destination": "/admin/config.yml"
+    }
+  ]
+}
