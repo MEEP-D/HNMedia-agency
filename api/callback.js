@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
 
   // MUST USE #/ not #
   res.writeHead(302, {
-    Location: `https://hn-media-agency.vercel.app/admin/#/access_token=${token}`
+    Location: `https://hn-media-agency.vercel.app/admin/?token=${token}#/`
   });
   res.end();
 };
