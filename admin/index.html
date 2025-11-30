@@ -3,12 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
-  const prod = "hn-media-agency.vercel.app";
-  if (location.hostname !== prod) {
-    location.href = `https://${prod}/admin/`;
-  }
-</script>
+
+  <!-- 🚀 Redirect ĐÚNG: không redirect khi đang có access_token -->
+  <script>
+    const prod = "hn-media-agency.vercel.app";
+
+    // Nếu KHÔNG phải domain production và KHÔNG phải callback chứa access_token thì redirect
+    if (location.hostname !== prod) {
+      if (!location.hash.startsWith("#/access_token")) {
+        window.location.replace(`https://${prod}/admin/`);
+      }
+    }
+  </script>
+
   <meta name="vercel-toolbar" content="false">
   <meta name="x-vercel-protection-bypass" content="1">
   <meta name="x-vercel-skip-sso" content="1">
@@ -16,6 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
   <style>
     html, body { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
     .cms-help { position: fixed; right: 16px; bottom: 16px; z-index: 9999; }
@@ -29,10 +37,15 @@
 
 <body>
   <script>
-      window.CMS_MANUAL_INIT = true;
-    </script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
+
+  <!-- Load Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3/dist/decap-cms.js"></script>
+
   <div id="nc-root"></div>
+
+  <!-- Panel hỗ trợ giữ nguyên -->
   <div class="cms-help">
     <button id="cms-help-btn" class="cms-help-btn" type="button">Hướng dẫn nhanh</button>
     <div id="cms-help-panel" class="cms-help-panel">
@@ -43,6 +56,7 @@
         <li>Mỗi mục có phần mô tả và tóm tắt giúp bạn dễ định vị.</li>
         <li>Bấm "Save" để lưu, sau đó "Publish" để xuất bản.</li>
       </ol>
+
       <div class="cms-help-title" style="margin-top:8px;">Mẹo sử dụng</div>
       <ol class="cms-help-list">
         <li>Dùng các trường (EN) để nhập nội dung tiếng Anh.</li>
@@ -51,31 +65,20 @@
       </ol>
     </div>
   </div>
+
   <script>
-    (function(){
-      var btn = document.getElementById('cms-help-btn');
-      var panel = document.getElementById('cms-help-panel');
-      var close = document.getElementById('cms-help-close');
-      function toggle(){ if(!panel) return; panel.style.display = (panel.style.display==='block' ? 'none' : 'block'); }
-      if(btn && panel){ btn.addEventListener('click', toggle); }
-      if(close && panel){ close.addEventListener('click', function(){ panel.style.display='none'; }); }
-      window.addEventListener('keydown', function(e){ if(e.key==='Escape' && panel && panel.style.display==='block'){ panel.style.display='none'; } });
-    })();
-  </script>
-   <script>
     (function () {
       if (!window.CMS) {
         console.error('CMS library không load được');
         return;
       }
 
-      // Gọi init, chỉ định file config rõ ràng
+      // Khởi tạo CMS
       window.CMS.init({
         config: '/admin/config.yml'
       });
     })();
   </script>
-
 
 </body>
 </html>
