@@ -1,4 +1,3 @@
-// /api/callback.js
 const fetch = global.fetch || require("node-fetch");
 
 module.exports = async (req, res) => {
@@ -34,7 +33,7 @@ module.exports = async (req, res) => {
 
   // Redirect về Decap CMS
   res.writeHead(302, {
-  Location: `https://hn-media-agency.vercel.app/admin/#access_token=${token}`
+    Location: `https://hn-media-agency.vercel.app/admin/#access_token=${token}`
   });
 
   res.end();
