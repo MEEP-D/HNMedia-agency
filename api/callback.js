@@ -5,21 +5,20 @@ module.exports = async (req, res) => {
 
   if (!code) {
     res.statusCode = 400;
-    res.end("Missing code");
-    return;
+    return res.end("Missing code");
   }
 
   const tokenRes = await fetch("https://github.com/login/oauth/access_token", {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
       client_id: process.env.GITHUB_CLIENT_ID,
       client_secret: process.env.GITHUB_CLIENT_SECRET,
-      code,
-    }),
+      code
+    })
   });
 
   const json = await tokenRes.json();
@@ -27,14 +26,12 @@ module.exports = async (req, res) => {
 
   if (!token) {
     res.statusCode = 400;
-    res.end(JSON.stringify(json));
-    return;
+    return res.end(JSON.stringify(json));
   }
 
-  // Redirect về Decap CMS
+  // MUST USE #/ not #
   res.writeHead(302, {
-    Location: `https://hn-media-agency.vercel.app/admin/#access_token=${token}`
+    Location: `https://hn-media-agency.vercel.app/admin/#/access_token=${token}`
   });
-
   res.end();
 };
