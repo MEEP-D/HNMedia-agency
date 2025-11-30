@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test GitHub OAuth</title>
+</head>
+<body>
+    <h1>Test GitHub OAuth Login</h1>
+    <button onclick="testGitHubLogin()">Test Login with GitHub</button>
+    <div id="result"></div>
+
+    <script>
+        function testGitHubLogin() {
+            const clientId = 'Ov23lio2L0EkJ9lpqLt9';
+            const redirectUri = 'https://hn-media-agency-9uwh677iz-meep-ds-projects.vercel.app/api/auth';
+            const scope = 'repo';
+            const state = Math.random().toString(36).substring(7);
+            
+            const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
+            
+            document.getElementById('result').innerHTML = `
+                <p>GitHub Auth URL:</p>
+                <a href="${githubAuthUrl}" target="_blank">${githubAuthUrl}</a>
+                <p>Click link above to test GitHub OAuth</p>
+            `;
+        }
+    </script>
+</body>
+</html>

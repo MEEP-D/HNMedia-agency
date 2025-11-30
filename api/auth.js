@@ -1,7 +1,7 @@
 // /api/auth.js
 module.exports = async (req, res) => {
   const clientId = process.env.GITHUB_CLIENT_ID;
-  const host = `https://${req.headers.host}`;
+  const host = "https://hn-media-agency.vercel.app";
   const callback = `${host}/api/callback`;
 
   const authorizeUrl =

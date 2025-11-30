@@ -34,7 +34,8 @@ module.exports = async (req, res) => {
 
   // Redirect về Decap CMS
   res.writeHead(302, {
-    Location: `https://${req.headers.host}/admin/#access_token=${token}`
+  Location: `https://hn-media-agency.vercel.app/admin/#access_token=${token}`
   });
+
   res.end();
 };
