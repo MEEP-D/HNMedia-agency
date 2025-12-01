@@ -4,8 +4,7 @@ module.exports = async (req, res) => {
   const { code } = req.query;
 
   if (!code) {
-    res.statusCode = 400;
-    return res.end("Missing code");
+    return res.status(400).json({ error: "Missing code" });
   }
 
   const tokenRes = await fetch("https://github.com/login/oauth/access_token", {
@@ -21,17 +20,15 @@ module.exports = async (req, res) => {
     })
   });
 
-  const json = await tokenRes.json();
-  const token = json.access_token;
+  const data = await tokenRes.json();
 
-  if (!token) {
-    res.statusCode = 400;
-    return res.end(JSON.stringify(json));
+  if (!data.access_token) {
+    return res.status(400).json({ error: "Invalid token response", data });
   }
 
-  // MUST USE #/ not #
-  res.writeHead(302, {
-    Location: `https://hn-media-agency.vercel.app/admin/?token=${token}#/`
+  // 🎯 Trả JSON đúng chuẩn Decap
+  res.status(200).json({
+    token: data.access_token,
+    provider: "github"
   });
-  res.end();
 };
