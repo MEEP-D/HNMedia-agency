@@ -49,16 +49,6 @@
     btn.onclick = () => panel.style.display = "block";
     close.onclick = () => panel.style.display = "none";
   </script>
-<script>
-  window.CMS_MANUAL_INIT = true;
-</script>
-
-<script>
-  // Load YAML đúng cách:
-  CMS.loadConfig('/admin/config.yml').then(config => {
-    CMS.init({ config });
-  });
-</script>
 
 </body>
 </html>
