@@ -50,8 +50,15 @@
     close.onclick = () => panel.style.display = "none";
   </script>
 <script>
+  // Bắt buộc cho Decap CMS 3.x
   window.CMS_MANUAL_INIT = false;
-</script>
 
+  // Khi CMS load xong script, tự khởi động
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.CMS) {
+      window.CMS.init();
+    }
+  });
+</script>
 </body>
 </html>
