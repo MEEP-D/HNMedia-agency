@@ -1,38 +1,34 @@
-
 {
   "version": 2,
   "public": true,
-  "headers": [
+
+  "routes": [
     {
-      "source": "/admin/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
-        { "key": "X-Frame-Options", "value": "DENY" }
-      ]
+      "src": "/admin/?(.*)",
+      "headers": {
+        "x-vercel-skip-sso": "1",
+        "x-vercel-protection-bypass": "1",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "X-Frame-Options": "DENY"
+      }
+    },
+    {
+      "src": "/api/auth",
+      "dest": "/api/auth.js"
+    },
+    {
+      "src": "/api/auth/callback",
+      "dest": "/api/auth/callback.js"
+    },
+    {
+      "src": "/admin",
+      "dest": "/admin/index.html"
     }
   ],
+
   "env": {
     "GITHUB_CLIENT_ID": "Ov23lio2L0EkJ9lpqLt9",
     "GITHUB_CLIENT_SECRET": "ed3801bbef7fff65cab3147033a68e659fcb0378",
     "OAUTH_REDIRECT_URI": "https://hn-media-agency.vercel.app/api/auth/callback"
-
-  },
-  "rewrites": [
-    {
-      "source": "/api/auth",
-      "destination": "/api/auth.js"
-    },
-    {
-      "source": "/admin",
-      "destination": "/admin/index.html"
-    },
-    {
-      "source": "/admin/(.*)",
-      "destination": "/admin/$1"
-    },
-    {
-      "source": "/admin/config.yml",
-      "destination": "/admin/config.yml"
-    }
-  ]
+  }
 }
