@@ -7,7 +7,7 @@
       "source": "/admin/config.yml",
       "headers": [
         { "key": "Content-Type", "value": "text/yaml" },
-        { "key": "Cache-Control", "value": "no-cache" }
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" }
       ]
     }
   ],
