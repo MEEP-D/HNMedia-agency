@@ -49,6 +49,15 @@
     btn.onclick = () => panel.style.display = "block";
     close.onclick = () => panel.style.display = "none";
   </script>
+  <script>
+  window.CMS_MANUAL_INIT = true;
+</script>
+
+<script>
+  CMS.init({
+    config: '/admin/config.yml'
+  });
+</script>
 
 </body>
 </html>
