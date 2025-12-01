@@ -30,7 +30,7 @@
       "dest": "/api/auth/callback.js"
     },
     {
-      "src": "/admin",
+      "src": "/admin/",
       "dest": "/admin/index.html"
     }
   ],
