@@ -49,14 +49,13 @@
     btn.onclick = () => panel.style.display = "block";
     close.onclick = () => panel.style.display = "none";
   </script>
-  <script>
+<script>
   window.CMS_MANUAL_INIT = true;
 </script>
-
 <script>
-  CMS.init({
-    config: '/admin/config.yml'
-  });
+  fetch('/admin/config.json')
+    .then(r => r.json())
+    .then(conf => CMS.init({ config: conf }));
 </script>
 
 </body>
