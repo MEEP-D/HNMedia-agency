@@ -52,10 +52,12 @@
 <script>
   window.CMS_MANUAL_INIT = true;
 </script>
+
 <script>
-  fetch('/admin/config.yml')
-    .then(r => r.json())
-    .then(conf => CMS.init({ config: conf }));
+  // Load YAML đúng cách:
+  CMS.loadConfig('/admin/config.yml').then(config => {
+    CMS.init({ config });
+  });
 </script>
 
 </body>
