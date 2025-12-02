@@ -62,42 +62,33 @@
     })();
   </script>
   
-  <script>
-  (function () {
-    // 1) Lấy token từ URL
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+ <script>
+(async function () {
+  // Nếu URL có ?code= GHILỎI → gọi API callback
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
 
-    if (token) {
-      console.log("Saving OAuth token:", token);
+  if (code) {
+    console.log("Calling callback API...");
 
-      localStorage.setItem(
-        "netlify-cms-user",
-        JSON.stringify({
-          token: token,
-          backendName: "github",
-          loginSource: "oauth",
-          provider: "github"
-        })
-      );
+    const res = await fetch(`/api/callback?code=${code}`);
+    const data = await res.json();
 
-      const cleanUrl = window.location.origin + window.location.pathname;
-      window.history.replaceState({}, "", cleanUrl);
+    if (data.token) {
+      localStorage.setItem("netlify-cms-user", JSON.stringify({
+        token: data.token,
+        backendName: "github",
+        loginSource: "oauth"
+      }));
+      window.location.replace("/admin/#/");
+      return;
     }
+  }
 
-    // 2) Khởi động CMS SAU khi script CMS load
-    document.addEventListener("DOMContentLoaded", () => {
-      if (window.CMS) {
-        console.log("CMS loaded → Initializing...");
-        window.CMS.init({
-          config: '/admin/config.yml'
-        });
-      } else {
-        console.error("CMS NOT LOADED — decap-cms.js failed to load");
-      }
-    });
-  })();
-  </script>
+  window.CMS.init({ config: "/admin/config.yml" });
+})();
+</script>
+
 
 </body>
 </html>
