@@ -63,29 +63,34 @@
   </script>
   
  <script>
-(async function () {
-  // Nếu URL có ?code= GHILỎI → gọi API callback
+(function () {
   const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
+  const token = params.get("token");
 
-  if (code) {
-    console.log("Calling callback API...");
+  if (token) {
+    console.log("Saving token...", token);
 
-    const res = await fetch(`/api/callback?code=${code}`);
-    const data = await res.json();
-
-    if (data.token) {
-      localStorage.setItem("netlify-cms-user", JSON.stringify({
-        token: data.token,
+    localStorage.setItem(
+      "netlify-cms-user",
+      JSON.stringify({
+        token: token,
         backendName: "github",
         loginSource: "oauth"
-      }));
-      window.location.replace("/admin/#/");
-      return;
-    }
+      })
+    );
+
+    // Xóa token khỏi URL
+    window.history.replaceState({}, "", "/admin/#/");
+
+    return;
   }
 
-  window.CMS.init({ config: "/admin/config.yml" });
+  // Khởi động CMS
+  window.addEventListener("DOMContentLoaded", () => {
+    if (window.CMS) {
+      window.CMS.init({ config: "/admin/config.yml" });
+    }
+  });
 })();
 </script>
 
