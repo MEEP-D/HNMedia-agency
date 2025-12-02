@@ -86,10 +86,12 @@
   }
 
   // Khởi động CMS
-  window.addEventListener("DOMContentLoaded", () => {
-    if (window.CMS) {
-      window.CMS.init({ config: "/admin/config.yml" });
-    }
+  window.addEventListener("cms-loaded", () => {
+    console.log("⚡ CMS loaded → init with config");
+
+    window.CMS.init({
+      config: "/admin/config.yml"
+    });
   });
 })();
 </script>
