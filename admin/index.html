@@ -18,7 +18,7 @@
 <body>
 
   <!-- ✨ CHỈ load Decap CMS – KHÔNG manual init, KHÔNG CMS.init() -->
-<script src="https://unpkg.com/browse/decap-cms@3.0.5/dist/decap-cms.js"></script>
+  <script src="/admin/decap-cms.js"></script>
 
   <div id="nc-root"></div>
 
@@ -52,37 +52,41 @@
     close.onclick = () => panel.style.display = "none";
   </script>
   <script>
-(function () {
-  // 1) Lấy token từ URL
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token");
+  (function () {
+    // 1) Lấy token từ URL
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
 
-  if (token) {
-    console.log("Saving OAuth token:", token);
+    if (token) {
+      console.log("Saving OAuth token:", token);
 
-    // 2) Lưu đúng chuẩn Decap CMS
-    localStorage.setItem(
-      "netlify-cms-user",
-      JSON.stringify({
-        token,
-        backendName: "github",
-        loginSource: "oauth"
-      })
-    );
+      localStorage.setItem(
+        "netlify-cms-user",
+        JSON.stringify({
+          token: token,
+          backendName: "github",
+          loginSource: "oauth",
+          provider: "github"
+        })
+      );
 
-    // 3) Xóa token khỏi URL để tránh login loop
-    const cleanUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, "", cleanUrl);
-  }
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, "", cleanUrl);
+    }
 
-  // 4) Khởi động CMS
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.CMS) window.CMS.init( 
-      config: '/admin/config.yml'
-    );
-  });
-})();
-</script>
+    // 2) Khởi động CMS SAU khi script CMS load
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.CMS) {
+        console.log("CMS loaded → Initializing...");
+        window.CMS.init({
+          config: '/admin/config.yml'
+        });
+      } else {
+        console.error("CMS NOT LOADED — decap-cms.js failed to load");
+      }
+    });
+  })();
+  </script>
 
 </body>
 </html>
