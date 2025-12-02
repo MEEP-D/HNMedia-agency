@@ -62,7 +62,7 @@
     })();
   </script>
   
- <script>
+ <!-- <script>
 (function () {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("token");
@@ -89,6 +89,39 @@
   window.addEventListener("cms-loaded", () => {
     console.log("⚡ CMS loaded → init with config");
 
+    window.CMS.init({
+      config: "/admin/config.yml"
+    });
+  });
+})();
+</script> -->
+<script>
+(function () {
+  // 1) Lấy token từ URL (# hoặc ?)
+  const url = new URL(window.location.href);
+  const token = url.searchParams.get("token") || url.hash.split("token=")[1];
+
+  if (token) {
+    console.log("Saved token:", token);
+
+    // 2) Lưu vào localStorage đúng chuẩn Decap
+    localStorage.setItem(
+      "netlify-cms-user",
+      JSON.stringify({
+        token,
+        backendName: "github",
+        loginSource: "oauth"
+      })
+    );
+
+    // 3) Xóa token khỏi URL và chuyển sang dashboard
+    window.location.replace("/admin/#/");
+    return; // Dừng lại, chưa init CMS
+  }
+
+  // 4) Khi CMS load xong → MỚI init
+  window.addEventListener("cms-loaded", () => {
+    console.log("CMS Loaded → Initializing...");
     window.CMS.init({
       config: "/admin/config.yml"
     });
