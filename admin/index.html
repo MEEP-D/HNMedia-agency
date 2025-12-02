@@ -59,5 +59,36 @@
     });
   }
 </script>
+  <script>
+(function () {
+  // 1) Lấy token từ URL
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (token) {
+    console.log("Saving OAuth token:", token);
+
+    // 2) Lưu đúng chuẩn Decap CMS
+    localStorage.setItem(
+      "netlify-cms-user",
+      JSON.stringify({
+        token,
+        backendName: "github",
+        loginSource: "oauth"
+      })
+    );
+
+    // 3) Xóa token khỏi URL để tránh login loop
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, "", cleanUrl);
+  }
+
+  // 4) Khởi động CMS
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.CMS) window.CMS.init();
+  });
+})();
+</script>
+
 </body>
 </html>
