@@ -1,70 +1,66 @@
-// Simple bypass for Vercel authentication
+// Simple bypass page for Vercel + custom OAuth Decap CMS
 module.exports = async (req, res) => {
-  res.setHeader('Content-Type', 'text/html');
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.setHeader('X-Vercel-Protection-Bypass', '1');
-  res.setHeader('X-Vercel-Skip-Sso', '1');
-  
+  res.setHeader("Content-Type", "text/html");
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("X-Vercel-Protection-Bypass", "1");
+  res.setHeader("X-Vercel-Skip-Sso", "1");
+
   res.status(200).send(`
-    <!doctype html>
-    <html lang="vi">
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="vercel-toolbar" content="false">
-      <title>CMS - HN Media Agency</title>
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-      <style>
-        html, body { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-        .cms-help { position: fixed; right: 16px; bottom: 16px; z-index: 9999; }
-        .cms-help-btn { background: #10B981; color: #fff; border: 1px solid #A7F3D0; box-shadow: 0 6px 16px rgba(16,185,129,0.35); border-radius: 999px; padding: 10px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
-        .cms-help-panel { position: fixed; right: 16px; bottom: 60px; width: 320px; background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.12); padding: 12px; font-size: 12px; color: #0f172a; display: none; }
-        .cms-help-title { font-weight: 600; font-size: 13px; margin-bottom: 6px; }
-        .cms-help-list { margin: 0; padding-left: 14px; color: #334155; }
-        .cms-help-close { position: absolute; top: 8px; right: 8px; background: #fff; border: 1px solid #E2E8F0; border-radius: 999px; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-      </style>
-    </head>
-    <body>
-      <script>
-      window.CMS_CONFIG = {
-        load_config_file: true,
-        config_file: "config.yml"
-      };
-      </script>
-      <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-      <div id="nc-root"></div>
-      <div class="cms-help">
-        <button id="cms-help-btn" class="cms-help-btn" type="button">Hướng dẫn nhanh</button>
-        <div id="cms-help-panel" class="cms-help-panel">
-          <button id="cms-help-close" class="cms-help-close" title="Đóng" type="button">×</button>
-          <div class="cms-help-title">Quy trình chỉnh sửa</div>
-          <ol class="cms-help-list">
-            <li>Vào mục "Nội dung trang" để sửa Trang chủ, Giới thiệu...</li>
-            <li>Mỗi mục có phần mô tả và tóm tắt giúp bạn dễ định vị.</li>
-            <li>Bấm "Save" để lưu, sau đó "Publish" để xuất bản.</li>
-          </ol>
-          <div class="cms-help-title" style="margin-top:8px;">Mẹo sử dụng</div>
-          <ol class="cms-help-list">
-            <li>Dùng các trường (EN) để nhập nội dung tiếng Anh.</li>
-            <li>Trong "Sections", dùng loại "text" cho nội dung tự do.</li>
-            <li>Hình ảnh nên đặt tên rõ ràng, dung lượng nhẹ.</li>
-          </ol>
-        </div>
-      </div>
-      <script>
-        (function(){
-          var btn = document.getElementById('cms-help-btn');
-          var panel = document.getElementById('cms-help-panel');
-          var close = document.getElementById('cms-help-close');
-          function toggle(){ if(!panel) return; panel.style.display = (panel.style.display==='block' ? 'none' : 'block'); }
-          if(btn && panel){ btn.addEventListener('click', toggle); }
-          if(close && panel){ close.addEventListener('click', function(){ panel.style.display='none'; }); }
-          window.addEventListener('keydown', function(e){ if(e.key==='Escape' && panel && panel.style.display==='block'){ panel.style.display='none'; } });
-        })();
-      </script>
-    </body>
-    </html>
-  `);
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CMS - HN Media Agency</title>
+</head>
+
+<body>
+
+  <!-- Load CMS from LOCAL (NOT CDN) -->
+  <script src="/admin/decap-cms.js"></script>
+
+  <div id="nc-root"></div>
+
+  <script>
+  (function () {
+    // --- 1) Extract token from URL ---
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+      console.log("🔥 Saving OAuth token:", token);
+
+      // --- 2) Save token exactly as Decap CMS expects ---
+      localStorage.setItem(
+        "netlify-cms-user",
+        JSON.stringify({
+          token,
+          backendName: "github",
+          loginSource: "oauth",
+          provider: "github"
+        })
+      );
+
+      // --- 3) Clean URL ---
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, "", cleanUrl);
+    }
+
+    // --- 4) Init CMS ---
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.CMS) {
+        console.log("🔥 CMS loaded → initializing...");
+        window.CMS.init({
+          config: '/admin/config.yml'
+        });
+      } else {
+        console.error("❌ CMS FAILED to load");
+      }
+    });
+  })();
+  </script>
+
+</body>
+</html>
+`);
 };
