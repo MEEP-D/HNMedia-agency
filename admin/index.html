@@ -49,16 +49,15 @@
     btn.onclick = () => panel.style.display = "block";
     close.onclick = () => panel.style.display = "none";
   </script>
-<!-- <script>
+<script>
   // Bắt buộc cho Decap CMS 3.x
-  window.CMS_MANUAL_INIT = false;
+  // window.CMS_MANUAL_INIT = false;
 
-  // Khi CMS load xong script, tự khởi động
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.CMS) {
-      window.CMS.init();
-    }
-  });
-</script> -->
+  if (window.CMS) {
+    window.CMS.init({
+      config: '/admin/config.yml'
+    });
+  }
+</script>
 </body>
 </html>
