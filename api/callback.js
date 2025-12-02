@@ -26,9 +26,11 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: "Invalid token response", data });
   }
 
-  // 🎯 Trả JSON đúng chuẩn Decap
-  res.status(200).json({
-    token: data.access_token,
-    provider: "github"
+  const token = data.access_token;
+
+  // 🎯 REDIRECT về CMS + mang theo token
+  res.writeHead(302, {
+    Location: `/admin/#/?token=${token}`
   });
+  res.end();
 };
