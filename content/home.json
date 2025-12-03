@@ -69,14 +69,26 @@
           "alt_text": "123123123123"
         }
       ],
-      "type": "text",
+      "type": "gallery",
       "ctaText": "123123123123"
     }
   ],
   "intro_en": "12314234232",
   "partners": [
     {
-      "name": "1231231231",
+      "name": "Bánh tráng phú cường",
+      "image": "/images/picture1.png"
+    },
+    {
+      "name": "đèn pllar",
+      "image": "/images/picture1.png"
+    },
+    {
+      "name": "màn",
+      "image": "/images/picture1.png"
+    },
+    {
+      "name": "vợt",
       "image": "/images/picture1.png"
     }
   ]
