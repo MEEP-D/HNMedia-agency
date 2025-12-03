@@ -61,41 +61,7 @@
       window.addEventListener('keydown', function(e){ if(e.key==='Escape' && panel && panel.style.display==='block'){ panel.style.display='none'; } });
     })();
   </script>
-  
- <!-- <script>
-(function () {
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token");
-
-  if (token) {
-    console.log("Saving token...", token);
-
-    localStorage.setItem(
-      "netlify-cms-user",
-      JSON.stringify({
-        token: token,
-        backendName: "github",
-        loginSource: "oauth"
-      })
-    );
-
-    // Xóa token khỏi URL
-    window.history.replaceState({}, "", "/admin/#/");
-
-    return;
-  }
-
-  // Khởi động CMS
-  window.addEventListener("cms-loaded", () => {
-    console.log("⚡ CMS loaded → init with config");
-
-    window.CMS.init({
-      config: "/admin/config.yml"
-    });
-  });
-})();
-</script> -->
-<script>
+<!-- <script>
 (function () {
   // 1) Lấy token từ URL (# hoặc ?)
   const url = new URL(window.location.href);
@@ -120,6 +86,44 @@
   }
 
   // 4) Khi CMS load xong → MỚI init
+  window.addEventListener("cms-loaded", () => {
+    console.log("CMS Loaded → Initializing...");
+    window.CMS.init({
+      config: "/admin/config.yml"
+    });
+  });
+})();
+</script> -->
+  <script>
+  (function () {
+  const url = new URL(window.location.href);
+
+  // Lấy token từ search (?token=) hoặc hash (#token=)
+  let token = url.searchParams.get("token");
+
+  if (!token && window.location.hash.includes("token=")) {
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
+    token = hashParams.get("token");
+  }
+
+  if (token) {
+    console.log("Saved token:", token);
+
+    localStorage.setItem(
+      "netlify-cms-user",
+      JSON.stringify({
+        token,
+        backendName: "github",
+        loginSource: "oauth"
+      })
+    );
+
+    // Xóa token khỏi URL và chuyển qua dashboard
+    window.location.replace("/admin/#/");
+    return;
+  }
+
+  // Chờ CMS load rồi mới init
   window.addEventListener("cms-loaded", () => {
     console.log("CMS Loaded → Initializing...");
     window.CMS.init({
