@@ -3,13 +3,52 @@
   "vision": "Trở thành đối tác truyền thông đáng tin cậy cho doanh nghiệp Việt.",
   "mission": "Tạo ra giá trị thực bằng nội dung sáng tạo và đo lường hiệu quả.",
   "team": [
-    { "name": "Nguyễn An", "role": "CEO", "photo": "images/team/ceo.jpg" },
-    { "name": "Trần Bình", "role": "Head of Strategy", "photo": "images/team/strategy.jpg" },
-    { "name": "Lê Chi", "role": "Creative Lead", "photo": "images/team/creative.jpg" }
+    {
+      "name": "Nguyễn An",
+      "role": "CEO",
+      "photo": "/images/picture1.png"
+    },
+    {
+      "name": "Trần Bình",
+      "role": "Head of Strategy",
+      "photo": "/images/picture1.png"
+    },
+    {
+      "name": "Lê Chi",
+      "role": "Creative Lead",
+      "photo": "/images/picture1.png"
+    }
   ],
   "history": [
-    { "year": "2019", "event": "Thành lập công ty" },
-    { "year": "2021", "event": "Mở rộng dịch vụ Digital" },
-    { "year": "2024", "event": "Đạt 100+ khách hàng" }
-  ]
+    {
+      "year": "2019",
+      "event": "Thành lập công ty"
+    },
+    {
+      "year": "2021",
+      "event": "Mở rộng dịch vụ Digital"
+    },
+    {
+      "year": "2024",
+      "event": "Đạt 100+ khách hàng"
+    }
+  ],
+  "cover": "/images/3374825268217454051.jpg",
+  "sections": [
+    {
+      "type": "grid",
+      "title": "Live",
+      "items": [
+        {
+          "title": "Live",
+          "title_en": "Live1",
+          "description": "LiveLiveLiveLive",
+          "description_en": "Live",
+          "image": "/images/picture1.png",
+          "link": "Live"
+        }
+      ]
+    }
+  ],
+  "title_en": "Dạy Bạn Cách Live - Trao Bạn Cách Thắng"
 }
