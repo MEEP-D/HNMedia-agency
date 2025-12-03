@@ -155,27 +155,27 @@ collections:
               - { label: Tên, name: name, widget: string, required: false }
               - { label: Logo, name: image, widget: image }
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định (Không dùng Conditional Fields)
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})' # Dễ hình dung hơn
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này (VD: "Ưu điểm nổi bật").'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -183,67 +183,46 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false } # Nâng cấp: Markdown
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
-              
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: Markdown
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
                 required: false
                 collapsed: true
-                fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                summary: 'Ảnh' # Tóm tắt đơn giản hơn
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
+                fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
       # ABOUT PAGE
       - file: content/about.json
@@ -280,27 +259,27 @@ collections:
               - { label: Sự kiện, name: event, widget: string }
               - { label: Sự kiện (EN), name: event_en, widget: string, required: false }
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này (VD: "Giá trị cốt lõi").'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -308,67 +287,46 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
-              
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
                 required: false
                 collapsed: true
+                summary: 'Ảnh'
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
                 fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
       # SERVICES PAGE
       - file: content/services.json
@@ -392,27 +350,27 @@ collections:
               - { label: Mô tả (EN), name: description_en, widget: text, required: false }
               - { label: Ảnh, name: image, widget: image, required: false }
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -420,67 +378,46 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
-              
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
                 required: false
                 collapsed: true
+                summary: 'Ảnh'
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
                 fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
       # COURSES PAGE
       - file: content/courses.json
@@ -515,27 +452,27 @@ collections:
                 summary: '{{fields.item}}'
                 field: { label: Mục, name: item, widget: string }
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -543,67 +480,46 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
-              
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
                 required: false
                 collapsed: true
+                summary: 'Ảnh'
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
                 fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
       # PORTFOLIO PAGE
       - file: content/portfolio.json
@@ -627,27 +543,27 @@ collections:
               - { label: Kết quả (EN), name: result_en, widget: text, required: false }
               - { label: Ảnh, name: image, widget: image, required: false }
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -655,67 +571,46 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
-
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
+                required: false
+                collapsed: true
+                summary: 'Ảnh'
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
+                fields:
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
       # CAREERS PAGE
       - file: content/careers.json
@@ -741,27 +636,27 @@ collections:
               - { label: Mô tả ngắn (EN), name: summary_en, widget: text, required: false }
               - { label: Ảnh, name: image, widget: image, required: false }
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -769,67 +664,46 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
-
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
+                required: false
+                collapsed: true
+                summary: 'Ảnh'
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
+                fields:
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
       # CONTACT PAGE
       - file: content/contact.json
@@ -873,27 +747,27 @@ collections:
             hint: Dán link Zalo Official/nhắn tin
             pattern: ['^https?://', 'URL bắt đầu bằng http/https']
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -901,69 +775,48 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
-              
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
                 required: false
                 collapsed: true
+                summary: 'Ảnh'
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
                 fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
-
-      # NEWS PAGE (Giữ nguyên cấu trúc News/Posts, chỉ nâng cấp Sections)
+      # NEWS PAGE
       - file: content/news.json
         label: Tin tức
         name: news
@@ -994,27 +847,27 @@ collections:
               - { label: Nội dung, name: body, widget: markdown }
               - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
           
-          # Nâng cấp: SECTIONS - Áp dụng Conditional Fields
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} ({{fields.type}})'
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
-              # TRƯỜNG BỘ CHỌN TYPE (Visible, non-conditional)
               - label: Loại Section
                 name: type
                 widget: select
-                options: [Text Block, Image Gallery, Feature Grid, Call To Action]
-                hint: 'Chọn loại bố cục bạn muốn sử dụng cho khối này.'
+                options: [grid, gallery, text, cta]
+                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
               
-              # TRƯỜNG CHUNG (Metadata/Background)
               - label: Tiêu đề Khối (Dùng cho Tóm tắt)
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tên dễ nhớ cho khối này (Ví dụ: "Ưu điểm nổi bật")'
-              - { label: Mô tả Khối, name: subtitle, widget: text, required: false }
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -1022,64 +875,43 @@ collections:
                 widget: object
                 collapsed: true
                 required: false
+                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
                 fields:
                   - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
                   - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
-
-              # 1. BLOCK: Text Block
-              - label: Nội dung (Text Block)
-                name: text_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Nội dung chính, name: body, widget: markdown } # Nâng cấp: Markdown
-                  - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
+                  
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
+              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
-              # 2. BLOCK: Feature Grid
-              - label: Nội dung (Feature Grid)
-                name: grid_content
-                widget: object
+              - label: Items (Dùng cho GRID/CTA)
+                name: items
+                widget: list
                 required: false
                 collapsed: true
+                summary: '{{title}}'
+                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
                 fields:
-                  - label: Các mục (Items)
-                    name: items
-                    widget: list
-                    collapsed: true
-                    summary: '{{title}}'
-                    fields:
-                      - { label: Tiêu đề, name: title, widget: string }
-                      - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                      - { label: Ảnh, name: image, widget: image, required: false }
-                      - { label: Link, name: link, widget: string, required: false }
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+                  
+              - label: Images (Dùng cho GALLERY)
+                name: images
+                widget: list
+                required: false
+                collapsed: true
+                summary: 'Ảnh'
+                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
+                fields:
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
 
-              # 3. BLOCK: Image Gallery
-              - label: Nội dung (Image Gallery)
-                name: gallery_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - label: Danh sách Ảnh
-                    name: images
-                    widget: list
-                    collapsed: true
-                    summary: '{{fields.image}}'
-                    fields:
-                      - { label: Ảnh, name: image, widget: image }
-                      - { label: Chú thích, name: caption, widget: string, required: false }
-                      - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              # 4. BLOCK: Call To Action
-              - label: Nội dung (Call To Action)
-                name: cta_content
-                widget: object
-                required: false
-                collapsed: true
-                fields:
-                  - { label: Văn bản CTA chính, name: ctaText, widget: string }
-                  - { label: Văn bản CTA chính (EN), name: ctaText_en, widget: string, required: false }
-                  - { label: Link CTA, name: ctaLink, widget: string }
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
