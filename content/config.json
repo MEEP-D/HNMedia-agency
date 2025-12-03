@@ -3,10 +3,16 @@
   "siteUrl": "https://example.com",
   "brand": {
     "name": "Media Agency",
-    "tagline": "Giải pháp truyền thông tăng trưởng"
+    "tagline": "Giải pháp truyền thông tăng trưởng",
+    "logo": "/images/picture1.png"
   },
   "theme": {
     "primary": "#16A34A",
     "accent": "#22C55E"
+  },
+  "intro": {
+    "enable": true,
+    "type": "image",
+    "duration": 10
   }
 }
