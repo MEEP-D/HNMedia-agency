@@ -11,9 +11,10 @@
     "accent": "#22C55E"
   },
   "intro": {
-    "enable": false,
-    "type": "video",
-    "duration": 10,
-    "video": "images/tạo_video_tết_iot_tinh_tế.mp4"
+    "enable": true,
+    "type": "gif",
+    "duration": 7,
+    "video": "images/tạo_video_tết_iot_tinh_tế.mp4",
+    "gif": "/images/8ake.gif"
   }
 }
