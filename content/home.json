@@ -30,7 +30,12 @@
           "image": "/images/picture1.png"
         }
       ],
-      "body": "[4﻿44444444](https://hn-media-agency.vercel.app/course-detail.html?id=performance-ads)",
+      "body": "`1﻿23`",
+      "animation": {
+        "type": "blur-in",
+        "delay": 2,
+        "duration": 2
+      },
       "body_en": "1﻿23123123123",
       "text_content": {
         "body": "1﻿23",
