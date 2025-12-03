@@ -2,7 +2,7 @@ backend:
   name: github
   repo: "MEEP-D/HNMedia-agency"
   branch: "main"
-  auth_type: oauth
+  auth_type: implicit
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
