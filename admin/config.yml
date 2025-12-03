@@ -39,17 +39,18 @@ collections:
               - { label: Logo, name: logo, widget: image }
               - { label: Mô tả công ty, name: description, widget: text, required: false }
 
-          - label: Intro
+          - label: Intro (Màn hình Chờ Tải)
             name: intro
             widget: object
+            description: 'Cấu hình màn hình chờ (loading screen) xuất hiện trước khi nội dung chính tải hoàn toàn.'
             fields:
-              - { label: Bật intro, name: enable, widget: boolean, default: true }
-              - { label: Loại, name: type, widget: select, options: [video, gif, image] }
-              - { label: Video, name: video, widget: string, required: false }
-              - { label: Ảnh GIF, name: gif, widget: image, required: false }
-              - { label: Ảnh, name: image, widget: image, required: false }
-              - { label: Chú thích, name: caption, widget: string, required: false }
-              - { label: Thời lượng, name: duration, widget: number, default: 3 }
+              - { label: Bật Loading Screen, name: enable, widget: boolean, default: true }
+              - { label: Loại hiệu ứng, name: type, widget: select, options: [video, gif, image], hint: 'Chọn loại nội dung sẽ hiển thị làm hiệu ứng chờ.' }
+              - { label: Video (URL), name: video, widget: string, required: false, hint: 'Dán URL video (dùng khi Loại = video)' }
+              - { label: Ảnh GIF, name: gif, widget: image, required: false, hint: 'Tải lên hoặc chọn ảnh GIF (dùng khi Loại = gif)' }
+              - { label: Ảnh tĩnh/Logo, name: image, widget: image, required: false, hint: 'Tải lên hoặc chọn ảnh tĩnh (dùng khi Loại = image)' }
+              - { label: Chú thích/Thông báo, name: caption, widget: string, required: false }
+              - { label: Thời lượng hiển thị (giây), name: duration, widget: number, default: 3, hint: 'Thời gian tối thiểu Loading Screen sẽ hiển thị (tính bằng giây).' }
 
           - label: Chủ đề
             name: theme
@@ -125,7 +126,7 @@ collections:
         label: Trang chủ
         name: home
         format: json
-        description: Nội dung Trang chủ gồm Hero, Đối tác và các Section
+        description: Nội dung Trang chủ gồm Hero, Logo Nổi bật và các Section
         fields:
           - label: Hero
             name: hero
@@ -144,17 +145,14 @@ collections:
               - { label: Video, name: video, widget: string, required: false }
               - { label: Ảnh GIF, name: gif, widget: image, required: false }
               - { label: Toàn màn hình, name: fullscreen, widget: boolean, default: false }
+              
+          - { label: Logo Đối tác Nổi bật [Nâng cấp], name: featured_partner_logo, widget: image, required: false, hint: 'Tải lên logo đối tác duy nhất cần hiển thị to và rõ ràng trên trang chủ.' }
+          
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
-          - label: Đối tác
-            name: partners
-            widget: list
-            collapsed: true
-            summary: '{{name}}'
-            fields:
-              - { label: Tên, name: name, widget: string, required: false }
-              - { label: Logo, name: image, widget: image }
           
+          # Đã xóa trường 'partners' cũ
+
           # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
@@ -177,7 +175,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
@@ -281,7 +295,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
@@ -372,7 +402,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
@@ -474,7 +520,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
@@ -565,7 +627,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
@@ -658,7 +736,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
@@ -769,7 +863,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
@@ -869,7 +979,23 @@ collections:
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
               
-              # Nâng cấp: BACKGROUND đa dạng
+              # THÊM ANIMATION
+              - label: Hiệu ứng Animation (Chuyển động)
+                name: animation
+                widget: object
+                collapsed: true
+                required: false
+                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
+                fields:
+                  - label: Kiểu chuyển động
+                    name: type
+                    widget: select
+                    options: [none, fade-in, slide-up, zoom-in, blur-in]
+                    default: none
+                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
+                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
+              
+              # BACKGROUND
               - label: Background
                 name: background
                 widget: object
