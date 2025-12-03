@@ -69,7 +69,7 @@
           "alt_text": "123123123123"
         }
       ],
-      "type": "gallery",
+      "type": "cta",
       "ctaText": "123123123123"
     }
   ],
@@ -77,19 +77,19 @@
   "partners": [
     {
       "name": "Bánh tráng phú cường",
-      "image": "/images/picture1.png"
-    },
-    {
-      "name": "đèn pllar",
-      "image": "/images/picture1.png"
+      "image": "/images/3374825268217454051.jpg"
     },
     {
       "name": "màn",
       "image": "/images/picture1.png"
     },
     {
+      "name": "đèn pllar",
+      "image": "/images/3374825268217454051.jpg"
+    },
+    {
       "name": "vợt",
-      "image": "/images/picture1.png"
+      "image": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
     }
   ]
 }
