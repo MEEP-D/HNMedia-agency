@@ -5,7 +5,8 @@
     "subtitle": "Đồng hành từ chiến lược đến thực thi",
     "ctaText": "Nhận tư vấn",
     "image": "/images/3374825268217454051.jpg",
-    "fullscreen": true
+    "fullscreen": true,
+    "layout_style": "content_left_media_right"
   },
   "intro": "Chúng tôi giúp doanh nghiệp tăng trưởng thông qua chiến lược nội dung, quảng cáo và đo lường hiệu quả.",
   "sections": [
@@ -79,23 +80,6 @@
     }
   ],
   "intro_en": "12314234232",
-  "partners": [
-    {
-      "name": "Bánh tráng phú cường",
-      "image": "/images/3374825268217454051.jpg"
-    },
-    {
-      "name": "màn",
-      "image": "/images/picture1.png"
-    },
-    {
-      "name": "đèn pllar",
-      "image": "/images/3374825268217454051.jpg"
-    },
-    {
-      "name": "vợt",
-      "image": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
-    }
-  ],
-  "featured_partner_logo": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
+  "partners": [],
+  "featured_partner_logo": ""
 }
