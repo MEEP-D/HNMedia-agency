@@ -2,12 +2,15 @@ backend:
   name: github
   repo: "MEEP-D/HNMedia-agency"
   branch: "main"
-  auth_type: implicit
+  auth_type: oauth
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
+
+
 media_folder: images
 public_folder: /images
-publish_mode: simple
+local_backend: true
+publish_mode: editorial_workflow
 
 site_url: https://hn-media-agency.vercel.app
 display_url: https://hn-media-agency.vercel.app
@@ -161,8 +164,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -172,8 +175,8 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
@@ -182,7 +185,10 @@ collections:
                 required: false
                 collapsed: true
                 summary: '{{fields.image}}'
-                field: { label: Ảnh, name: image, widget: image }
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh (chú thích, alt text)
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
@@ -231,8 +237,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -242,15 +248,20 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
                 name: images
                 widget: list
                 required: false
-                field: { label: Ảnh, name: image, widget: image }
+                collapsed: true
+                summary: '{{fields.image}}'
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
@@ -286,8 +297,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -297,15 +308,20 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
                 name: images
                 widget: list
                 required: false
-                field: { label: Ảnh, name: image, widget: image }
+                collapsed: true
+                summary: '{{fields.image}}'
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
@@ -330,8 +346,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Tóm tắt, name: summary, widget: text }
               - { label: Tóm tắt (EN), name: summary_en, widget: text, required: false }
-              - { label: Mô tả, name: description, widget: text }
-              - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+              - { label: Mô tả, name: description, widget: markdown } # Nâng cấp: text -> markdown
+              - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - { label: Thời lượng, name: duration, widget: string }
               - { label: Hình thức, name: format, widget: string }
               - { label: Ảnh, name: image, widget: image, required: false }
@@ -352,8 +368,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -363,15 +379,20 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
                 name: images
                 widget: list
                 required: false
-                field: { label: Ảnh, name: image, widget: image }
+                collapsed: true
+                summary: '{{fields.image}}'
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
@@ -407,8 +428,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -418,15 +439,20 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
                 name: images
                 widget: list
                 required: false
-                field: { label: Ảnh, name: image, widget: image }
+                collapsed: true
+                summary: '{{fields.image}}'
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
@@ -464,8 +490,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -475,15 +501,20 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
                 name: images
                 widget: list
                 required: false
-                field: { label: Ảnh, name: image, widget: image }
+                collapsed: true
+                summary: '{{fields.image}}'
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
@@ -539,8 +570,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -550,8 +581,8 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
@@ -560,7 +591,10 @@ collections:
                 required: false
                 collapsed: true
                 summary: '{{fields.image}}'
-                field: { label: Ảnh, name: image, widget: image }
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
@@ -592,8 +626,8 @@ collections:
               - { label: Ảnh, name: image, widget: image, required: false }
               - { label: Tác giả, name: author, widget: string, required: false }
               - { label: Ngày, name: date, widget: string, required: false }
-              - { label: Nội dung, name: body, widget: markdown }
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
+              - { label: Nội dung, name: body, widget: markdown } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
           - label: Sections
             name: sections
             widget: list
@@ -605,8 +639,8 @@ collections:
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              - { label: Nội dung, name: body, widget: text, required: false }
-              - { label: Nội dung (EN), name: body_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
               - label: Items
                 name: items
                 widget: list
@@ -616,8 +650,8 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
                   - { label: Ảnh, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
               - label: Images
@@ -626,7 +660,10 @@ collections:
                 required: false
                 collapsed: true
                 summary: '{{fields.image}}'
-                field: { label: Ảnh, name: image, widget: image }
+                fields: # Nâng cấp: thêm fields để tùy chỉnh ảnh
+                  - { label: Ảnh, name: image, widget: image }
+                  - { label: Chú thích, name: caption, widget: string, required: false }
+                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
               - { label: CTA text, name: ctaText, widget: string, required: false }
               - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
               - { label: CTA link, name: ctaLink, widget: string, required: false }
