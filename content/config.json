@@ -12,7 +12,7 @@
   },
   "intro": {
     "enable": true,
-    "type": "image",
+    "type": "video",
     "duration": 10
   }
 }
