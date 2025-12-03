@@ -6,7 +6,7 @@
     "ctaText": "Nhận tư vấn",
     "image": "/images/3374825268217454051.jpg",
     "fullscreen": true,
-    "layout_style": "content_left_media_right"
+    "layout_style": "media_center_small"
   },
   "intro": "Chúng tôi giúp doanh nghiệp tăng trưởng thông qua chiến lược nội dung, quảng cáo và đo lường hiệu quả.",
   "sections": [
@@ -80,6 +80,23 @@
     }
   ],
   "intro_en": "12314234232",
-  "partners": [],
+  "partners": [
+    {
+      "name": "bánh tráng",
+      "image": "/images/picture1.png"
+    },
+    {
+      "name": "đèn",
+      "image": "/images/3374825268217454051.jpg"
+    },
+    {
+      "name": "màn",
+      "image": "/images/picture1.png"
+    },
+    {
+      "name": "vợt",
+      "image": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
+    }
+  ],
   "featured_partner_logo": ""
 }
