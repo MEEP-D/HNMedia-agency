@@ -1,7 +1,17 @@
 {
   "title": "Tuyển dụng",
   "positions": [
-    { "title": "Account Manager", "location": "TP.HCM", "summary": "Quản lý quan hệ khách hàng" },
-    { "title": "Media Planner", "location": "Hà Nội", "summary": "Lập kế hoạch media" }
+    {
+      "title": "Account Manager",
+      "location": "TP.HCM",
+      "summary": "Quản lý quan hệ khách hàng",
+      "image": "/images/picture1.png"
+    },
+    {
+      "title": "Media Planner",
+      "location": "Hà Nội",
+      "summary": "Lập kế hoạch media",
+      "image": "/images/picture1.png"
+    }
   ]
 }
