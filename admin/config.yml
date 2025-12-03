@@ -155,12 +155,12 @@ collections:
               - { label: Tên, name: name, widget: string, required: false }
               - { label: Logo, name: image, widget: image }
           
-          # SECTIONS - Cấu trúc ổn định (Không dùng Conditional Fields)
+          # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
             widget: list
             collapsed: true
-            summary: '{{fields.title}} (Loại: {{fields.type}})' # Dễ hình dung hơn
+            summary: '{{fields.title}} (Loại: {{fields.type}})'
             fields:
               - label: Loại Section
                 name: type
@@ -172,7 +172,7 @@ collections:
                 name: title
                 widget: string
                 required: false
-                hint: 'Đặt tiêu đề dễ nhớ cho khối này (VD: "Ưu điểm nổi bật").'
+                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
               - { label: Mô tả, name: subtitle, widget: text, required: false }
               - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
@@ -190,7 +190,7 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
                   
-              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false } # Nâng cấp: Markdown
+              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
               - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
               
               - label: Items (Dùng cho GRID/CTA)
@@ -203,8 +203,8 @@ collections:
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: Markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: Markdown
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
                   - { label: Ảnh/Icon, name: image, widget: image, required: false }
                   - { label: Link, name: link, widget: string, required: false }
                   
@@ -213,9 +213,9 @@ collections:
                 widget: list
                 required: false
                 collapsed: true
-                summary: 'Ảnh' # Tóm tắt đơn giản hơn
+                summary: 'Ảnh'
                 hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
-                fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
+                fields:
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
