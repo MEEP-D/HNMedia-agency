@@ -1,11 +1,54 @@
 {
   "title": "Dịch vụ",
   "items": [
-    { "title": "Chiến lược truyền thông", "description": "Phân tích thị trường, định vị thương hiệu" },
-    { "title": "Sản xuất nội dung", "description": "Copywriting, thiết kế, video" },
-    { "title": "Quảng cáo hiệu suất", "description": "Facebook, Google, TikTok" },
-    { "title": "Quản trị kênh", "description": "Fanpage, YouTube, Website" },
-    { "title": "PR & KOLs", "description": "Chiến dịch lan tỏa" },
-    { "title": "Phân tích dữ liệu", "description": "Dashboard, báo cáo" }
+    {
+      "title": "Chiến lược truyền thông",
+      "description": "Phân tích thị trường, định vị thương hiệu"
+    },
+    {
+      "title": "Sản xuất nội dung",
+      "description": "Copywriting, thiết kế, video"
+    },
+    {
+      "title": "Quảng cáo hiệu suất",
+      "description": "Facebook, Google, TikTok"
+    },
+    {
+      "title": "Quản trị kênh",
+      "description": "Fanpage, YouTube, Website"
+    },
+    {
+      "title": "PR & KOLs",
+      "description": "Chiến dịch lan tỏa"
+    },
+    {
+      "title": "Phân tích dữ liệu",
+      "description": "Dashboard, báo cáo"
+    }
+  ],
+  "sections": [
+    {
+      "items": [
+        {
+          "title": "abc",
+          "description": "**aacxczx**",
+          "description_en": "[Livescvxvbcvbcvb](https://hn-media-agency.vercel.app/course-detail.html?id=performance-ads)",
+          "link": "acxczxczxczxc",
+          "image": "/images/picture1.png"
+        }
+      ],
+      "body": "![liver](/images/picture1.png \"live\")",
+      "ctaLink": "xcvxcvxcv",
+      "ctaText_en": "xcvxcvxcv",
+      "background": {
+        "type": "color",
+        "color": "xanh"
+      },
+      "subtitle_en": "Live",
+      "subtitle": "Live",
+      "title": "Live",
+      "type": "text",
+      "ctaText": "xcvxxcvxcvxv"
+    }
   ]
 }
