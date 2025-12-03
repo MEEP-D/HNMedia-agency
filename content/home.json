@@ -4,12 +4,22 @@
     "title": "Truyền thông hiệu quả cho thương hiệu của bạn",
     "subtitle": "Đồng hành từ chiến lược đến thực thi",
     "ctaText": "Nhận tư vấn",
-    "image": "images/hero/hero.jpg",
+    "image": "/images/3374825268217454051.jpg",
     "fullscreen": true
   },
   "intro": "Chúng tôi giúp doanh nghiệp tăng trưởng thông qua chiến lược nội dung, quảng cáo và đo lường hiệu quả.",
   "sections": [
     {
+      "grid_content": {
+        "items": [
+          {
+            "title": "123",
+            "description": "1﻿23",
+            "link": "123",
+            "image": "/images/picture1.png"
+          }
+        ]
+      },
       "items": [
         {
           "title": "12312312312312",
@@ -22,8 +32,26 @@
       ],
       "body": "[4﻿44444444](https://hn-media-agency.vercel.app/course-detail.html?id=performance-ads)",
       "body_en": "1﻿23123123123",
+      "text_content": {
+        "body": "1﻿23",
+        "body_en": "1﻿23"
+      },
+      "cta_content": {
+        "ctaText": "123123",
+        "ctaText_en": "123123",
+        "ctaLink": "123123123"
+      },
       "ctaLink": "123123123123123",
       "ctaText_en": "123123123",
+      "gallery_content": {
+        "images": [
+          {
+            "image": "/images/picture1.png",
+            "caption": "123",
+            "alt_text": "123"
+          }
+        ]
+      },
       "background": {
         "type": "image",
         "color": "blue",
