@@ -146,12 +146,29 @@ collections:
               - { label: Ảnh GIF, name: gif, widget: image, required: false }
               - { label: Toàn màn hình, name: fullscreen, widget: boolean, default: false }
               
-          # Sửa lỗi: Chuyển sang cấu trúc khối để tránh lỗi cú pháp
-          - label: Logo Đối tác Nổi bật [Nâng cấp]
+              # Nâng cấp: Tùy chỉnh bố cục cho ảnh/video Hero
+              - label: Bố cục Media
+                name: layout_style
+                widget: select
+                options: [content_left_media_right, media_full_width, media_center_small]
+                default: content_left_media_right
+                hint: 'Chọn cách hiển thị ảnh/video trong khối Hero (Media bên phải, Media chiếm toàn bộ chiều rộng, hoặc Media trung tâm nhỏ).'
+              
+          - label: Logo Đối tác Nổi bật
             name: featured_partner_logo
             widget: image
             required: false
             hint: 'Tải lên logo đối tác duy nhất cần hiển thị to và rõ ràng trên trang chủ.'
+          
+          - label: Đối tác Khác (Danh sách)
+            name: partners
+            widget: list
+            collapsed: true
+            summary: '{{name}}'
+            hint: 'Sử dụng danh sách này cho tất cả các logo đối tác khác (nếu có).'
+            fields:
+              - { label: Tên, name: name, widget: string, required: false }
+              - { label: Logo, name: image, widget: image }
           
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
@@ -843,122 +860,6 @@ collections:
             required: false
             hint: Dán link Zalo Official/nhắn tin
             pattern: ['^https?://', 'URL bắt đầu bằng http/https']
-          
-          # SECTIONS - Cấu trúc ổn định
-          - label: Sections
-            name: sections
-            widget: list
-            collapsed: true
-            summary: '{{fields.title}} (Loại: {{fields.type}})'
-            fields:
-              - label: Loại Section
-                name: type
-                widget: select
-                options: [grid, gallery, text, cta]
-                hint: 'Chọn loại bố cục cho khối này (Grid/Gallery/Text/CTA). Gợi ý: Chỉ điền các trường nội dung liên quan đến loại bạn chọn.'
-              
-              - label: Tiêu đề Khối (Dùng cho Tóm tắt)
-                name: title
-                widget: string
-                required: false
-                hint: 'Đặt tiêu đề dễ nhớ cho khối này.'
-              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-              - { label: Mô tả, name: subtitle, widget: text, required: false }
-              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
-              
-              # THÊM ANIMATION
-              - label: Hiệu ứng Animation (Chuyển động)
-                name: animation
-                widget: object
-                collapsed: true
-                required: false
-                hint: 'Cấu hình hiệu ứng động khi khối này xuất hiện (Animation library cần được tích hợp vào Frontend).'
-                fields:
-                  - label: Kiểu chuyển động
-                    name: type
-                    widget: select
-                    options: [none, fade-in, slide-up, zoom-in, blur-in]
-                    default: none
-                  - { label: Độ trễ (ms), name: delay, widget: number, default: 0, hint: 'Thời gian chờ trước khi chạy hiệu ứng (milliseconds - 1000ms = 1s)' }
-                  - { label: Thời lượng (s), name: duration, widget: number, default: 1, hint: 'Thời gian hiệu ứng diễn ra (giây)' }
-              
-              # BACKGROUND
-              - label: Background
-                name: background
-                widget: object
-                collapsed: true
-                required: false
-                hint: 'Cấu hình màu nền, ảnh nền hoặc gradient cho khối này.'
-                fields:
-                  - { label: Loại Background, name: type, widget: select, options: [none, color, image, gradient], default: none }
-                  - { label: Màu nền, name: color, widget: string, required: false, hint: 'Chọn màu nền (dạng hex hoặc tên màu)' }
-                  - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
-                  - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
-                  
-              - { label: Nội dung chính (TEXT/MARKDOWN), name: body, widget: markdown, required: false }
-              - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
-              
-              - label: Items (Dùng cho GRID/CTA)
-                name: items
-                widget: list
-                required: false
-                collapsed: true
-                summary: '{{title}}'
-                hint: 'Thêm danh sách các mục (ví dụ: các tính năng, cột dịch vụ).'
-                fields:
-                  - { label: Tiêu đề, name: title, widget: string }
-                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-                  - { label: Mô tả, name: description, widget: markdown, required: false }
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
-                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
-                  - { label: Link, name: link, widget: string, required: false }
-                  
-              - label: Images (Dùng cho GALLERY)
-                name: images
-                widget: list
-                required: false
-                collapsed: true
-                summary: 'Ảnh'
-                hint: 'Thêm danh sách hình ảnh cho khối Gallery.'
-                fields:
-                  - { label: Ảnh, name: image, widget: image }
-                  - { label: Chú thích, name: caption, widget: string, required: false }
-                  - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-
-              - { label: CTA text, name: ctaText, widget: string, required: false }
-              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
-              - { label: CTA link, name: ctaLink, widget: string, required: false }
-
-      # NEWS PAGE
-      - file: content/news.json
-        label: Tin tức
-        name: news
-        format: json
-        description: Trang Tin tức và bài viết
-        fields:
-          - { label: Tiêu đề, name: title, widget: string }
-          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-          - { label: Ảnh cover, name: cover, widget: image, required: false }
-          - label: Danh sách tin
-            name: items
-            widget: list
-            collapsed: true
-            summary: '{{title}} · {{date}}'
-            fields:
-              - label: Slug
-                name: slug
-                widget: string
-                hint: Không dấu, cách bằng dấu gạch ngang
-                pattern: ['^[a-z0-9-]+$', 'Chỉ a-z, 0-9, dấu -']
-              - { label: Tiêu đề, name: title, widget: string }
-              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-              - { label: Tóm tắt, name: summary, widget: text }
-              - { label: Tóm tắt (EN), name: summary_en, widget: text, required: false }
-              - { label: Ảnh, name: image, widget: image, required: false }
-              - { label: Tác giả, name: author, widget: string, required: false }
-              - { label: Ngày, name: date, widget: string, required: false }
-              - { label: Nội dung, name: body, widget: markdown }
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
           
           # SECTIONS - Cấu trúc ổn định
           - label: Sections
