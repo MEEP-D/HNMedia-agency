@@ -7,8 +7,8 @@
 #   auth_endpoint: auth
 backend:
   name: github
-  repo: "MEEP-D/HNMedia-agency"
-  branch: "main"
+  repo: MEEP-D/HNMedia-agency
+  branch: main
   auth: implicit
 
 media_folder: images
