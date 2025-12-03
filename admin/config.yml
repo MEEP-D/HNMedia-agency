@@ -1,171 +1,171 @@
 backend:
-  [cite_start]name: github [cite: 1]
-  [cite_start]repo: "MEEP-D/HNMedia-agency" [cite: 1]
-  [cite_start]branch: "main" [cite: 1]
-  [cite_start]auth_type: oauth [cite: 1]
-  [cite_start]base_url: "https://hn-media-agency.vercel.app/api" [cite: 1]
-  [cite_start]auth_endpoint: auth [cite: 1]
+  name: github
+  repo: "MEEP-D/HNMedia-agency"
+  branch: "main"
+  auth_type: oauth
+  base_url: "https://hn-media-agency.vercel.app/api"
+  auth_endpoint: auth
 
 
-[cite_start]media_folder: images [cite: 1]
-[cite_start]public_folder: /images [cite: 1]
-[cite_start]local_backend: true [cite: 1]
-[cite_start]publish_mode: editorial_workflow [cite: 1]
+media_folder: images
+public_folder: /images
+local_backend: true
+publish_mode: editorial_workflow
 
-[cite_start]site_url: https://hn-media-agency.vercel.app [cite: 1]
-[cite_start]display_url: https://hn-media-agency.vercel.app [cite: 1]
+site_url: https://hn-media-agency.vercel.app
+display_url: https://hn-media-agency.vercel.app
 
 
 collections:
-  - [cite_start]name: settings [cite: 1]
-    [cite_start]label: Cài đặt [cite: 1]
-    [cite_start]description: Cấu hình chung và thương hiệu, intro, màu sắc [cite: 1]
+  - name: settings
+    label: Cài đặt
+    description: Cấu hình chung và thương hiệu, intro, màu sắc
     files:
-      - [cite_start]file: content/config.json [cite: 1]
-        [cite_start]label: Cấu hình chung [cite: 1]
-        [cite_start]description: Tên site, URL, thương hiệu, intro và chủ đề [cite: 1]
-        [cite_start]name: site [cite: 1]
-        [cite_start]format: json [cite: 2]
+      - file: content/config.json
+        label: Cấu hình chung
+        description: Tên site, URL, thương hiệu, intro và chủ đề
+        name: site
+        format: json
         fields:
-          - [cite_start]{ label: Tên website, name: siteName, widget: string } [cite: 2]
-          - [cite_start]{ label: URL website, name: siteUrl, widget: string } [cite: 2]
+          - { label: Tên website, name: siteName, widget: string }
+          - { label: URL website, name: siteUrl, widget: string }
 
-          - [cite_start]label: Thương hiệu [cite: 2]
-            [cite_start]name: brand [cite: 2]
-            [cite_start]widget: object [cite: 2]
+          - label: Thương hiệu
+            name: brand
+            widget: object
             fields:
-              - [cite_start]{ label: Tên, name: name, widget: string } [cite: 3]
-              - [cite_start]{ label: Tagline, name: tagline, widget: string } [cite: 3]
-              - [cite_start]{ label: Logo, name: logo, widget: image } [cite: 3]
-              - [cite_start]{ label: Mô tả công ty, name: description, widget: text, required: false } [cite: 3]
+              - { label: Tên, name: name, widget: string }
+              - { label: Tagline, name: tagline, widget: string }
+              - { label: Logo, name: logo, widget: image }
+              - { label: Mô tả công ty, name: description, widget: text, required: false }
 
-          - [cite_start]label: Intro [cite: 4]
-            [cite_start]name: intro [cite: 4]
-            [cite_start]widget: object [cite: 4]
+          - label: Intro
+            name: intro
+            widget: object
             fields:
-              - [cite_start]{ label: Bật intro, name: enable, widget: boolean, default: true } [cite: 4]
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [video, gif, image] } [cite: 4]
-              - [cite_start]{ label: Video, name: video, widget: string, required: false } [cite: 5]
-              - [cite_start]{ label: Ảnh GIF, name: gif, widget: image, required: false } [cite: 5]
-              - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 5]
-              - [cite_start]{ label: Chú thích, name: caption, widget: string, required: false } [cite: 5]
-              - [cite_start]{ label: Thời lượng, name: duration, widget: number, default: 3 } [cite: 6]
+              - { label: Bật intro, name: enable, widget: boolean, default: true }
+              - { label: Loại, name: type, widget: select, options: [video, gif, image] }
+              - { label: Video, name: video, widget: string, required: false }
+              - { label: Ảnh GIF, name: gif, widget: image, required: false }
+              - { label: Ảnh, name: image, widget: image, required: false }
+              - { label: Chú thích, name: caption, widget: string, required: false }
+              - { label: Thời lượng, name: duration, widget: number, default: 3 }
 
-          - [cite_start]label: Chủ đề [cite: 6]
-            [cite_start]name: theme [cite: 6]
-            [cite_start]widget: object [cite: 6]
+          - label: Chủ đề
+            name: theme
+            widget: object
             fields:
-              - [cite_start]{ label: Màu chính, name: primary, widget: string } [cite: 6]
-              - [cite_start]{ label: Màu phụ, name: accent, widget: string } [cite: 7]
+              - { label: Màu chính, name: primary, widget: string }
+              - { label: Màu phụ, name: accent, widget: string }
 
   ##################################################
   # SEO
   ##################################################
-  - [cite_start]name: seo [cite: 7]
-    [cite_start]label: SEO [cite: 7]
-    [cite_start]description: Cấu hình SEO cho các trang [cite: 7]
+  - name: seo
+    label: SEO
+    description: Cấu hình SEO cho các trang
     files:
-      - [cite_start]file: content/seo.json [cite: 7]
-        [cite_start]label: SEO các trang [cite: 7]
-        [cite_start]name: seo [cite: 7]
-        [cite_start]format: json [cite: 7]
+      - file: content/seo.json
+        label: SEO các trang
+        name: seo
+        format: json
         fields:
-          - [cite_start]label: Trang chủ [cite: 8]
-            [cite_start]name: index [cite: 8]
-            [cite_start]widget: object [cite: 8]
+          - label: Trang chủ
+            name: index
+            widget: object
             fields:
-              - [cite_start]{ label: Meta title, name: title, widget: string } [cite: 8]
-              - [cite_start]{ label: Meta description, name: description, widget: text } [cite: 8]
-          - [cite_start]label: Giới thiệu [cite: 9]
-            [cite_start]name: about [cite: 9]
-            [cite_start]widget: object [cite: 9]
+              - { label: Meta title, name: title, widget: string }
+              - { label: Meta description, name: description, widget: text }
+          - label: Giới thiệu
+            name: about
+            widget: object
             fields:
-              - [cite_start]{ label: Meta title, name: title, widget: string } [cite: 9]
-              - [cite_start]{ label: Meta description, name: description, widget: text } [cite: 9]
-          - [cite_start]label: Dịch vụ [cite: 9]
-            [cite_start]name: services [cite: 10]
-            [cite_start]widget: object [cite: 10]
+              - { label: Meta title, name: title, widget: string }
+              - { label: Meta description, name: description, widget: text }
+          - label: Dịch vụ
+            name: services
+            widget: object
             fields:
-              - [cite_start]{ label: Meta title, name: title, widget: string } [cite: 10]
-              - [cite_start]{ label: Meta description, name: description, widget: text } [cite: 10]
-          - [cite_start]label: Khóa học [cite: 10]
-            [cite_start]name: courses [cite: 11]
-            [cite_start]widget: object [cite: 11]
+              - { label: Meta title, name: title, widget: string }
+              - { label: Meta description, name: description, widget: text }
+          - label: Khóa học
+            name: courses
+            widget: object
             fields:
-              - [cite_start]{ label: Meta title, name: title, widget: string } [cite: 11]
-              - [cite_start]{ label: Meta description, name: description, widget: text } [cite: 11]
-          - [cite_start]label: Thành tựu [cite: 12]
-            [cite_start]name: portfolio [cite: 12]
-            [cite_start]widget: object [cite: 12]
+              - { label: Meta title, name: title, widget: string }
+              - { label: Meta description, name: description, widget: text }
+          - label: Thành tựu
+            name: portfolio
+            widget: object
             fields:
-              - [cite_start]{ label: Meta title, name: title, widget: string } [cite: 12]
-              - [cite_start]{ label: Meta description, name: description, widget: text } [cite: 12]
-          - [cite_start]label: Tuyển dụng [cite: 13]
-            [cite_start]name: careers [cite: 13]
-            [cite_start]widget: object [cite: 13]
+              - { label: Meta title, name: title, widget: string }
+              - { label: Meta description, name: description, widget: text }
+          - label: Tuyển dụng
+            name: careers
+            widget: object
             fields:
-              - [cite_start]{ label: Meta title, name: title, widget: string } [cite: 13]
-              - [cite_start]{ label: Meta description, name: description, widget: text } [cite: 13]
-          - [cite_start]label: Liên hệ [cite: 13]
-            [cite_start]name: contact [cite: 14]
-            [cite_start]widget: object [cite: 14]
+              - { label: Meta title, name: title, widget: string }
+              - { label: Meta description, name: description, widget: text }
+          - label: Liên hệ
+            name: contact
+            widget: object
             fields:
-              - [cite_start]{ label: Meta title, name: title, widget: string } [cite: 14]
-              - [cite_start]{ label: Meta description, name: description, widget: text } [cite: 14]
+              - { label: Meta title, name: title, widget: string }
+              - { label: Meta description, name: description, widget: text }
 
   ##################################################
   # PAGES CONTENT
   ##################################################
-  - [cite_start]name: pages [cite: 14]
-    [cite_start]label: Nội dung trang [cite: 14]
-    [cite_start]description: Quản lý nội dung các trang chính của website [cite: 15]
+  - name: pages
+    label: Nội dung trang
+    description: Quản lý nội dung các trang chính của website
     files:
-      - [cite_start]file: content/home.json [cite: 15]
-        [cite_start]label: Trang chủ [cite: 15]
-        [cite_start]name: home [cite: 15]
-        [cite_start]format: json [cite: 15]
-        [cite_start]description: Nội dung Trang chủ gồm Hero, Đối tác và các Section [cite: 15]
+      - file: content/home.json
+        label: Trang chủ
+        name: home
+        format: json
+        description: Nội dung Trang chủ gồm Hero, Đối tác và các Section
         fields:
-          - [cite_start]label: Hero [cite: 15]
-            [cite_start]name: hero [cite: 15]
-            [cite_start]widget: object [cite: 16]
-            [cite_start]collapsed: false [cite: 16]
+          - label: Hero
+            name: hero
+            widget: object
+            collapsed: false
             fields:
-              - [cite_start]{ label: Slogan, name: slogan, widget: string } [cite: 16]
-              - [cite_start]{ label: Slogan (EN), name: slogan_en, widget: string, required: false } [cite: 16]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 17]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 17]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text } [cite: 17]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 17]
-              - [cite_start]{ label: CTA, name: ctaText, widget: string } [cite: 17]
-              - [cite_start]{ label: CTA (EN), name: ctaText_en, widget: string, required: false } [cite: 18]
-              - [cite_start]{ label: Ảnh, name: image, widget: image } [cite: 18]
-              - [cite_start]{ label: Video, name: video, widget: string, required: false } [cite: 18]
-              - [cite_start]{ label: Ảnh GIF, name: gif, widget: image, required: false } [cite: 18]
-              - [cite_start]{ label: Toàn màn hình, name: fullscreen, widget: boolean, default: false } [cite: 19]
-          - [cite_start]{ label: Giới thiệu nhanh, name: intro, widget: text } [cite: 19]
-          - [cite_start]{ label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false } [cite: 19]
-          - [cite_start]label: Đối tác [cite: 19]
-            [cite_start]name: partners [cite: 19]
-            [cite_start]widget: list [cite: 20]
-            [cite_start]collapsed: true [cite: 20]
-            [cite_start]summary: '{{name}}' [cite: 20]
+              - { label: Slogan, name: slogan, widget: string }
+              - { label: Slogan (EN), name: slogan_en, widget: string, required: false }
+              - { label: Tiêu đề, name: title, widget: string }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: CTA, name: ctaText, widget: string }
+              - { label: CTA (EN), name: ctaText_en, widget: string, required: false }
+              - { label: Ảnh, name: image, widget: image }
+              - { label: Video, name: video, widget: string, required: false }
+              - { label: Ảnh GIF, name: gif, widget: image, required: false }
+              - { label: Toàn màn hình, name: fullscreen, widget: boolean, default: false }
+          - { label: Giới thiệu nhanh, name: intro, widget: text }
+          - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
+          - label: Đối tác
+            name: partners
+            widget: list
+            collapsed: true
+            summary: '{{name}}'
             fields:
-              - [cite_start]{ label: Tên, name: name, widget: string, required: false } [cite: 20]
-              - [cite_start]{ label: Logo, name: image, widget: image } [cite: 20]
-          - [cite_start]label: Sections [cite: 20]
-            [cite_start]name: sections [cite: 21]
-            [cite_start]widget: list [cite: 21]
-            [cite_start]collapsed: true [cite: 21]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 21]
+              - { label: Tên, name: name, widget: string, required: false }
+              - { label: Logo, name: image, widget: image }
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 22]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 22]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 22]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 22]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 22]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -179,79 +179,79 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
 
-              - [cite_start]label: Items [cite: 23]
-                [cite_start]name: items [cite: 23]
-                [cite_start]widget: list [cite: 23]
-                [cite_start]required: false [cite: 24]
-                [cite_start]collapsed: true [cite: 24]
-                [cite_start]summary: '{{title}}' [cite: 24]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 24]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 25]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 26]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 26]
-              - [cite_start]label: Images [cite: 26]
-                [cite_start]name: images [cite: 26]
-                [cite_start]widget: list [cite: 26]
-                [cite_start]required: false [cite: 27]
-                [cite_start]collapsed: true [cite: 27]
-                [cite_start]summary: '{{fields.image}}' [cite: 27]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 27]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 28]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 28]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-      - [cite_start]file: content/about.json [cite: 28]
-        [cite_start]label: Giới thiệu [cite: 28]
-        [cite_start]name: about [cite: 29]
-        [cite_start]format: json [cite: 29]
-        [cite_start]description: "Trang Giới thiệu: tiêu đề, tầm nhìn, sứ mệnh, team và lịch sử" [cite: 29]
+      - file: content/about.json
+        label: Giới thiệu
+        name: about
+        format: json
+        description: "Trang Giới thiệu: tiêu đề, tầm nhìn, sứ mệnh, team và lịch sử"
         fields:
-          - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 29]
-          - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 29]
-          - [cite_start]{ label: Ảnh cover, name: cover, widget: image, required: false } [cite: 29]
-          - [cite_start]{ label: Tầm nhìn, name: vision, widget: text } [cite: 29]
-          - [cite_start]{ label: Tầm nhìn (EN), name: vision_en, widget: text, required: false } [cite: 30]
-          - [cite_start]{ label: Sứ mệnh, name: mission, widget: text } [cite: 30]
-          - [cite_start]{ label: Sứ mệnh (EN), name: mission_en, widget: text, required: false } [cite: 30]
-          - [cite_start]label: Team [cite: 30]
-            [cite_start]name: team [cite: 30]
-            [cite_start]widget: list [cite: 30]
-            [cite_start]collapsed: true [cite: 30]
-            [cite_start]summary: '{{name}} · {{role}}' [cite: 31]
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          - { label: Tầm nhìn, name: vision, widget: text }
+          - { label: Tầm nhìn (EN), name: vision_en, widget: text, required: false }
+          - { label: Sứ mệnh, name: mission, widget: text }
+          - { label: Sứ mệnh (EN), name: mission_en, widget: text, required: false }
+          - label: Team
+            name: team
+            widget: list
+            collapsed: true
+            summary: '{{name}} · {{role}}'
             fields:
-              - [cite_start]{ label: Tên, name: name, widget: string } [cite: 31]
-              - [cite_start]{ label: Tên (EN), name: name_en, widget: string, required: false } [cite: 31]
-              - [cite_start]{ label: Vai trò, name: role, widget: string } [cite: 31]
-              - [cite_start]{ label: Vai trò (EN), name: role_en, widget: string, required: false } [cite: 32]
-              - [cite_start]{ label: Ảnh, name: photo, widget: image } [cite: 32]
-          - [cite_start]label: Lịch sử [cite: 32]
-            [cite_start]name: history [cite: 32]
-            [cite_start]widget: list [cite: 32]
-            [cite_start]collapsed: true [cite: 32]
-            [cite_start]summary: '{{year}} · {{event}}' [cite: 33]
+              - { label: Tên, name: name, widget: string }
+              - { label: Tên (EN), name: name_en, widget: string, required: false }
+              - { label: Vai trò, name: role, widget: string }
+              - { label: Vai trò (EN), name: role_en, widget: string, required: false }
+              - { label: Ảnh, name: photo, widget: image }
+          - label: Lịch sử
+            name: history
+            widget: list
+            collapsed: true
+            summary: '{{year}} · {{event}}'
             fields:
-              - [cite_start]{ label: Năm, name: year, widget: string } [cite: 33]
-              - [cite_start]{ label: Sự kiện, name: event, widget: string } [cite: 33]
-              - [cite_start]{ label: Sự kiện (EN), name: event_en, widget: string, required: false } [cite: 33]
-          - [cite_start]label: Sections [cite: 34]
-            [cite_start]name: sections [cite: 34]
-            [cite_start]widget: list [cite: 34]
-            [cite_start]collapsed: true [cite: 34]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 34]
+              - { label: Năm, name: year, widget: string }
+              - { label: Sự kiện, name: event, widget: string }
+              - { label: Sự kiện (EN), name: event_en, widget: string, required: false }
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 35]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 35]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 35]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 35]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 35]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -265,66 +265,66 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
                   
-              - [cite_start]label: Items [cite: 36]
-                [cite_start]name: items [cite: 37]
-                [cite_start]widget: list [cite: 37]
-                [cite_start]required: false [cite: 37]
-                [cite_start]collapsed: true [cite: 37]
-                [cite_start]summary: '{{title}}' [cite: 37]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 38]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 38]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 39]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 39]
-              - [cite_start]label: Images [cite: 39]
-                [cite_start]name: images [cite: 39]
-                [cite_start]widget: list [cite: 39]
-                [cite_start]required: false [cite: 40]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
                 collapsed: true
                 summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 40]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 40]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 41]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-      - [cite_start]file: content/services.json [cite: 41]
-        [cite_start]label: Dịch vụ [cite: 41]
-        [cite_start]name: services [cite: 42]
-        [cite_start]format: json [cite: 42]
-        [cite_start]description: "Trang Dịch vụ: danh sách và các khối nội dung" [cite: 42]
+      - file: content/services.json
+        label: Dịch vụ
+        name: services
+        format: json
+        description: "Trang Dịch vụ: danh sách và các khối nội dung"
         fields:
-          - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 42]
-          - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 42]
-          - [cite_start]{ label: Ảnh cover, name: cover, widget: image, required: false } [cite: 42]
-          - [cite_start]label: Danh sách dịch vụ [cite: 42]
-            [cite_start]name: items [cite: 42]
-            [cite_start]widget: list [cite: 42]
-            [cite_start]collapsed: true [cite: 42]
-            [cite_start]summary: '{{title}}' [cite: 42]
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          - label: Danh sách dịch vụ
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{title}}'
             fields:
-              - [cite_start]{ label: Tên, name: title, widget: string } [cite: 43]
-              - [cite_start]{ label: Tên (EN), name: title_en, widget: string, required: false } [cite: 43]
-              - [cite_start]{ label: Mô tả, name: description, widget: text } [cite: 43]
-              - [cite_start]{ label: Mô tả (EN), name: description_en, widget: text, required: false } [cite: 44]
-              - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 44]
-          - [cite_start]label: Sections [cite: 44]
-            [cite_start]name: sections [cite: 44]
-            [cite_start]widget: list [cite: 44]
-            [cite_start]collapsed: true [cite: 44]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 44]
+              - { label: Tên, name: title, widget: string }
+              - { label: Tên (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: description, widget: text }
+              - { label: Mô tả (EN), name: description_en, widget: text, required: false }
+              - { label: Ảnh, name: image, widget: image, required: false }
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 45]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 45]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 45]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 46]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 46]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -338,77 +338,77 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
 
-              - [cite_start]label: Items [cite: 47]
-                [cite_start]name: items [cite: 47]
-                [cite_start]widget: list [cite: 47]
-                [cite_start]required: false [cite: 47]
-                [cite_start]collapsed: true [cite: 47]
-                [cite_start]summary: '{{title}}' [cite: 47]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 48]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 48]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 49]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 49]
-              - [cite_start]label: Images [cite: 49]
-                [cite_start]name: images [cite: 50]
-                [cite_start]widget: list [cite: 50]
-                [cite_start]required: false [cite: 50]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
                 collapsed: true
                 summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 50]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 51]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 51]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-      - [cite_start]file: content/courses.json [cite: 51]
-        [cite_start]label: Khóa học [cite: 52]
-        [cite_start]name: courses [cite: 52]
-        [cite_start]format: json [cite: 52]
-        [cite_start]description: Trang Khóa học và chi tiết từng khóa [cite: 52]
+      - file: content/courses.json
+        label: Khóa học
+        name: courses
+        format: json
+        description: Trang Khóa học và chi tiết từng khóa
         fields:
-          - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 52]
-          - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 52]
-          - [cite_start]{ label: Ảnh cover, name: cover, widget: image, required: false } [cite: 52]
-          - [cite_start]label: Danh sách khóa học [cite: 52]
-            [cite_start]name: items [cite: 53]
-            [cite_start]widget: list [cite: 53]
-            [cite_start]collapsed: true [cite: 53]
-            [cite_start]summary: '{{title}}' [cite: 53]
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          - label: Danh sách khóa học
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{title}}'
             fields:
-              - [cite_start]{ label: Slug, name: slug, widget: string } [cite: 53]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 53]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 54]
-              - [cite_start]{ label: Tóm tắt, name: summary, widget: text } [cite: 54]
-              - [cite_start]{ label: Tóm tắt (EN), name: summary_en, widget: text, required: false } [cite: 54]
-              - { label: Mô tả, name: description, widget: markdown } # Nâng cấp: text -> markdown
-              - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - [cite_start]{ label: Thời lượng, name: duration, widget: string } [cite: 55]
-              - [cite_start]{ label: Hình thức, name: format, widget: string } [cite: 55]
-              - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 55]
-              - [cite_start]label: Nội dung học [cite: 55]
-                [cite_start]name: curriculum [cite: 56]
-                [cite_start]widget: list [cite: 56]
-                [cite_start]collapsed: true [cite: 56]
-                [cite_start]summary: '{{fields.item}}' [cite: 56]
-                [cite_start]field: { label: Mục, name: item, widget: string } [cite: 56]
-          - [cite_start]label: Sections [cite: 57]
-            [cite_start]name: sections [cite: 57]
-            [cite_start]widget: list [cite: 57]
-            [cite_start]collapsed: true [cite: 57]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 57]
+              - { label: Slug, name: slug, widget: string }
+              - { label: Tiêu đề, name: title, widget: string }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Tóm tắt, name: summary, widget: text }
+              - { label: Tóm tắt (EN), name: summary_en, widget: text, required: false }
+              - { label: Mô tả, name: description, widget: markdown }
+              - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+              - { label: Thời lượng, name: duration, widget: string }
+              - { label: Hình thức, name: format, widget: string }
+              - { label: Ảnh, name: image, widget: image, required: false }
+              - label: Nội dung học
+                name: curriculum
+                widget: list
+                collapsed: true
+                summary: '{{fields.item}}'
+                field: { label: Mục, name: item, widget: string }
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 58]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 58]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 58]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 58]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 58]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -422,66 +422,66 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
 
-              - [cite_start]label: Items [cite: 60]
-                [cite_start]name: items [cite: 60]
-                [cite_start]widget: list [cite: 60]
-                [cite_start]required: false [cite: 60]
-                [cite_start]collapsed: true [cite: 60]
-                [cite_start]summary: '{{title}}' [cite: 60]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 60]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 61]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 62]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 62]
-              - [cite_start]label: Images [cite: 62]
-                [cite_start]name: images [cite: 62]
-                [cite_start]widget: list [cite: 62]
-                [cite_start]required: false [cite: 63]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
                 collapsed: true
                 summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 63]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 63]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 64]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-      - [cite_start]file: content/portfolio.json [cite: 64]
-        [cite_start]label: Thành tựu [cite: 64]
-        [cite_start]name: portfolio [cite: 65]
-        [cite_start]format: json [cite: 65]
-        [cite_start]description: Trang Thành tựu và các case study [cite: 65]
+      - file: content/portfolio.json
+        label: Thành tựu
+        name: portfolio
+        format: json
+        description: Trang Thành tựu và các case study
         fields:
-          - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 65]
-          - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 65]
-          - [cite_start]{ label: Ảnh cover, name: cover, widget: image, required: false } [cite: 65]
-          - [cite_start]label: Case studies [cite: 65]
-            [cite_start]name: items [cite: 65]
-            [cite_start]widget: list [cite: 65]
-            [cite_start]collapsed: true [cite: 65]
-            [cite_start]summary: '{{title}}' [cite: 65]
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          - label: Case studies
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{title}}'
             fields:
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 66]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 66]
-              - [cite_start]{ label: Kết quả, name: result, widget: text } [cite: 66]
-              - [cite_start]{ label: Kết quả (EN), name: result_en, widget: text, required: false } [cite: 67]
-              - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 67]
-          - [cite_start]label: Sections [cite: 67]
-            [cite_start]name: sections [cite: 67]
-            [cite_start]widget: list [cite: 67]
-            [cite_start]collapsed: true [cite: 67]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 67]
+              - { label: Tiêu đề, name: title, widget: string }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Kết quả, name: result, widget: text }
+              - { label: Kết quả (EN), name: result_en, widget: text, required: false }
+              - { label: Ảnh, name: image, widget: image, required: false }
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 68]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 68]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 68]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 69]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 69]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -495,68 +495,68 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
 
-              - [cite_start]label: Items [cite: 70]
-                [cite_start]name: items [cite: 70]
-                [cite_start]widget: list [cite: 70]
-                [cite_start]required: false [cite: 70]
-                [cite_start]collapsed: true [cite: 70]
-                [cite_start]summary: '{{title}}' [cite: 70]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 71]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 71]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 72]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 72]
-              - [cite_start]label: Images [cite: 72]
-                [cite_start]name: images [cite: 73]
-                [cite_start]widget: list [cite: 73]
-                [cite_start]required: false [cite: 73]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
                 collapsed: true
                 summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 73]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 74]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 74]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-      - [cite_start]file: content/careers.json [cite: 74]
-        [cite_start]label: Tuyển dụng [cite: 75]
-        [cite_start]name: careers [cite: 75]
-        [cite_start]format: json [cite: 75]
-        [cite_start]description: Trang Tuyển dụng và danh sách vị trí [cite: 75]
+      - file: content/careers.json
+        label: Tuyển dụng
+        name: careers
+        format: json
+        description: Trang Tuyển dụng và danh sách vị trí
         fields:
-          - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 75]
-          - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 75]
-          - [cite_start]{ label: Ảnh cover, name: cover, widget: image, required: false } [cite: 75]
-          - [cite_start]label: Vị trí [cite: 75]
-            [cite_start]name: positions [cite: 75]
-            [cite_start]widget: list [cite: 76]
-            [cite_start]collapsed: true [cite: 76]
-            [cite_start]summary: '{{title}} · {{location}}' [cite: 76]
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          - label: Vị trí
+            name: positions
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{location}}'
             fields:
-              - [cite_start]{ label: Chức danh, name: title, widget: string } [cite: 76]
-              - [cite_start]{ label: Chức danh (EN), name: title_en, widget: string, required: false } [cite: 76]
-              - [cite_start]{ label: Nơi làm việc, name: location, widget: string } [cite: 77]
-              - [cite_start]{ label: Nơi làm việc (EN), name: location_en, widget: string, required: false } [cite: 77]
-              - [cite_start]{ label: Mô tả ngắn, name: summary, widget: text } [cite: 77]
-              - [cite_start]{ label: Mô tả ngắn (EN), name: summary_en, widget: text, required: false } [cite: 77]
-              - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 78]
-          - [cite_start]label: Sections [cite: 78]
-            [cite_start]name: sections [cite: 78]
-            [cite_start]widget: list [cite: 78]
-            [cite_start]collapsed: true [cite: 78]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 78]
+              - { label: Chức danh, name: title, widget: string }
+              - { label: Chức danh (EN), name: title_en, widget: string, required: false }
+              - { label: Nơi làm việc, name: location, widget: string }
+              - { label: Nơi làm việc (EN), name: location_en, widget: string, required: false }
+              - { label: Mô tả ngắn, name: summary, widget: text }
+              - { label: Mô tả ngắn (EN), name: summary_en, widget: text, required: false }
+              - { label: Ảnh, name: image, widget: image, required: false }
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 79]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 79]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 79]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 79]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 80]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -570,86 +570,86 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
 
-              - [cite_start]label: Items [cite: 81]
-                [cite_start]name: items [cite: 81]
-                [cite_start]widget: list [cite: 81]
-                [cite_start]required: false [cite: 81]
-                [cite_start]collapsed: true [cite: 81]
-                [cite_start]summary: '{{title}}' [cite: 81]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 82]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 82]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 83]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 83]
-              - [cite_start]label: Images [cite: 83]
-                [cite_start]name: images [cite: 84]
-                [cite_start]widget: list [cite: 84]
-                [cite_start]required: false [cite: 84]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
                 collapsed: true
                 summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 84]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 85]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 85]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-      - [cite_start]file: content/contact.json [cite: 85]
-        [cite_start]label: Liên hệ [cite: 86]
-        [cite_start]name: contact [cite: 86]
-        [cite_start]format: json [cite: 86]
-        [cite_start]description: Trang Liên hệ và thông tin công ty [cite: 86]
+      - file: content/contact.json
+        label: Liên hệ
+        name: contact
+        format: json
+        description: Trang Liên hệ và thông tin công ty
         fields:
-          - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 86]
-          - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 86]
-          - [cite_start]{ label: Ảnh cover, name: image, widget: image, required: false } [cite: 86]
-          - [cite_start]label: Email [cite: 86]
-            [cite_start]name: email [cite: 86]
-            [cite_start]widget: string [cite: 86]
-            [cite_start]hint: Nhập email nhận liên hệ [cite: 87]
-            [cite_start]pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', 'Email hợp lệ'] [cite: 87]
-          - [cite_start]label: Điện thoại [cite: 87]
-            [cite_start]name: phone [cite: 87]
-            [cite_start]widget: string [cite: 87]
-            [cite_start]hint: Điện thoại liên hệ [cite: 87]
-            [cite_start]pattern: ['^[0-9+ ()-]+$', 'Chỉ số, +, khoảng trắng, () hoặc -'] [cite: 87]
-          - [cite_start]{ label: Hotline, name: hotline, widget: string, required: false } [cite: 88]
-          - [cite_start]label: Địa chỉ [cite: 88]
-            [cite_start]name: address [cite: 88]
-            [cite_start]widget: string [cite: 88]
-            [cite_start]hint: Địa chỉ công ty [cite: 88]
-          - [cite_start]label: Map iframe [cite: 88]
-            [cite_start]name: mapEmbed [cite: 89]
-            [cite_start]widget: text [cite: 89]
-            [cite_start]hint: Dán iframe Google Maps hoặc URL embed [cite: 89]
-          - [cite_start]label: Facebook URL [cite: 89]
-            [cite_start]name: facebook [cite: 89]
-            [cite_start]widget: string [cite: 89]
-            [cite_start]required: false [cite: 89]
-            [cite_start]hint: Dán link trang Facebook [cite: 90]
-            [cite_start]pattern: ['^https?://', 'URL bắt đầu bằng http/https'] [cite: 90]
-          - [cite_start]label: Zalo URL [cite: 90]
-            [cite_start]name: zalo [cite: 90]
-            [cite_start]widget: string [cite: 90]
-            [cite_start]required: false [cite: 90]
-            [cite_start]hint: Dán link Zalo Official/nhắn tin [cite: 91]
-            [cite_start]pattern: ['^https?://', 'URL bắt đầu bằng http/https'] [cite: 91]
-          - [cite_start]label: Sections [cite: 91]
-            [cite_start]name: sections [cite: 91]
-            [cite_start]widget: list [cite: 91]
-            [cite_start]collapsed: true [cite: 91]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 91]
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh cover, name: image, widget: image, required: false }
+          - label: Email
+            name: email
+            widget: string
+            hint: Nhập email nhận liên hệ
+            pattern: ['^[^@\s]+@[^@\s]+\.[^@\s]+$', 'Email hợp lệ']
+          - label: Điện thoại
+            name: phone
+            widget: string
+            hint: Điện thoại liên hệ
+            pattern: ['^[0-9+ ()-]+$', 'Chỉ số, +, khoảng trắng, () hoặc -']
+          - { label: Hotline, name: hotline, widget: string, required: false }
+          - label: Địa chỉ
+            name: address
+            widget: string
+            hint: Địa chỉ công ty
+          - label: Map iframe
+            name: mapEmbed
+            widget: text
+            hint: Dán iframe Google Maps hoặc URL embed
+          - label: Facebook URL
+            name: facebook
+            widget: string
+            required: false
+            hint: Dán link trang Facebook
+            pattern: ['^https?://', 'URL bắt đầu bằng http/https']
+          - label: Zalo URL
+            name: zalo
+            widget: string
+            required: false
+            hint: Dán link Zalo Official/nhắn tin
+            pattern: ['^https?://', 'URL bắt đầu bằng http/https']
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 92]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 92]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 92]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 92]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 93]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -663,75 +663,75 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
 
-              - [cite_start]label: Items [cite: 93]
-                [cite_start]name: items [cite: 94]
-                [cite_start]widget: list [cite: 94]
-                [cite_start]required: false [cite: 94]
-                [cite_start]collapsed: true [cite: 94]
-                [cite_start]summary: '{{title}}' [cite: 94]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 95]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 95]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 96]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 96]
-              - [cite_start]label: Images [cite: 96]
-                [cite_start]name: images [cite: 97]
-                [cite_start]widget: list [cite: 97]
-                [cite_start]required: false [cite: 97]
-                [cite_start]collapsed: true [cite: 97]
-                [cite_start]summary: '{{fields.image}}' [cite: 97]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 98]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 98]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 98]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
 
-      - [cite_start]file: content/news.json [cite: 98]
-        [cite_start]label: Tin tức [cite: 99]
-        [cite_start]name: news [cite: 99]
-        [cite_start]format: json [cite: 99]
-        [cite_start]description: Trang Tin tức và bài viết [cite: 99]
+      - file: content/news.json
+        label: Tin tức
+        name: news
+        format: json
+        description: Trang Tin tức và bài viết
         fields:
-          - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 99]
-          - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 99]
-          - [cite_start]{ label: Ảnh cover, name: cover, widget: image, required: false } [cite: 99]
-          - [cite_start]label: Danh sách tin [cite: 99]
-            [cite_start]name: items [cite: 100]
-            [cite_start]widget: list [cite: 100]
-            [cite_start]collapsed: true [cite: 100]
-            [cite_start]summary: '{{title}} · {{date}}' [cite: 100]
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          - label: Danh sách tin
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{date}}'
             fields:
-              - [cite_start]label: Slug [cite: 100]
-                [cite_start]name: slug [cite: 100]
-                [cite_start]widget: string [cite: 101]
-                [cite_start]hint: Không dấu, cách bằng dấu gạch ngang [cite: 101]
-                [cite_start]pattern: ['^[a-z0-9-]+$', 'Chỉ a-z, 0-9, dấu -'] [cite: 101]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 101]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 102]
-              - [cite_start]{ label: Tóm tắt, name: summary, widget: text } [cite: 102]
-              - [cite_start]{ label: Tóm tắt (EN), name: summary_en, widget: text, required: false } [cite: 102]
-              - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 102]
-              - [cite_start]{ label: Tác giả, name: author, widget: string, required: false } [cite: 102]
-              - [cite_start]{ label: Ngày, name: date, widget: string, required: false } [cite: 103]
-              - [cite_start]{ label: Nội dung, name: body, widget: markdown } [cite: 103]
-              - [cite_start]{ label: Nội dung (EN), name: body_en, widget: markdown, required: false } [cite: 103]
-          - [cite_start]label: Sections [cite: 103]
-            [cite_start]name: sections [cite: 104]
-            [cite_start]widget: list [cite: 104]
-            [cite_start]collapsed: true [cite: 104]
-            [cite_start]summary: '{{title}} · {{type}}' [cite: 104]
+              - label: Slug
+                name: slug
+                widget: string
+                hint: Không dấu, cách bằng dấu gạch ngang
+                pattern: ['^[a-z0-9-]+$', 'Chỉ a-z, 0-9, dấu -']
+              - { label: Tiêu đề, name: title, widget: string }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Tóm tắt, name: summary, widget: text }
+              - { label: Tóm tắt (EN), name: summary_en, widget: text, required: false }
+              - { label: Ảnh, name: image, widget: image, required: false }
+              - { label: Tác giả, name: author, widget: string, required: false }
+              - { label: Ngày, name: date, widget: string, required: false }
+              - { label: Nội dung, name: body, widget: markdown }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
+          - label: Sections
+            name: sections
+            widget: list
+            collapsed: true
+            summary: '{{title}} · {{type}}'
             fields:
-              - [cite_start]{ label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] } [cite: 104]
-              - [cite_start]{ label: Tiêu đề, name: title, widget: string, required: false } [cite: 104]
-              - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 105]
-              - [cite_start]{ label: Mô tả, name: subtitle, widget: text, required: false } [cite: 105]
-              - [cite_start]{ label: Mô tả (EN), name: subtitle_en, widget: text, required: false } [cite: 105]
-              - { label: Nội dung, name: body, widget: markdown, required: false } # Nâng cấp: text -> markdown
-              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
+              - { label: Loại, name: type, widget: select, options: [grid, gallery, text, cta] }
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Mô tả, name: subtitle, widget: text, required: false }
+              - { label: Mô tả (EN), name: subtitle_en, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
               
               # Nâng cấp: BACKGROUND đa dạng
               - label: Background
@@ -745,29 +745,29 @@ collections:
                   - { label: Ảnh nền, name: image, widget: image, required: false, hint: 'Chọn ảnh nền' }
                   - { label: Gradient CSS, name: gradient, widget: string, required: false, hint: 'Dán mã CSS gradient (linear-gradient, radial-gradient...)' }
 
-              - [cite_start]label: Items [cite: 106]
-                [cite_start]name: items [cite: 106]
-                [cite_start]widget: list [cite: 106]
-                [cite_start]required: false [cite: 106]
-                [cite_start]collapsed: true [cite: 107]
-                [cite_start]summary: '{{title}}' [cite: 107]
+              - label: Items
+                name: items
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{title}}'
                 fields:
-                  - [cite_start]{ label: Tiêu đề, name: title, widget: string } [cite: 107]
-                  - [cite_start]{ label: Tiêu đề (EN), name: title_en, widget: string, required: false } [cite: 108]
-                  - { label: Mô tả, name: description, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false } # Nâng cấp: text -> markdown
-                  - [cite_start]{ label: Ảnh, name: image, widget: image, required: false } [cite: 108]
-                  - [cite_start]{ label: Link, name: link, widget: string, required: false } [cite: 109]
-              - [cite_start]label: Images [cite: 109]
-                [cite_start]name: images [cite: 109]
-                [cite_start]widget: list [cite: 109]
-                [cite_start]required: false [cite: 109]
-                [cite_start]collapsed: true [cite: 109]
-                [cite_start]summary: '{{fields.image}}' [cite: 110]
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+                  - { label: Mô tả, name: description, widget: markdown, required: false }
+                  - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+                  - { label: Link, name: link, widget: string, required: false }
+              - label: Images
+                name: images
+                widget: list
+                required: false
+                collapsed: true
+                summary: '{{fields.image}}'
                 fields: # Nâng cấp: Cấu trúc Images để thêm chú thích
                   - { label: Ảnh, name: image, widget: image }
                   - { label: Chú thích, name: caption, widget: string, required: false }
                   - { label: Mô tả ảnh (Alt Text), name: alt_text, widget: string, required: false }
-              - [cite_start]{ label: CTA text, name: ctaText, widget: string, required: false } [cite: 110]
-              - [cite_start]{ label: CTA text (EN), name: ctaText_en, widget: string, required: false } [cite: 110]
-              - [cite_start]{ label: CTA link, name: ctaLink, widget: string, required: false } [cite: 111]
+              - { label: CTA text, name: ctaText, widget: string, required: false }
+              - { label: CTA text (EN), name: ctaText_en, widget: string, required: false }
+              - { label: CTA link, name: ctaLink, widget: string, required: false }
