@@ -146,13 +146,16 @@ collections:
               - { label: Ảnh GIF, name: gif, widget: image, required: false }
               - { label: Toàn màn hình, name: fullscreen, widget: boolean, default: false }
               
-          - { label: Logo Đối tác Nổi bật [Nâng cấp], name: featured_partner_logo, widget: image, required: false, hint: 'Tải lên logo đối tác duy nhất cần hiển thị to và rõ ràng trên trang chủ.' }
+          # Sửa lỗi: Chuyển sang cấu trúc khối để tránh lỗi cú pháp
+          - label: Logo Đối tác Nổi bật [Nâng cấp]
+            name: featured_partner_logo
+            widget: image
+            required: false
+            hint: 'Tải lên logo đối tác duy nhất cần hiển thị to và rõ ràng trên trang chủ.'
           
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
           
-          # Đã xóa trường 'partners' cũ
-
           # SECTIONS - Cấu trúc ổn định
           - label: Sections
             name: sections
