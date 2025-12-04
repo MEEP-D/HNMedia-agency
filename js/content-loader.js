@@ -244,13 +244,29 @@
     var heroImg = (home.hero && home.hero.image) || 'images/hero/placeholder.jpg';
     
     // Nếu chọn Fullscreen trong CMS, hoặc mặc định muốn đẹp -> Fullscreen
+    // --- [SỬA ĐOẠN NÀY] HERO FULLSCREEN TRÀN VIỀN ---
     if(home.hero && home.hero.fullscreen){
-      var media = home.hero.video ? `<video src="${home.hero.video}" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline></video>` : `<img src="${heroImg}" class="absolute inset-0 w-full h-full object-cover animate-scale-slow" alt="Hero">`;
-      // Sử dụng h-screen (100vh) để ảnh phủ kín màn hình
-      hero = `<section class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-slate-900">${media}<div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60"></div><div class="relative z-10 text-center text-white px-4 max-w-5xl" data-aos="zoom-out"><div class="inline-block py-1.5 px-4 mb-6 rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-300 text-xs font-bold uppercase tracking-widest">${home.hero.slogan||'Welcome'}</div><h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight drop-shadow-2xl">${home.hero.title||''}</h1><p class="mb-10 max-w-2xl mx-auto text-lg md:text-xl text-white/90 font-light leading-relaxed">${home.hero.subtitle||''}</p>${home.hero.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white font-bold px-10 py-4 hover:bg-emerald-500 transition-all hover:scale-105 shadow-2xl shadow-emerald-900/50 text-base" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-5 h-5"></i></a>`:''}</div><div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-white/50"><i data-lucide="chevron-down" class="w-8 h-8"></i></div></section>`;
+      var media = home.hero.video 
+        ? `<video src="${home.hero.video}" class="absolute inset-0 w-full h-full object-cover z-0" autoplay muted loop playsinline></video>` 
+        : `<img src="${heroImg}" class="absolute inset-0 w-full h-full object-cover z-0 animate-scale-slow" alt="Hero" loading="eager">`;
+      
+      // Cấu trúc: Section (h-screen) -> Media (z-0) -> Overlay (z-10) -> Content (z-20)
+      hero = `<section class="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-slate-900">
+                ${media}
+                <div class="absolute inset-0 bg-black/40 z-10 pointer-events-none"></div>
+                
+                <div class="relative z-20 text-center text-white px-4 max-w-5xl" data-aos="zoom-out">
+                  <div class="inline-block py-1.5 px-4 mb-6 rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-300 text-xs font-bold uppercase tracking-widest">${home.hero.slogan||'Welcome'}</div>
+                  <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight drop-shadow-2xl">${home.hero.title||''}</h1>
+                  <p class="mb-10 max-w-2xl mx-auto text-lg md:text-xl text-white/90 font-light leading-relaxed">${home.hero.subtitle||''}</p>
+                  ${home.hero.ctaText ? `<a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white font-bold px-10 py-4 hover:bg-emerald-500 transition-all hover:scale-105 shadow-2xl shadow-emerald-900/50 text-base" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-5 h-5"></i></a>`:''}
+                </div>
+                
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-white/50 z-20 pointer-events-none"><i data-lucide="chevron-down" class="w-8 h-8"></i></div>
+              </section>`;
     } else {
-      // Split Layout (nếu không chọn full)
-      hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg hover:bg-emerald-600 transition-all" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
+      // Logic mặc định (Split Layout) - có container giới hạn
+      hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg shadow-slate-200 hover:bg-emerald-600 hover:shadow-emerald-200 transition-all hover:-translate-y-1" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
     }
     
     var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
