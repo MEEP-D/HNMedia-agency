@@ -61,24 +61,49 @@
       if(saved){ document.body.dataset.lang = saved==='en' ? 'en' : 'vi'; } else { if(!document.body.dataset.lang){ document.body.dataset.lang = 'vi'; } }
       var menu = document.getElementById('menu'); if(!menu) return;
       var old = document.getElementById('lang-switcher'); if(old && old.parentNode){ old.parentNode.removeChild(old); }
+      
       var wrap = document.createElement('div');
       wrap.id = 'lang-switcher';
       wrap.className = 'inline-flex items-center gap-1 ml-2';
+      
       var l = document.body.dataset.lang==='en' ? 'en' : 'vi';
+      
+      // --- PHẦN CHỈNH SỬA ---
+      
+      // Nút Tiếng Việt
       var btnVi = document.createElement('button');
       btnVi.type = 'button';
       btnVi.setAttribute('data-lang','vi');
-      btnVi.className = (l==='vi' ? 'bg-emerald-600 text-white border-emerald-600 ' : 'bg-white text-slate-800 ') + 'inline-flex items-center gap-1 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm';
-      btnVi.textContent = '🇻🇳 VI';
+      btnVi.className = (l==='vi' ? 'bg-emerald-600 text-white border-emerald-600 ' : 'bg-white text-slate-800 ') + 'inline-flex items-center gap-2 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm transition-colors';
+      // Thay textContent bằng innerHTML và thêm thẻ img
+      btnVi.innerHTML = '<img src="https://flagcdn.com/w40/vn.png" style="width: 16px; height: auto; border-radius: 2px;" alt="VN"> VI';
+      
+      // Nút Tiếng Anh
       var btnEn = document.createElement('button');
       btnEn.type = 'button';
       btnEn.setAttribute('data-lang','en');
-      btnEn.className = (l==='en' ? 'bg-emerald-600 text-white border-emerald-600 ' : 'bg-white text-slate-800 ') + 'inline-flex items-center gap-1 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm';
-      btnEn.textContent = '🇬🇧 EN';
+      btnEn.className = (l==='en' ? 'bg-emerald-600 text-white border-emerald-600 ' : 'bg-white text-slate-800 ') + 'inline-flex items-center gap-2 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm transition-colors';
+      // Thay textContent bằng innerHTML và thêm thẻ img
+      btnEn.innerHTML = '<img src="https://flagcdn.com/w40/gb.png" style="width: 16px; height: auto; border-radius: 2px;" alt="EN"> EN';
+      
+      // --- HẾT PHẦN CHỈNH SỬA ---
+
       wrap.appendChild(btnVi);
       wrap.appendChild(btnEn);
       menu.appendChild(wrap);
-      var setActiveBtn = function(){ var cur = document.body.dataset.lang==='en' ? 'en' : 'vi'; [btnVi, btnEn].forEach(function(b){ var k = b.getAttribute('data-lang'); if(k===cur){ b.className = 'inline-flex items-center gap-1 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm bg-emerald-600 text-white border-emerald-600'; } else { b.className = 'inline-flex items-center gap-1 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm bg-white text-slate-800'; } }); };
+      
+      var setActiveBtn = function(){ 
+          var cur = document.body.dataset.lang==='en' ? 'en' : 'vi'; 
+          [btnVi, btnEn].forEach(function(b){ 
+              var k = b.getAttribute('data-lang'); 
+              if(k===cur){ 
+                  b.className = 'inline-flex items-center gap-2 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm bg-emerald-600 text-white border-emerald-600 transition-colors'; 
+              } else { 
+                  b.className = 'inline-flex items-center gap-2 rounded-full border border-slate-200 text-xs px-2 py-1 shadow-sm bg-white text-slate-800 transition-colors'; 
+              } 
+          }); 
+      };
+      
       var change = function(val){ document.body.dataset.lang = val==='en' ? 'en' : 'vi'; localStorage.setItem('lang', document.body.dataset.lang); applyLangTexts(); if(typeof window.initContent==='function'){ window.initContent(); } setActiveBtn(); };
       btnVi.addEventListener('click', function(){ change('vi'); });
       btnEn.addEventListener('click', function(){ change('en'); });
