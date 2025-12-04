@@ -56,6 +56,36 @@
       });
       var searchInput = document.querySelector('input[placeholder]'); if(searchInput){ var ph = t('Tìm kiếm','Search'); searchInput.setAttribute('placeholder', ph); }
     }
+    (function(){
+  // --- LOGIC CHUYỂN ĐỔI NGÔN NGỮ ---
+  function setLanguage(langCode) {
+    // 1. Lưu trạng thái vào localStorage
+    localStorage.setItem('appLang', langCode);
+    
+    // 2. Cập nhật thuộc tính data-lang trên body
+    document.body.dataset.lang = langCode;
+
+    // 3. Cập nhật class CSS cho nút
+    document.querySelectorAll('.lang-btn').forEach(button => {
+        if (button.dataset.langCode === langCode) {
+            // Thay đổi class cho nút active
+            button.classList.add('active-lang', 'bg-emerald-600', 'text-white', 'border-emerald-600');
+            button.classList.remove('bg-white', 'text-slate-700', 'border-slate-200', 'hover:border-emerald-500');
+        } else {
+            // Thay đổi class cho nút inactive
+            button.classList.remove('active-lang', 'bg-emerald-600', 'text-white', 'border-emerald-600');
+            button.classList.add('bg-white', 'text-slate-700', 'border-slate-200', 'hover:border-emerald-500');
+        }
+    });
+
+    // 4. Tải lại nội dung trang (quan trọng để hàm TF/TR trong content-loader nhận ngôn ngữ mới)
+    // Sau khi thay đổi ngôn ngữ, gọi hàm khởi tạo nội dung để tải dữ liệu ngôn ngữ mới
+    if (window.initContent) {
+        window.initContent();
+    }
+    
+    // Đảm bảo cập nhật menu và các văn bản tĩnh nếu cần (Logic applyLangTexts của bạn đã bị loại bỏ)
+  }
     function initLangUI(){
       var saved = localStorage.getItem('lang');
       if(saved){ document.body.dataset.lang = saved==='en' ? 'en' : 'vi'; } else { if(!document.body.dataset.lang){ document.body.dataset.lang = 'vi'; } }
