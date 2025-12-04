@@ -3,39 +3,87 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trang chủ</title>
+  <title>Trang chủ - Media Agency</title>
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={theme:{extend:{colors:{emerald:{50:'#ECFDF5',100:'#D1FAE5',200:'#A7F3D0',300:'#6EE7B7',400:'#34D399',500:'#10B981',600:'#059669',700:'#047857',800:'#065F46',900:'#064E3B'},slate:{50:'#F8FAFC',100:'#F1F5F9',200:'#E2E8F0',300:'#CBD5E1',400:'#94A3B8',500:'#64748B',600:'#475569',700:'#334155',800:'#1E293B',900:'#0F172A'}}}}}</script>
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons & Animation -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  
 </head>
-<body class="bg-slate-50 text-slate-900" data-page="home">
-  <header class="sticky top-0 z-20">
-    <nav class="bg-white/85 backdrop-blur border-b border-slate-200">
-      <div class="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between relative">
-        <a class="text-emerald-600 font-semibold text-sm" href="index.html" data-page-link="home">Media Agency</a>
-        <button id="menu-btn" class="h-9 w-9 rounded-full border border-slate-200 bg-white inline-flex items-center justify-center shadow-sm md:hidden"><i data-lucide="menu" class="h-4 w-4"></i></button>
-        <div id="menu" class="hidden md:flex items-center gap-3 text-xs absolute right-4 top-full w-64 bg-white/95 backdrop-blur border border-slate-200 shadow-lg p-3 flex-col rounded-2xl md:static md:w-auto md:bg-transparent md:border-none md:shadow-none md:p-0 md:flex-row">
-          <a class="text-slate-700 hover:text-emerald-600" href="index.html" data-page-link="home">Trang chủ</a>
-          <a class="text-slate-700 hover:text-emerald-600" href="about.html" data-page-link="about">Giới thiệu</a>
-          <a class="text-slate-700 hover:text-emerald-600" href="services.html" data-page-link="services">Dịch vụ</a>
-          <a class="text-slate-700 hover:text-emerald-600" href="courses.html" data-page-link="courses">Khóa học</a>
-          <a class="text-slate-700 hover:text-emerald-600" href="portfolio.html" data-page-link="portfolio">Thành tựu</a>
-          <a class="text-slate-700 hover:text-emerald-600" href="news.html" data-page-link="news">Tin tức</a>
-          <a class="text-slate-700 hover:text-emerald-600" href="careers.html" data-page-link="careers">Tuyển dụng</a>
-          <a class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white px-4 py-2" href="contact.html" data-page-link="contact"><i data-lucide="phone" class="h-4 w-4"></i><span>Liên hệ</span></a>
+
+<!-- data-page="home" để JS nhận diện trang chủ -->
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden" data-page="home">
+
+  <!-- LOADING SCREEN: Cần thiết để che đi quá trình tải nội dung -->
+  <!-- <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-white transition-opacity duration-500">
+    <div class="flex flex-col items-center">
+      <svg class="animate-spin h-10 w-10 text-emerald-600 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <div class="text-sm font-medium text-slate-500">Đang tải...</div>
+    </div>
+  </div> -->
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40">
+    <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between relative">
+        <a class="text-emerald-600 font-bold text-lg flex items-center gap-2" href="index.html" data-page-link="home">
+          <!-- Logo sẽ được JS điền vào đây -->
+          Media Agency
+        </a>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="h-10 w-10 rounded-full border border-slate-200 bg-white inline-flex items-center justify-center shadow-sm md:hidden hover:bg-slate-50">
+          <i data-lucide="menu" class="h-5 w-5 text-slate-700"></i>
+        </button>
+
+        <!-- Desktop Menu -->
+        <div id="menu" class="hidden md:flex items-center gap-1 text-sm font-medium absolute right-4 top-full w-64 bg-white/95 backdrop-blur border border-slate-200 shadow-xl p-4 flex-col rounded-2xl md:static md:w-auto md:bg-transparent md:border-none md:shadow-none md:p-0 md:flex-row">
+          <a class="px-3 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" href="index.html" data-page-link="home">Trang chủ</a>
+          <a class="px-3 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" href="about.html" data-page-link="about">Giới thiệu</a>
+          <a class="px-3 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" href="services.html" data-page-link="services">Dịch vụ</a>
+          <a class="px-3 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" href="courses.html" data-page-link="courses">Khóa học</a>
+          <a class="px-3 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" href="portfolio.html" data-page-link="portfolio">Thành tựu</a>
+          <a class="px-3 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" href="news.html" data-page-link="news">Tin tức</a>
+          <a class="px-3 py-2 rounded-lg text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" href="careers.html" data-page-link="careers">Tuyển dụng</a>
+          
+          <div class="h-4 w-[1px] bg-slate-200 mx-2 hidden md:block"></div>
+          
+          <a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-5 py-2 hover:bg-emerald-700 shadow-sm transition-all hover:shadow-emerald-200" href="contact.html" data-page-link="contact">
+            <i data-lucide="phone" class="h-4 w-4"></i><span>Liên hệ</span>
+          </a>
         </div>
       </div>
     </nav>
   </header>
-  <main class="py-6">
-    <div id="app" class="max-w-6xl mx-auto px-4"></div>
+
+  <!-- MAIN CONTENT: QUAN TRỌNG - Xóa class giới hạn chiều rộng ở đây -->
+  <main class="min-h-screen">
+    <div id="app" class="w-full"></div>
   </main>
+
+  <footer class="border-t border-slate-200 bg-white pt-10 pb-6">
+    <div id="footer"></div>
+  </footer>
+
+  <!-- Form ẩn cho Netlify -->
+  <form name="apply" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" hidden>
+    <input type="hidden" name="form-name" value="apply">
+    <input type="text" name="name"><input type="email" name="email"><input type="tel" name="phone"><input type="url" name="resume"><input type="file" name="cv"><textarea name="message"></textarea><input type="hidden" name="position">
+  </form>
+
+  <!-- SCRIPTS: Chỉ gọi 2 file này -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <footer class="border-t border-slate-200 py-6 bg-white/80">
     <div class="max-w-6xl mx-auto px-4"><div id="footer"></div></div>
   </footer>
