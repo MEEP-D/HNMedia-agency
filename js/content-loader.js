@@ -213,7 +213,7 @@
     } else {
       // Logic mặc định / Khối Hero 2 cột
       // Đã sửa: Căn giữa nội dung Hero
-      var contentClasses = 'flex flex-col items-center text-center';
+      var contentClasses = 'flex flex-col items-center';
       var contentInner = `
         <div class="${contentClasses}">
           <div class="inline-flex items-center rounded-full bg-white/70 border border-slate-200 text-emerald-600 text-xs px-3 py-1 mb-2 shadow-sm">${home.hero && home.hero.slogan || ''}</div>
