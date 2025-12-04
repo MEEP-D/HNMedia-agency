@@ -57,14 +57,13 @@
     return `data-aos="${animation.type}" data-aos-delay="${delay}" data-aos-duration="${duration}"`;
   }
 
-  // Áp dụng style và animation vào thẻ Section
+  // Đã sửa: Xóa chấm xanh, tăng kích thước font, và căn giữa khối tiêu đề
   function section(title, body, style, animationAttr){ 
     return `<section class="py-8 reveal" style="${style}" ${animationAttr}>
               <div class="max-w-6xl mx-auto px-4">
-                <!-- Đã sửa: Căn giữa tiêu đề Section -->
-                <div class="flex items-center justify-center gap-2 mb-4">
-                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <h2 class="text-sm md:text-base font-medium text-slate-800 m-0 text-center">${title}</h2>
+                <!-- Tiêu đề Section (H2) được căn giữa, to hơn và nổi bật -->
+                <div class="flex items-center justify-center mb-6">
+                  <h2 class="text-xl md:text-2xl font-bold text-slate-800 m-0 text-center">${title}</h2>
                 </div>
                 ${body}
               </div>
@@ -93,7 +92,8 @@
 
     var bodyContent = '';
     var head = TF(s,'title') || TR('Tiêu đề khối','Content Block');
-    var sub = TF(s,'subtitle') ? ('<p class="text-xs text-slate-600 mb-2 text-center">' + TF(s,'subtitle') + '</p>') : ''; // Căn giữa Subtitle
+    // Đã sửa: Căn giữa Subtitle
+    var sub = TF(s,'subtitle') ? ('<p class="text-base text-slate-600 mb-6 text-center max-w-3xl mx-auto">' + TF(s,'subtitle') + '</p>') : ''; 
 
     if(t==='grid'){ 
       var g = '<div class="' + gridResponsive() + '">' + ((s.items||[]).map(serviceCard).join('')) + '</div>'; 
@@ -122,7 +122,7 @@
   function partnerLogo(p){ 
     var src = (typeof p==='string') ? p : (p && (p.image||p.logo||p.url)) || ''; 
     var alt = (p && (p.name||p.title)) || TR('Đối tác','Partner'); 
-    // Thẻ img không còn filter grayscale
+    // Tăng kích thước logo và hiển thị màu
     return `<div class="flex-shrink-0 mx-6 h-20 flex items-center justify-center min-w-[150px]"> 
               <img src="${src}" alt="${alt}" class="h-full w-auto object-contain transition duration-300" loading="lazy" decoding="async">
             </div>`; 
