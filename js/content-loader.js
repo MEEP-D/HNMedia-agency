@@ -9,7 +9,7 @@
     easing: 'ease-out-cubic',
   };
 
-  // --- UTILS ---
+  // --- HÀM TIỆN ÍCH ---
   function q(name){ var s = new URLSearchParams(location.search); return s.get(name); }
   async function fetchJson(p){ try{ var r = await fetch(p); if(!r.ok) return null; return await r.json(); } catch(e){ return null; } }
   function lang(){ return document.body && document.body.dataset && document.body.dataset.lang==='en' ? 'en' : 'vi'; }
@@ -51,9 +51,11 @@
 
   function gridResponsive(){ return 'grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'; }
   function gridThree(){ return 'grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'; }
+  function galleryGrid(){ return 'grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4'; }
   function cardBase(idx){ return `data-aos="fade-up" data-aos-delay="${(idx||0)*100}" class="rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:border-emerald-500/60 hover:-translate-y-0.5 hover:shadow-md h-full"`; }
+  function cardGlass(){ return 'rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm'; }
 
-  // --- CARD COMPONENTS (Đã thêm News & Career) ---
+  // --- CARD COMPONENTS ---
   function serviceCard(s, i){ 
     var img = s.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${s.image}" alt="${TF(s,'title')}" loading="lazy">` : ''; 
     return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(s,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-3">${TF(s,'description')}</p></div></div>`; 
@@ -69,20 +71,41 @@
     return `<div ${cardBase(i)}><div class="p-4 h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(p,'title')}</div><p class="text-xs text-slate-600 mt-2">${TF(p,'result')}</p></div></div>`; 
   }
 
-  // Card Tin tức (MỚI)
   function newsCard(n, i){
     var img = n.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${n.image}" alt="${TF(n,'title')}" loading="lazy">` : ''; 
     var date = n.date ? `<span class="text-[10px] text-slate-400 mb-1 block">${n.date}</span>` : '';
     return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}${date}<div class="text-sm font-bold text-slate-900 mt-1 line-clamp-2">${TF(n,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-3">${TF(n,'summary')}</p><div class="mt-auto pt-2"><a href="news-detail.html?id=${n.slug}" class="text-emerald-600 text-xs font-semibold hover:underline">${TR('Xem thêm','Read more')}</a></div></div></div>`;
   }
 
-  // Card Tuyển dụng (MỚI)
+  // Card Tuyển dụng - Gọi hàm openApplyModal
   function careerCard(p, i){
-    return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full justify-between"><div class="flex justify-between items-start mb-2"><div class="text-sm font-bold text-slate-900">${TF(p,'title')}</div><span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-1 rounded">${TF(p,'location')}</span></div><p class="text-xs text-slate-600 mt-2 mb-4 line-clamp-3">${TF(p,'summary')}</p><button onclick="window.openApplyModal('${TF(p,'title')}')" class="w-full inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2 hover:bg-emerald-700 transition-colors"><i data-lucide="send" class="w-3 h-3"></i><span>${TR('Ứng tuyển','Apply Now')}</span></button></div></div>`;
+    return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full justify-between"><div class="flex justify-between items-start mb-2"><div class="text-sm font-bold text-slate-900">${TF(p,'title')}</div><span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-1 rounded">${TF(p,'location')}</span></div><p class="text-xs text-slate-600 mt-2 mb-4 line-clamp-3">${TF(p,'summary')}</p><button type="button" data-open-apply="${TF(p,'title')}" class="w-full inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2 hover:bg-emerald-700 transition-colors"><i data-lucide="send" class="w-3 h-3"></i><span>${TR('Ứng tuyển','Apply Now')}</span></button></div></div>`;
   }
 
   function personCard(t, i){ return `<div ${cardBase(i)}><div class="p-4 flex items-center gap-4"><img src="${t.photo||''}" alt="${TF(t,'name')}" class="w-16 h-16 rounded-full border-2 border-slate-100 object-cover" loading="lazy"><div><div class="text-sm font-bold text-slate-900">${TF(t,'name')}</div><div class="text-xs text-emerald-600 font-medium">${TF(t,'role')}</div></div></div></div>`; }
   function imageTile(src, alt, idx){ return `<div data-aos="zoom-in" data-aos-delay="${idx*50}"><img class="w-full h-32 sm:h-36 md:h-40 object-cover rounded-xl border border-slate-200" src="${src}" alt="${alt||'Ảnh'}" loading="lazy"></div>`; }
+
+  // --- [KHÔI PHỤC] LOGIC FORM ỨNG TUYỂN CŨ ---
+  function applyForm(pos){ 
+    return '<form name="apply" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data"><input type="hidden" name="form-name" value="apply"><input type="hidden" name="position" value="' + (pos||'') + '"><div class="space-y-3"><div><label class="text-xs text-slate-700">Họ tên</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="text" name="name" required></div><div><label class="text-xs text-slate-700">Email</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="email" name="email" required></div><div><label class="text-xs text-slate-700">Điện thoại</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="tel" name="phone" required></div><div><label class="text-xs text-slate-700">CV (PDF/DOC)</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-50 file:text-emerald-700" type="file" name="cv" accept=".pdf,.doc,.docx" required></div><div><label class="text-xs text-slate-700">Link Portfolio (tuỳ chọn)</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="url" name="resume" placeholder="https://..."></div><div><label class="text-xs text-slate-700">Giới thiệu</label><textarea class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" name="message" rows="4" required></textarea></div><button class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2" type="submit"><i data-lucide="send"></i><span>Gửi đơn</span></button></div></form>'; 
+  }
+
+  // Hàm mở Modal (Global)
+  window.openApplyModal = function(pos){
+    var m = document.getElementById('apply-modal');
+    if(m){ m.remove(); }
+    var wrap = document.createElement('div');
+    wrap.id = 'apply-modal';
+    wrap.setAttribute('role','dialog');
+    wrap.setAttribute('aria-modal','true');
+    wrap.className = 'fixed inset-0 z-50 flex items-center justify-center';
+    // Khôi phục cấu trúc HTML modal cũ
+    var inner = '<div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close-apply></div><div class="relative z-10 max-w-md w-full mx-4" data-aos="zoom-in"><div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-4"><div class="flex items-center justify-between mb-2"><div class="text-sm font-semibold text-slate-900">Ứng tuyển: ' + (pos||'') + '</div><button type="button" class="h-8 w-8 inline-flex items-center justify-center rounded-full border border-slate-200" data-close-apply><i data-lucide="x"></i></button></div>' + applyForm(pos) + '</div></div>';
+    wrap.innerHTML = inner;
+    document.body.appendChild(wrap);
+    if(window.lucide && typeof window.lucide.createIcons==='function'){ window.lucide.createIcons(); }
+    wrap.addEventListener('click', function(e){ var t = e.target && e.target.closest('[data-close-apply]'); if(t){ wrap.remove(); } });
+  }
 
   // --- RENDER SECTIONS ---
   function renderSections(sections){ if(!sections||!sections.length) return ''; return sections.map(renderSection).join(''); }
@@ -97,7 +120,7 @@
 
     if(t==='grid') bodyContent = sub + `<div class="${gridResponsive()}">${(s.items||[]).map((it, i) => serviceCard(it, i)).join('')}</div>`; 
     else if(t==='gallery') bodyContent = `<div class="${galleryGrid()}">${(s.images||[]).map((it, i) => imageTile(it.image, it.alt_text, i)).join('')}</div>`; 
-    else if(t==='text') { var parsed = window.marked ? marked.parse(lang()==='en'&&s.body_en?s.body_en:(s.body||'')) : (s.body||''); bodyContent = `<div class="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur p-6" data-aos="fade-right"><div class="prose prose-slate max-w-none text-sm text-slate-700">${parsed}</div></div>`; } 
+    else if(t==='text') { var parsed = window.marked ? marked.parse(lang()==='en'&&s.body_en?s.body_en:(s.body||'')) : (s.body||''); bodyContent = `<div class="${cardGlass()} p-6" data-aos="fade-right"><div class="prose prose-slate max-w-none text-sm text-slate-700">${parsed}</div></div>`; } 
     else if(t==='cta') bodyContent = sub + `<div class="text-center" data-aos="zoom-in"><a class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white text-sm px-6 py-3 hover:bg-emerald-600/90 shadow-sm hover:scale-105 transition-transform" href="${s.ctaLink||'#'}"><span>${TF(s,'ctaText')||TR('Xem thêm','Learn more')}</span></a></div>`; 
     return section(head, bodyContent, style, animAttr); 
   }
@@ -126,24 +149,35 @@
     el.innerHTML = hero + `<div class="max-w-6xl mx-auto px-4">${chips}</div>` + renderPartners(home) + intro + `<div data-section="services">${section(TR('Dịch vụ','Services'), `<div class="${gridResponsive()}">${(svc.items||[]).slice(0,8).map((it,i)=>serviceCard(it,i)).join('')}</div>`,'','')}</div>` + `<div data-section="courses">${section(TR('Khóa học','Courses'), `<div class="${gridResponsive()}">${(crs.items||[]).slice(0,8).map((it,i)=>courseCard(it,i)).join('')}</div>`,'','')}</div>` + `<div data-section="portfolio">${section(TR('Thành tựu','Portfolio'), `<div class="${gridResponsive()}">${(port.items||[]).slice(0,8).map((it,i)=>caseCard(it,i)).join('')}</div>`,'','')}</div>` + renderSections(home.sections||[]);
   }
 
-  // --- MODAL ỨNG TUYỂN ---
-  window.openApplyModal = function(pos){
-    var wrap = document.createElement('div');
-    wrap.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4';
-    wrap.innerHTML = `<div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl animate-fade-in-up relative"><button onclick="this.closest('.fixed').remove()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i data-lucide="x"></i></button><h3 class="text-lg font-bold mb-4">${TR('Ứng tuyển: ','Apply for: ')} ${pos}</h3><form name="apply" method="POST" data-netlify="true" class="space-y-3"><input type="hidden" name="form-name" value="apply"><input type="hidden" name="position" value="${pos}"><input class="w-full border p-2 rounded text-sm" name="name" placeholder="Họ tên" required><input class="w-full border p-2 rounded text-sm" name="email" placeholder="Email" required><input class="w-full border p-2 rounded text-sm" name="phone" placeholder="SĐT" required><textarea class="w-full border p-2 rounded text-sm" name="message" placeholder="Giới thiệu bản thân"></textarea><button class="w-full bg-emerald-600 text-white py-2 rounded-full text-sm font-bold">Gửi hồ sơ</button></form></div>`;
-    document.body.appendChild(wrap);
-    if(window.lucide) window.lucide.createIcons();
-  };
+  // --- [KHÔI PHỤC] LOGIC RENDER NEWS DETAIL CŨ ---
+  function renderNewsDetail(el, news){
+    var id = q('id');
+    var item = (news.items||[]).find(function(x){ return (x.slug||'')===id; });
+    if(!item){ el.innerHTML = h1('Không tìm thấy tin tức'); return; }
+    
+    // Format cũ bạn thích: Title -> Cover -> Meta -> Body (dùng cardGlass)
+    var head = h1(TF(item||{},'title')||'');
+    var cover = item.image ? ('<div data-aos="zoom-in"><img class="rounded-2xl border border-slate-200 shadow-sm w-full mb-4" src="' + item.image + '" alt="' + ((item.title)||'Tin tức') + '" loading="eager" decoding="async"></div>') : '';
+    var meta = (item.date ? ('<div class="text-[11px] text-slate-500 mb-4">' + item.date + (item.author ? (' · ' + item.author) : '') + '</div>') : '');
+    var body = '<article class="' + cardGlass() + ' p-4" data-aos="fade-up"><div class="prose prose-sm max-w-none text-slate-700">' + (window.marked ? marked.parse(lang()==='en' && item.body_en ? item.body_en : (item.body||'')) : (item.body||'')) + '</div></article>';
+    
+    el.innerHTML = head + cover + meta + body + renderSections(item.sections||[]);
+  }
 
-  // --- LOAD & RENDER MAIN ---
+  // --- LOAD & RENDER MAIN (Đã sửa lỗi Routing) ---
   async function loadAndRenderContent(){
+    // [FIX QUAN TRỌNG] Lấy chính xác page từ data-page. Nếu không có, mặc định là home.
+    // Nếu URL có ?id=... thì vẫn giữ nguyên logic page hiện tại.
     var page = document.body.dataset.page || 'home';
+    
+    // Đảm bảo không bị nhảy sang news-detail nếu không phải là trang đó
     var name = (page === 'home' || page === 'index') ? 'home' : page;
+    
     var cfg = await fetchJson('content/config.json');
     var seo = await fetchJson('content/seo.json');
     setSEO(seo, page, cfg);
     
-    // FIX 1: HIỂN THỊ LOGO + TÊN
+    // FIX LOGO + TÊN CÔNG TY
     var brandEl = document.querySelector('a[data-page-link="home"]');
     if(brandEl && cfg?.brand) {
       var logoHtml = cfg.brand.logo ? `<img src="${cfg.brand.logo}" class="h-8 w-auto rounded">` : '';
@@ -152,7 +186,18 @@
     }
 
     var el = document.getElementById('app');
-    var data = await fetchJson('content/' + name + '.json');
+    
+    // Logic fetch JSON
+    var data = null;
+    // News Detail và Course Detail cần load file tổng (news.json, courses.json) chứ không phải news-detail.json
+    if(page === 'news-detail') {
+        data = await fetchJson('content/news.json'); 
+    } else if (page === 'course-detail') {
+        data = await fetchJson('content/courses.json');
+    } else {
+        data = await fetchJson('content/' + name + '.json');
+    }
+
     var footerContact = await fetchJson('content/contact.json');
     
     // Render Footer
@@ -164,36 +209,34 @@
         f.innerHTML = `<div class="max-w-6xl mx-auto px-4 py-8"><div class="grid grid-cols-1 md:grid-cols-2 gap-8">${left}${right}</div></div>`;
     }
 
+    // --- ROUTING CHÍNH XÁC ---
     if(page==='home'){
       var svc = await fetchJson('content/services.json');
       var crs = await fetchJson('content/courses.json');
       var prt = await fetchJson('content/portfolio.json');
       renderHome(el, data||{}, svc||{}, crs||{}, prt||{});
     }
-    // FIX 2: THÊM LOGIC RENDER TIN TỨC
     else if(page==='news'){
         var head = h1(TF(data,'title'));
         var list = `<div class="${gridThree()}">${(data.items||[]).map((it,i)=>newsCard(it,i)).join('')}</div>`;
         el.innerHTML = head + list + renderSections(data.sections||[]);
     }
-    // FIX 3: THÊM LOGIC RENDER TUYỂN DỤNG
     else if(page==='careers'){
         var head = h1(TF(data,'title'));
         var cover = data.cover ? `<div data-aos="zoom-in"><img class="rounded-2xl border border-slate-200 shadow-sm w-full mb-6" src="${data.cover}"></div>` : '';
         var list = `<div class="${gridThree()}">${(data.positions||[]).map((it,i)=>careerCard(it,i)).join('')}</div>`;
         el.innerHTML = head + cover + list + renderSections(data.sections||[]);
+        // Gán sự kiện click cho các nút ứng tuyển
+        document.querySelectorAll('button[data-open-apply]').forEach(btn => {
+            btn.addEventListener('click', function(){ window.openApplyModal(this.getAttribute('data-open-apply')); });
+        });
     }
-    // FIX 4: CHI TIẾT TIN TỨC
     else if(page==='news-detail'){
-        var newsData = await fetchJson('content/news.json');
-        var id = q('id'); var item = (newsData.items||[]).find(x=>x.slug===id);
-        if(!item) { el.innerHTML = h1('Not found'); return; }
-        el.innerHTML = `<div class="max-w-3xl mx-auto py-10" data-aos="fade-up"><a href="javascript:history.back()" class="text-slate-500 text-sm mb-4 inline-block">&larr; Quay lại</a><h1 class="text-2xl font-bold mb-4">${TF(item,'title')}</h1>${item.image?`<img src="${item.image}" class="w-full rounded-xl mb-6 shadow-sm">`:''}<div class="prose prose-slate">${window.marked?marked.parse(TF(item,'body')||TF(item,'summary')):TF(item,'summary')}</div></div>`;
+        renderNewsDetail(el, data||{});
     }
-    // CHI TIẾT KHÓA HỌC
     else if(page==='course-detail'){
-        var crsData = await fetchJson('content/courses.json');
-        var id = q('id'); var item = (crsData.items||[]).find(x=>x.slug===id);
+        // Logic render Course Detail cũ
+        var id = q('id'); var item = (data.items||[]).find(x=>x.slug===id);
         if(!item) { el.innerHTML = h1('Not found'); return; }
         el.innerHTML = `<div class="py-10" data-aos="fade-up"><div class="grid md:grid-cols-3 gap-8"><div class="md:col-span-2"><h1 class="text-2xl font-bold mb-4">${TF(item,'title')}</h1><img src="${item.image}" class="w-full rounded-xl mb-6 shadow-sm"><div class="prose prose-slate">${window.marked?marked.parse(TF(item,'description')):TF(item,'description')}</div></div><div><div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm sticky top-24"><div class="font-bold mb-4">Thông tin</div><div class="text-sm space-y-2 mb-6"><div>Thời lượng: ${item.duration}</div><div>Hình thức: ${item.format}</div></div><a href="contact.html" class="block text-center bg-emerald-600 text-white py-2 rounded-full font-bold text-sm">Đăng ký ngay</a></div></div></div></div>`;
     }
