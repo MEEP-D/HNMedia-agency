@@ -273,7 +273,14 @@
           if (typeof window.initContent === "function") window.initContent();
           
           setActive();
-          if (menuControl) menuControl.closeMenu();
+          
+          // --- SỬA LỖI MẤT MENU Ở ĐÂY ---
+          // Chỉ đóng menu nếu đang ở chế độ Mobile (tức là nút menu-btn đang hiển thị)
+          const menuBtn = document.getElementById("menu-btn");
+          if (menuControl && menuBtn && getComputedStyle(menuBtn).display !== 'none') {
+             menuControl.closeMenu();
+          }
+          // ------------------------------
           
           // Cuộn lên đầu trang mượt mà
           window.scrollTo({ top: 0, behavior: 'smooth' });
