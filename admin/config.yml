@@ -165,6 +165,36 @@ collections:
   # ------------------------------------------------------------
   # SEO
   # ------------------------------------------------------------
+  - file: content/footer.json
+    label: Chân trang (Footer)
+    name: footer
+    format: json
+    fields:
+          - { label: Tên hiển thị (Brand Name), name: brand_name, widget: string, required: false, default: "Media Agency" }
+          - { label: Logo Footer, name: logo, widget: image, required: false, hint: "Để trống sẽ dùng logo mặc định trong Cấu hình chung" }
+          - { label: Mô tả ngắn, name: description, widget: text, required: false, hint: "Hiện dưới logo ở chân trang" }
+          
+          - { label: Địa chỉ hiển thị, name: address, widget: string, required: false }
+          - { label: Số điện thoại, name: phone, widget: string, required: false }
+          - { label: Email liên hệ, name: email, widget: string, required: false }
+          - { label: Dòng bản quyền (Copyright), name: copyright, widget: string, required: false, default: "© 2025 All rights reserved." }
+
+          - label: Cột liên kết (Links Columns)
+            name: columns
+            widget: list
+            collapsed: false
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Tiêu đề cột, name: title, widget: string }
+              - { label: Tiêu đề cột (EN), name: title_en, widget: string, required: false }
+              - label: Danh sách đường dẫn
+                name: links
+                widget: list
+                summary: '{{fields.text}}'
+                fields:
+                  - { label: Tên link, name: text, widget: string }
+                  - { label: Tên link (EN), name: text_en, widget: string, required: false }
+                  - { label: Đường dẫn (URL), name: url, widget: string, hint: "Ví dụ: /contact.html hoặc #services" }
   - name: seo
     label: 🔍 SEO
     files:

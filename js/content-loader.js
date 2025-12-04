@@ -155,10 +155,45 @@
   
   function renderPartners(home){ 
     var featured = home.featured_partner_logo ? `<section class="py-12 reveal" data-aos="fade-up"><div class="max-w-6xl mx-auto px-4 text-center"><p class="text-xs font-bold text-slate-400 mb-6 tracking-[0.2em] uppercase">${TR('Đối tác chiến lược','Strategic Partner')}</p><img src="${home.featured_partner_logo}" class="mx-auto h-24 md:h-32 object-contain hover:scale-105 transition-transform duration-500 drop-shadow-sm" loading="lazy"/></div></section>` : '';
-    var list = (home && home.partners) || []; if(!list.length) return featured; 
-    var track = '<div class="flex marquee-track">' + list.concat(list).map(partnerLogo).join('') + '</div>'; 
-    return featured + `<section class="py-10 reveal border-t border-slate-100 bg-slate-50/50" data-aos="fade-in"><div class="w-full overflow-hidden"><p class="text-center text-xs font-bold text-slate-400 mb-8 tracking-[0.2em] uppercase">${TR('Được tin tưởng bởi','Trusted By')}</p><div class="marquee-wrapper relative"><div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10"></div><div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>${track}</div></div><style>.marquee-wrapper{overflow:hidden}.marquee-track{animation:scroll-x ${Math.max(20,list.length*4)}s linear infinite;width:max-content;display:flex;align-items:center}.marquee-track:hover{animation-play-state:paused}@keyframes scroll-x{from{transform:translateX(0)}to{transform:translateX(-50%)}}</style></section>`;
-  }
+    
+    var list = (home && home.partners) || []; 
+    if(!list.length) return featured; 
+
+    // Nhân bản danh sách 4 lần để đảm bảo độ dài vô tận trên mọi màn hình
+    var fullList = [...list, ...list, ...list, ...list];
+    
+    var track = '<div class="flex marquee-track">' + fullList.map(partnerLogo).join('') + '</div>'; 
+    
+    return featured + `
+    <section class="py-10 reveal border-t border-slate-100 bg-slate-50/50" data-aos="fade-in">
+        <div class="w-full overflow-hidden">
+            <p class="text-center text-xs font-bold text-slate-400 mb-8 tracking-[0.2em] uppercase">${TR('Được tin tưởng bởi','Trusted By')}</p>
+            <div class="marquee-wrapper relative group">
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
+                ${track}
+            </div>
+        </div>
+        <style>
+            .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
+            .marquee-track {
+                display: flex;
+                width: max-content;
+                /* Thời gian chạy dựa trên độ dài danh sách, đảm bảo tốc độ đều */
+                animation: scroll-x ${Math.max(30, list.length * 5)}s linear infinite; 
+            }
+            /* Khi di chuột vào thì dừng lại để xem rõ hơn */
+            .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
+            
+            @keyframes scroll-x {
+                0% { transform: translateX(0); }
+                /* Dịch chuyển -25% vì chúng ta nhân bản 4 lần. 
+                   Hết 1 set (-25%) nó sẽ khớp hoàn hảo với set tiếp theo */
+                100% { transform: translateX(-25%); } 
+            }
+        </style>
+    </section>`;
+}
 
   function renderHome(el, home, svc, crs, port){
     var hero;
@@ -268,11 +303,63 @@
     // Footer
     var footerContact = await fetchJson('content/contact.json');
     var f = document.getElementById('footer'); 
-    if(f && cfg){ 
-        var n = (cfg.brand && cfg.brand.name) || 'Media Agency'; 
-        var left = (cfg.brand && cfg.brand.logo) ? `<div class="flex items-center gap-3 mb-4"><img src="${cfg.brand.logo}" class="h-10 w-auto rounded"></div><div class="text-lg font-bold text-slate-800">${n}</div>` : `<div class="text-lg font-bold text-slate-800">${n}</div>`;
-        var right = `<div class="text-sm text-slate-500 space-y-2"><div class="mb-4 text-slate-600 leading-relaxed max-w-sm">${cfg.brand && cfg.brand.description||''}</div>${footerContact?.address?`<div class="flex gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-emerald-500 mt-0.5"></i><span>${footerContact.address}</span></div>`:''}${footerContact?.phone?`<div class="flex gap-2"><i data-lucide="phone" class="w-4 h-4 text-emerald-500 mt-0.5"></i><span>${footerContact.phone}</span></div>`:''}<div class="mt-6 pt-6 border-t border-slate-100 text-xs text-slate-400">© ${new Date().getFullYear()} ${n}. All rights reserved.</div></div>`;
-        f.innerHTML = `<div class="max-w-6xl mx-auto px-4 py-12"><div class="grid grid-cols-1 md:grid-cols-2 gap-12">${left}${right}</div></div>`;
+    if(f){ 
+        // 1. Load dữ liệu footer riêng từ file footer.json
+        var footerData = await fetchJson('content/footer.json');
+        
+        // Fallback: Nếu chưa có footer.json thì lấy tạm từ config và contact
+        var brandName = (footerData && footerData.brand_name) || (cfg && cfg.brand && cfg.brand.name) || 'Media Agency';
+        var brandDesc = (footerData && footerData.description) || (cfg && cfg.brand && cfg.brand.description) || '';
+        var brandLogo = (footerData && footerData.logo) || (cfg && cfg.brand && cfg.brand.logo) || '';
+        
+        // 2. Render cột thông tin bên trái (Logo + Info)
+        var leftContent = `
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    ${brandLogo ? `<img src="${brandLogo}" class="h-10 w-auto rounded">` : ''}
+                    <span class="text-xl font-bold text-slate-800">${brandName}</span>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed max-w-sm">${brandDesc}</p>
+                
+                <div class="pt-4 space-y-2">
+                    ${(footerData && footerData.address) ? `<div class="flex gap-2 text-sm text-slate-600"><i data-lucide="map-pin" class="w-4 h-4 text-emerald-500 shrink-0"></i><span>${footerData.address}</span></div>` : ''}
+                    ${(footerData && footerData.phone) ? `<div class="flex gap-2 text-sm text-slate-600"><i data-lucide="phone" class="w-4 h-4 text-emerald-500 shrink-0"></i><span>${footerData.phone}</span></div>` : ''}
+                    ${(footerData && footerData.email) ? `<div class="flex gap-2 text-sm text-slate-600"><i data-lucide="mail" class="w-4 h-4 text-emerald-500 shrink-0"></i><span>${footerData.email}</span></div>` : ''}
+                </div>
+            </div>
+        `;
+
+        // 3. Render các cột liên kết (nếu có trong footer.json)
+        // Cấu trúc mong đợi: columns: [{title: "Về chúng tôi", links: [{text: "Giới thiệu", url: "#"}]}]
+        var linksContent = '';
+        if(footerData && footerData.columns){
+            linksContent = footerData.columns.map(col => `
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-4 uppercase text-xs tracking-wider">${TF(col, 'title')}</h4>
+                    <ul class="space-y-2 text-sm text-slate-500">
+                        ${(col.links||[]).map(l => `<li><a href="${l.url}" class="hover:text-emerald-600 transition-colors">${TF(l, 'text')}</a></li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        // 4. Render bản quyền
+        var copyright = footerData && footerData.copyright ? footerData.copyright : `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
+
+        // 5. Gộp HTML
+        f.innerHTML = `
+            <div class="bg-white border-t border-slate-100 pt-16 pb-8">
+                <div class="max-w-6xl mx-auto px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                        <div class="lg:col-span-2">${leftContent}</div>
+                        ${linksContent}
+                    </div>
+                    <div class="border-t border-slate-100 pt-8 text-center md:text-left text-xs text-slate-400">
+                        ${copyright}
+                    </div>
+                </div>
+            </div>
+        `;
     }
     
     setTimeout(() => { if(window.AOS) window.AOS.init(AOS_CONFIG); }, 100);
