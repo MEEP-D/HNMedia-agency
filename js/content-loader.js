@@ -30,7 +30,7 @@
     document.head.appendChild(ld);
   }
   // Đã sửa: Thêm font-bold và text-center cho các tiêu đề chính
-  function h1(t){ return '<h1 class="text-xl md:text-2xl font-bold mb-3 text-slate-900 text-center">' + t + '</h1>'; }
+  function h1(t){ return '<h1 class="text-xl md:text-2xl font-bold mb-3 text-slate-900">' + t + '</h1>'; }
   
   // --- HÀM XỬ LÝ CUSTOM FIELDS ---
   
@@ -93,7 +93,7 @@
     var bodyContent = '';
     var head = TF(s,'title') || TR('Tiêu đề khối','Content Block');
     // Đã sửa: Căn giữa Subtitle
-    var sub = TF(s,'subtitle') ? ('<p class="text-base text-slate-600 mb-6 text-center max-w-3xl mx-auto">' + TF(s,'subtitle') + '</p>') : ''; 
+    var sub = TF(s,'subtitle') ? ('<p class="text-base text-slate-600 mb-6 max-w-3xl mx-auto">' + TF(s,'subtitle') + '</p>') : ''; 
 
     if(t==='grid'){ 
       var g = '<div class="' + gridResponsive() + '">' + ((s.items||[]).map(serviceCard).join('')) + '</div>'; 
