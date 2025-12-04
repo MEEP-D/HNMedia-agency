@@ -111,7 +111,7 @@
       bodyContent = '<div class="' + cardGlass() + ' p-4"><div class="text-sm text-slate-700">' + body + '</div></div>';
     } else if(t==='cta'){ 
       // Căn giữa CTA
-      var a = '<div class="text-center"><a class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white text-sm px-4 py-2 hover:bg-emerald-600/90 shadow-sm" href="' + (s.ctaLink||'#') + '"><i data-lucide="arrow-right" class="h-4 w-4"></i><span>' + (TF(s,'ctaText')||TR('Xem thêm','Learn more')) + '</span></a></div>'; 
+      var a = '<div class="text"><a class="inline-flex items gap-2 rounded-xl bg-emerald-600 text-white text-sm px-4 py-2 hover:bg-emerald-600/90 shadow-sm" href="' + (s.ctaLink||'#') + '"><i data-lucide="arrow-right" class="h-4 w-4"></i><span>' + (TF(s,'ctaText')||TR('Xem thêm','Learn more')) + '</span></a></div>'; 
       bodyContent = a;
     } 
     
