@@ -69,11 +69,7 @@
       "subtitle": "33333333",
       "title": "123123123123",
       "images": [
-        {
-          "image": "/images/picture1.png",
-          "caption": "123123123",
-          "alt_text": "123123123123"
-        }
+        "/images/penci_ai_image_1764864234613.jpg"
       ],
       "type": "cta",
       "ctaText": "123123123123"
