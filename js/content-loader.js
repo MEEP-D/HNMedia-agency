@@ -250,10 +250,10 @@
         ? `<video src="${home.hero.video}" class="absolute inset-0 w-full h-full object-cover z-0" autoplay muted loop playsinline></video>` 
         : `<img src="${heroImg}" class="absolute inset-0 w-full h-full object-cover z-0 animate-scale-slow" alt="Hero" loading="eager">`;
       
-      // Cấu trúc: Section (h-screen) -> Media (z-0) -> Overlay (z-10) -> Content (z-20)
       hero = `<section class="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-slate-900">
                 ${media}
-                <div class="absolute inset-0 bg-black/40 z-10 pointer-events-none"></div>
+                <!-- [SỬA] Giảm độ tối từ bg-black/40 xuống bg-black/10 (hoặc xóa dòng này nếu muốn ảnh gốc) -->
+                <div class="absolute inset-0 bg-black/10 z-10 pointer-events-none"></div>
                 
                 <div class="relative z-20 text-center text-white px-4 max-w-5xl" data-aos="zoom-out">
                   <div class="inline-block py-1.5 px-4 mb-6 rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-300 text-xs font-bold uppercase tracking-widest">${home.hero.slogan||'Welcome'}</div>
@@ -261,7 +261,6 @@
                   <p class="mb-10 max-w-2xl mx-auto text-lg md:text-xl text-white/90 font-light leading-relaxed">${home.hero.subtitle||''}</p>
                   ${home.hero.ctaText ? `<a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white font-bold px-10 py-4 hover:bg-emerald-500 transition-all hover:scale-105 shadow-2xl shadow-emerald-900/50 text-base" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-5 h-5"></i></a>`:''}
                 </div>
-                
                 <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-white/50 z-20 pointer-events-none"><i data-lucide="chevron-down" class="w-8 h-8"></i></div>
               </section>`;
     } else {
@@ -298,7 +297,7 @@
     var brandEl = document.querySelector('a[data-page-link="home"]');
     if(brandEl && cfg?.brand) {
       var logoHtml = cfg.brand.logo ? `<img src="${cfg.brand.logo}" class="h-8 w-auto rounded shadow-sm">` : '';
-      var nameHtml = `<span class="font-bold text-lg tracking-tight text-slate-800">${cfg.brand.name}</span>`;
+      var nameHtml = `<span class="font-bold text-lg tracking-tight text-emerald-600">${cfg.brand.name}</span>`;;
       brandEl.innerHTML = `<div class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">${logoHtml}${nameHtml}</div>`;
     }
 
@@ -345,10 +344,13 @@
             el.innerHTML = head + cover + vm + team + renderSections(data.sections||[]);
         }
         else if(page === 'contact'){
-            var head = h1(TF(data,'title'));
-            var info = `<div class="grid md:grid-cols-2 gap-12 bg-white p-10 rounded-3xl shadow-xl border border-slate-100" data-aos="fade-up"><div class="space-y-6"><h3 class="font-bold text-2xl mb-2 text-slate-900">Liên hệ với chúng tôi</h3><p class="text-slate-500 mb-6">Chúng tôi luôn sẵn sàng lắng nghe bạn.</p><div class="flex items-start gap-4"><div class="p-3 bg-emerald-50 rounded-full text-emerald-600"><i data-lucide="mail"></i></div><div><div class="text-xs font-bold text-slate-400 uppercase">Email</div><div class="font-medium">${data.email}</div></div></div><div class="flex items-start gap-4"><div class="p-3 bg-emerald-50 rounded-full text-emerald-600"><i data-lucide="phone"></i></div><div><div class="text-xs font-bold text-slate-400 uppercase">Hotline</div><div class="font-medium">${data.phone}</div></div></div><div class="flex items-start gap-4"><div class="p-3 bg-emerald-50 rounded-full text-emerald-600"><i data-lucide="map-pin"></i></div><div><div class="text-xs font-bold text-slate-400 uppercase">Địa chỉ</div><div class="font-medium">${data.address}</div></div></div></div><div><form name="contact" method="POST" data-netlify="true" class="space-y-4"><input type="hidden" name="form-name" value="contact"><input class="w-full border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none" name="name" placeholder="Họ tên" required><input class="w-full border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none" name="email" placeholder="Email" required><textarea class="w-full border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none" name="message" placeholder="Nội dung" rows="4" required></textarea><button class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-emerald-600 transition-colors shadow-lg shadow-slate-900/20">Gửi tin nhắn</button></form></div></div>`;
-            el.innerHTML = head + info + renderSections(data.sections||[]);
-        }
+        var data = await fetchJson('content/contact.json');
+        var head = h1(TF(data,'title'));
+        var info = `<div class="grid md:grid-cols-2 gap-12 bg-white p-10 rounded-3xl shadow-xl border border-slate-100" data-aos="fade-up"><div class="space-y-6"><h3 class="font-bold text-2xl mb-2 text-slate-900">Liên hệ với chúng tôi</h3><p class="text-slate-500 mb-6">Chúng tôi luôn sẵn sàng lắng nghe bạn.</p><div class="flex items-start gap-4"><div class="p-3 bg-emerald-50 rounded-full text-emerald-600"><i data-lucide="mail"></i></div><div><div class="text-xs font-bold text-slate-400 uppercase">Email</div><div class="font-medium">${data.email}</div></div></div><div class="flex items-start gap-4"><div class="p-3 bg-emerald-50 rounded-full text-emerald-600"><i data-lucide="phone"></i></div><div><div class="text-xs font-bold text-slate-400 uppercase">Hotline</div><div class="font-medium">${data.phone}</div></div></div><div class="flex items-start gap-4"><div class="p-3 bg-emerald-50 rounded-full text-emerald-600"><i data-lucide="map-pin"></i></div><div><div class="text-xs font-bold text-slate-400 uppercase">Địa chỉ</div><div class="font-medium">${data.address}</div></div></div></div><div><form name="contact" method="POST" data-netlify="true" class="space-y-4"><input type="hidden" name="form-name" value="contact"><input class="w-full border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none" name="name" placeholder="Họ tên" required><input class="w-full border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none" name="email" placeholder="Email" required><textarea class="w-full border border-slate-200 p-3 rounded-xl bg-slate-50 focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all outline-none" name="message" placeholder="Nội dung" rows="4" required></textarea><button class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-emerald-600 transition-colors shadow-lg shadow-slate-900/20">Gửi tin nhắn</button></form></div></div>`;
+        
+        // [SỬA] Thêm div bao ngoài với class max-w-6xl mx-auto px-4 để nội dung không bị tràn sát lề
+        el.innerHTML = `<div class="max-w-6xl mx-auto px-4 pt-8 pb-12">${head}${info}</div>` + renderSections(data.sections||[]);
+    }
         else {
             var head = h1(TF(data,'title'));
             var list = '';
