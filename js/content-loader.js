@@ -6,7 +6,19 @@
 
   // --- 1. UTILS ---
   function q(name){ var s = new URLSearchParams(location.search); return s.get(name); }
-  async function fetchJson(p){ try{ var r = await fetch(p); if(!r.ok) return null; return await r.json(); } catch(e){ return null; } }
+  
+  // Hàm fetch có báo lỗi ra Console để dễ kiểm tra
+  async function fetchJson(p){ 
+    try{ 
+      var r = await fetch(p); 
+      if(!r.ok) { console.warn('Không tìm thấy file:', p); return null; }
+      return await r.json(); 
+    } catch(e){ 
+      console.error('Lỗi tải file:', p, e); 
+      return null; 
+    } 
+  }
+  
   function lang(){ return document.body && document.body.dataset && document.body.dataset.lang==='en' ? 'en' : 'vi'; }
   function TF(obj, key){ var l = lang(); var ke = key + '_en'; return l==='en' && obj && obj[ke] ? obj[ke] : (obj && obj[key]) || ''; }
   function TR(vi, en){ return lang()==='en' ? (en||vi) : vi; }
@@ -19,60 +31,40 @@
     if(item && item.description){ m.setAttribute('content', item.description); }
   }
 
-  // --- 2. HÀM XỬ LÝ ĐIỀU HƯỚNG (NAVIGATION - FIX LỖI KHÔNG VỀ ĐƯỢC HOME) ---
+  // --- 2. NAVIGATION HANDLER (XỬ LÝ CLICK MENU) ---
   function setupNavigation() {
-    // Lắng nghe sự kiện click trên toàn bộ body (Event Delegation)
     document.body.addEventListener('click', async (e) => {
-        // Tìm xem cái được click có phải là link điều hướng không (có thuộc tính data-page-link)
         const link = e.target.closest('[data-page-link]');
-        
         if (link) {
-            e.preventDefault(); // CHẶN reload trang
-            
-            const targetPage = link.getAttribute('data-page-link'); // Lấy tên trang đích (vd: home, careers)
+            e.preventDefault();
+            const target = link.getAttribute('data-page-link');
             const href = link.getAttribute('href');
-
-            // 1. Cập nhật URL trên thanh địa chỉ mà không reload
-            if(href && href !== '#') window.history.pushState({page: targetPage}, '', href);
             
-            // 2. Cập nhật biến môi trường data-page của body
-            document.body.dataset.page = targetPage;
-
-            // 3. Cuộn lên đầu trang
-            window.scrollTo(0, 0);
-
-            // 4. Đóng menu mobile nếu đang mở
+            // Đổi URL không reload
+            if(href && href !== '#') window.history.pushState({page: target}, '', href);
+            
+            // Cập nhật data-page để active menu
+            document.body.dataset.page = target;
+            
+            // Đóng menu mobile nếu đang mở
             const menu = document.getElementById('menu');
             if(menu && !menu.classList.contains('hidden') && window.innerWidth < 768) {
                 menu.classList.add('hidden');
             }
 
-            // 5. Tải lại nội dung trang mới
+            // Scroll lên đầu và tải nội dung
+            window.scrollTo(0, 0);
             await loadAndRenderContent();
         }
     });
 
-    // Xử lý nút Back/Forward của trình duyệt
-    window.addEventListener('popstate', async () => {
-        // Khi bấm Back, reload lại nội dung dựa trên URL hiện tại (đơn giản hóa)
-        location.reload(); 
-    });
+    window.addEventListener('popstate', () => location.reload());
   }
 
-  // --- 3. UI HELPER (FONT & STYLE CŨ) ---
+  // --- 3. UI HELPER ---
   function h1(t){ return '<h1 class="text-xl md:text-2xl font-bold mb-4 text-slate-900" data-aos="fade-right">' + t + '</h1>'; }
-  
-  function getAnimAttr(anim) {
-    if (!anim || anim.type === 'none') return '';
-    return `data-aos="${anim.type||'fade-up'}" data-aos-delay="${anim.delay||0}" data-aos-duration="${(anim.duration||0.8)*1000}"`;
-  }
-  
-  function getBackgroundStyle(bg) {
-    if (!bg || bg.type === 'none') return '';
-    if (bg.type === 'color') return `background-color: ${bg.color};`;
-    if (bg.type === 'image') return `background-image: url('${bg.image}'); background-size: cover; background-position: center;`;
-    return '';
-  }
+  function getAnimAttr(anim) { if (!anim || anim.type === 'none') return ''; return `data-aos="${anim.type||'fade-up'}" data-aos-delay="${anim.delay||0}" data-aos-duration="${(anim.duration||0.8)*1000}"`; }
+  function getBackgroundStyle(bg) { if (!bg || bg.type === 'none') return ''; if (bg.type === 'color') return `background-color: ${bg.color};`; if (bg.type === 'image') return `background-image: url('${bg.image}'); background-size: cover; background-position: center;`; return ''; }
 
   function section(title, body, style, animationAttr){ 
     var aosAttr = animationAttr || 'data-aos="fade-up"';
@@ -90,72 +82,31 @@
   function cardBase(idx){ return `data-aos="fade-up" data-aos-delay="${(idx||0)*100}" class="rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:border-emerald-500/60 hover:-translate-y-0.5 hover:shadow-md h-full"`; }
   function cardGlass(){ return 'rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm'; }
 
-  // --- 4. CARD COMPONENTS ---
-  function serviceCard(s, i){ 
-    var img = s.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${s.image}" alt="${TF(s,'title')}" loading="lazy">` : ''; 
-    return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(s,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-3">${TF(s,'description')}</p></div></div>`; 
-  }
-  
-  function courseCard(c, i){ 
-    var img = c.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${c.image}" alt="${TF(c,'title')}" loading="lazy">` : ''; 
-    return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(c,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-2">${TF(c,'summary')}</p><div class="mt-auto pt-3"><a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2 hover:bg-emerald-700" href="course-detail.html?id=${encodeURIComponent(c.slug||'')}"><span>${TR('Chi tiết','Details')}</span></a></div></div></div>`; 
-  }
-
-  function caseCard(p, i){ 
-    var img = p.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${p.image}" alt="${TF(p,'title')}" loading="lazy">` : ''; 
-    return `<div ${cardBase(i)}><div class="p-4 h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(p,'title')}</div><p class="text-xs text-slate-600 mt-2">${TF(p,'result')}</p></div></div>`; 
-  }
-
-  function newsCard(n, i){
-    var img = n.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${n.image}" alt="${TF(n,'title')}" loading="lazy">` : ''; 
-    var date = n.date ? `<span class="text-[10px] text-slate-400 mb-1 block">${n.date}</span>` : '';
-    return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}${date}<div class="text-sm font-bold text-slate-900 mt-1 line-clamp-2">${TF(n,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-3">${TF(n,'summary')}</p><div class="mt-auto pt-2"><a href="news-detail.html?id=${n.slug}" class="text-emerald-600 text-xs font-semibold hover:underline">${TR('Xem thêm','Read more')}</a></div></div></div>`;
-  }
-
-  function careerCard(p, i){
-    var jobTitle = (TF(p,'title') || '').replace(/'/g, "\\'"); 
-    return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full justify-between"><div class="flex justify-between items-start mb-2"><div class="text-sm font-bold text-slate-900">${TF(p,'title')}</div><span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-1 rounded">${TF(p,'location')}</span></div><p class="text-xs text-slate-600 mt-2 mb-4 line-clamp-3">${TF(p,'summary')}</p><button type="button" onclick="window.openApplyModal('${jobTitle}')" class="w-full inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2 hover:bg-emerald-700 transition-colors cursor-pointer"><i data-lucide="send" class="w-3 h-3"></i><span>${TR('Ứng tuyển','Apply Now')}</span></button></div></div>`;
-  }
-
+  // --- 4. CARD RENDERERS ---
+  function serviceCard(s, i){ var img = s.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${s.image}" alt="${TF(s,'title')}" loading="lazy">` : ''; return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(s,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-3">${TF(s,'description')}</p></div></div>`; }
+  function courseCard(c, i){ var img = c.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${c.image}" alt="${TF(c,'title')}" loading="lazy">` : ''; return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(c,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-2">${TF(c,'summary')}</p><div class="mt-auto pt-3"><a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2 hover:bg-emerald-700" href="course-detail.html?id=${encodeURIComponent(c.slug||'')}"><span>${TR('Chi tiết','Details')}</span></a></div></div></div>`; }
+  function caseCard(p, i){ var img = p.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${p.image}" alt="${TF(p,'title')}" loading="lazy">` : ''; return `<div ${cardBase(i)}><div class="p-4 h-full">${img}<div class="text-sm font-bold text-slate-900 mt-1">${TF(p,'title')}</div><p class="text-xs text-slate-600 mt-2">${TF(p,'result')}</p></div></div>`; }
+  function newsCard(n, i){ var img = n.image ? `<img class="w-full h-32 object-cover rounded-xl border border-slate-200 mb-3" src="${n.image}" alt="${TF(n,'title')}" loading="lazy">` : ''; var date = n.date ? `<span class="text-[10px] text-slate-400 mb-1 block">${n.date}</span>` : ''; return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full">${img}${date}<div class="text-sm font-bold text-slate-900 mt-1 line-clamp-2">${TF(n,'title')}</div><p class="text-xs text-slate-600 mt-2 line-clamp-3">${TF(n,'summary')}</p><div class="mt-auto pt-2"><a href="news-detail.html?id=${n.slug}" class="text-emerald-600 text-xs font-semibold hover:underline">${TR('Xem thêm','Read more')}</a></div></div></div>`; }
+  function careerCard(p, i){ var jobTitle = (TF(p,'title') || '').replace(/'/g, "\\'"); return `<div ${cardBase(i)}><div class="p-4 flex flex-col h-full justify-between"><div class="flex justify-between items-start mb-2"><div class="text-sm font-bold text-slate-900">${TF(p,'title')}</div><span class="bg-slate-100 text-slate-600 text-[10px] px-2 py-1 rounded">${TF(p,'location')}</span></div><p class="text-xs text-slate-600 mt-2 mb-4 line-clamp-3">${TF(p,'summary')}</p><button type="button" onclick="window.openApplyModal('${jobTitle}')" class="w-full inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2 hover:bg-emerald-700 transition-colors cursor-pointer"><i data-lucide="send" class="w-3 h-3"></i><span>${TR('Ứng tuyển','Apply Now')}</span></button></div></div>`; }
   function personCard(t, i){ return `<div ${cardBase(i)}><div class="p-4 flex items-center gap-4"><img src="${t.photo||''}" alt="${TF(t,'name')}" class="w-16 h-16 rounded-full border-2 border-slate-100 object-cover" loading="lazy"><div><div class="text-sm font-bold text-slate-900">${TF(t,'name')}</div><div class="text-xs text-emerald-600 font-medium">${TF(t,'role')}</div></div></div></div>`; }
   function imageTile(src, alt, idx){ return `<div data-aos="zoom-in" data-aos-delay="${idx*50}"><img class="w-full h-32 sm:h-36 md:h-40 object-cover rounded-xl border border-slate-200" src="${src}" alt="${alt||'Ảnh'}" loading="lazy"></div>`; }
 
-  // --- 5. LOGIC FORM ỨNG TUYỂN ---
-  function applyForm(pos){ 
-    return '<form name="apply" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data"><input type="hidden" name="form-name" value="apply"><input type="hidden" name="position" value="' + (pos||'') + '"><div class="space-y-3"><div><label class="text-xs text-slate-700">Họ tên</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="text" name="name" required></div><div><label class="text-xs text-slate-700">Email</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="email" name="email" required></div><div><label class="text-xs text-slate-700">Điện thoại</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="tel" name="phone" required></div><div><label class="text-xs text-slate-700">CV (PDF/DOC)</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-50 file:text-emerald-700" type="file" name="cv" accept=".pdf,.doc,.docx" required></div><div><label class="text-xs text-slate-700">Link Portfolio (tuỳ chọn)</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="url" name="resume" placeholder="https://..."></div><div><label class="text-xs text-slate-700">Giới thiệu</label><textarea class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" name="message" rows="4" required></textarea></div><button class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2" type="submit"><i data-lucide="send"></i><span>Gửi đơn</span></button></div></form>'; 
-  }
-
+  // --- 5. LOGIC MODAL ---
+  function applyForm(pos){ return '<form name="apply" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data"><input type="hidden" name="form-name" value="apply"><input type="hidden" name="position" value="' + (pos||'') + '"><div class="space-y-3"><div><label class="text-xs text-slate-700">Họ tên</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="text" name="name" required></div><div><label class="text-xs text-slate-700">Email</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="email" name="email" required></div><div><label class="text-xs text-slate-700">Điện thoại</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="tel" name="phone" required></div><div><label class="text-xs text-slate-700">CV (PDF/DOC)</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-50 file:text-emerald-700" type="file" name="cv" accept=".pdf,.doc,.docx" required></div><div><label class="text-xs text-slate-700">Link Portfolio (tuỳ chọn)</label><input class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" type="url" name="resume" placeholder="https://..."></div><div><label class="text-xs text-slate-700">Giới thiệu</label><textarea class="mt-1 w-full rounded-xl border border-slate-200 text-sm px-3 py-2" name="message" rows="4" required></textarea></div><button class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white text-xs px-4 py-2" type="submit"><i data-lucide="send"></i><span>Gửi đơn</span></button></div></form>'; }
+  
   window.openApplyModal = function(pos){
-    var m = document.getElementById('apply-modal');
-    if(m){ m.remove(); }
+    var m = document.getElementById('apply-modal'); if(m) m.remove();
     var wrap = document.createElement('div');
-    wrap.id = 'apply-modal';
-    wrap.setAttribute('role','dialog');
-    wrap.setAttribute('aria-modal','true');
+    wrap.id = 'apply-modal'; wrap.setAttribute('role','dialog'); wrap.setAttribute('aria-modal','true');
     wrap.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4'; 
     var style = `<style>@keyframes modalPop { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }</style>`;
-    var inner = style + 
-    '<div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close-apply></div>' + 
-    '<div class="relative z-10 max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden" style="animation: modalPop 0.3s ease-out forwards;">' +
-      '<div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">' +
-        '<h3 class="font-bold text-slate-800 text-lg">Ứng tuyển: ' + (pos||'Vị trí') + '</h3>' +
-        '<button type="button" class="h-8 w-8 inline-flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 hover:text-red-500 hover:border-red-200 transition-colors" data-close-apply><i data-lucide="x" class="w-4 h-4"></i></button>' +
-      '</div>' +
-      '<div class="p-5 max-h-[80vh] overflow-y-auto">' + applyForm(pos) + '</div>' +
-    '</div>';
-    wrap.innerHTML = inner;
-    document.body.appendChild(wrap);
-    document.body.style.overflow = 'hidden';
-    if(window.lucide && typeof window.lucide.createIcons==='function'){ window.lucide.createIcons(); }
-    wrap.addEventListener('click', function(e){ 
-      if(e.target.closest('[data-close-apply]')){ 
-        wrap.remove(); 
-        document.body.style.overflow = ''; 
-      } 
-    });
+    var inner = style + '<div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close-apply></div><div class="relative z-10 max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden" style="animation: modalPop 0.3s ease-out forwards;"><div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50"><h3 class="font-bold text-slate-800 text-lg">Ứng tuyển: ' + (pos||'Vị trí') + '</h3><button type="button" class="h-8 w-8 inline-flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 hover:text-red-500 hover:border-red-200 transition-colors" data-close-apply><i data-lucide="x" class="w-4 h-4"></i></button></div><div class="p-5 max-h-[80vh] overflow-y-auto">' + applyForm(pos) + '</div></div>';
+    wrap.innerHTML = inner; document.body.appendChild(wrap); document.body.style.overflow = 'hidden';
+    if(window.lucide) window.lucide.createIcons();
+    wrap.addEventListener('click', function(e){ if(e.target.closest('[data-close-apply]')){ wrap.remove(); document.body.style.overflow = ''; } });
   }
 
-  // --- 6. RENDER SECTIONS & HOME ---
+  // --- 6. RENDERERS ---
   function renderSections(sections){ if(!sections||!sections.length) return ''; return sections.map(renderSection).join(''); }
   function renderSection(s){ 
     if (!s || !s.type) return '';
@@ -192,28 +143,26 @@
     el.innerHTML = hero + `<div class="max-w-6xl mx-auto px-4">${chips}</div>` + renderPartners(home) + intro + `<div data-section="services">${section(TR('Dịch vụ','Services'), `<div class="${gridResponsive()}">${(svc.items||[]).slice(0,8).map((it,i)=>serviceCard(it,i)).join('')}</div>`,'','')}</div>` + `<div data-section="courses">${section(TR('Khóa học','Courses'), `<div class="${gridResponsive()}">${(crs.items||[]).slice(0,8).map((it,i)=>courseCard(it,i)).join('')}</div>`,'','')}</div>` + `<div data-section="portfolio">${section(TR('Thành tựu','Portfolio'), `<div class="${gridResponsive()}">${(port.items||[]).slice(0,8).map((it,i)=>caseCard(it,i)).join('')}</div>`,'','')}</div>` + renderSections(home.sections||[]);
   }
 
-  // --- 7. NEWS DETAIL ---
   function renderNewsDetail(el, news){
-    var id = q('id');
-    var item = (news.items||[]).find(function(x){ return (x.slug||'')===id; });
+    var id = q('id'); var item = (news.items||[]).find(x=>x.slug===id);
     if(!item){ el.innerHTML = h1('Không tìm thấy tin tức'); return; }
-    
     var head = h1(TF(item||{},'title')||'');
     var cover = item.image ? ('<div data-aos="zoom-in"><img class="rounded-2xl border border-slate-200 shadow-sm w-full mb-4" src="' + item.image + '" alt="' + ((item.title)||'Tin tức') + '" loading="eager" decoding="async"></div>') : '';
     var meta = (item.date ? ('<div class="text-[11px] text-slate-500 mb-4">' + item.date + (item.author ? (' · ' + item.author) : '') + '</div>') : '');
     var body = '<article class="' + cardGlass() + ' p-4" data-aos="fade-up"><div class="prose prose-sm max-w-none text-slate-700">' + (window.marked ? marked.parse(lang()==='en' && item.body_en ? item.body_en : (item.body||'')) : (item.body||'')) + '</div></article>';
-    
     el.innerHTML = head + cover + meta + body + renderSections(item.sections||[]);
   }
 
-  // --- 8. LOAD CONTENT ---
+  // --- 7. LOAD AND RENDER MAIN ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
     
+    // Tải config & seo
     var cfg = await fetchJson('content/config.json');
     var seo = await fetchJson('content/seo.json');
     setSEO(seo, page, cfg);
     
+    // Fix brand logo
     var brandEl = document.querySelector('a[data-page-link="home"]');
     if(brandEl && cfg?.brand) {
       var logoHtml = cfg.brand.logo ? `<img src="${cfg.brand.logo}" class="h-8 w-auto rounded">` : '';
@@ -290,37 +239,12 @@
     setTimeout(() => { if(window.AOS) window.AOS.init(AOS_CONFIG); }, 100);
   }
 
-  // --- 9. INIT & EVENT LISTENER (FIX LỖI BACK HOME) ---
+  // --- INIT ---
   window.initContent = async function(){ 
     
-    // GẮN SỰ KIỆN CLICK MENU MỘT LẦN DUY NHẤT
-    // Đây là phần fix lỗi "Không quay lại được trang chủ"
-    document.body.addEventListener('click', async (e) => {
-        const link = e.target.closest('[data-page-link]');
-        if (link) {
-            e.preventDefault();
-            const target = link.getAttribute('data-page-link');
-            // Cập nhật trạng thái trang
-            document.body.dataset.page = target;
-            
-            // Xử lý URL (để khi bấm Back trình duyệt hoạt động đúng)
-            const href = link.getAttribute('href');
-            if(href && href !== '#') window.history.pushState({page: target}, '', href);
-            
-            // Scroll lên đầu và đóng menu
-            window.scrollTo(0,0);
-            const menu = document.getElementById('menu');
-            if(menu && !menu.classList.contains('hidden') && window.innerWidth<768) menu.classList.add('hidden');
-            
-            // Tải lại nội dung
-            await loadAndRenderContent();
-        }
-    });
+    // [FIX] GỌI SETUP NAVIGATION
+    setupNavigation();
 
-    // Xử lý khi bấm nút Back trên trình duyệt
-    window.addEventListener('popstate', () => location.reload());
-
-    // START
     var cfg = await fetchJson('content/config.json');
     var introConfig = cfg && cfg.intro;
     var duration = (introConfig && introConfig.enable) ? (introConfig.duration * 1000) : 0;
@@ -332,4 +256,12 @@
         if(loadingScreen){ loadingScreen.style.opacity = '0'; setTimeout(()=>loadingScreen.style.display='none', 500); }
     }, duration);
   };
+
+  // [QUAN TRỌNG] TỰ ĐỘNG CHẠY HÀM INIT KHI LOAD XONG
+  if (document.readyState !== 'loading') {
+    window.initContent();
+  } else {
+    document.addEventListener('DOMContentLoaded', window.initContent);
+  }
+
 })();
