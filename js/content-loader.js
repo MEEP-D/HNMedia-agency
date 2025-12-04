@@ -93,19 +93,54 @@
   }
 
   // Hàm mở Modal (Gắn trực tiếp vào window để button gọi được)
+ // --- MODAL ỨNG TUYỂN (ĐÃ FIX LỖI HIỂN THỊ) ---
   window.openApplyModal = function(pos){
     var m = document.getElementById('apply-modal');
     if(m){ m.remove(); }
+    
     var wrap = document.createElement('div');
     wrap.id = 'apply-modal';
     wrap.setAttribute('role','dialog');
     wrap.setAttribute('aria-modal','true');
-    wrap.className = 'fixed inset-0 z-50 flex items-center justify-center';
-    var inner = '<div class="absolute inset-0 bg-black/40 backdrop-blur-sm" data-close-apply></div><div class="relative z-10 max-w-md w-full mx-4" data-aos="zoom-in"><div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-4"><div class="flex items-center justify-between mb-2"><div class="text-sm font-semibold text-slate-900">Ứng tuyển: ' + (pos||'') + '</div><button type="button" class="h-8 w-8 inline-flex items-center justify-center rounded-full border border-slate-200" data-close-apply><i data-lucide="x"></i></button></div>' + applyForm(pos) + '</div></div>';
+    wrap.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4'; // Tăng z-index lên cao nhất
+    
+    // CSS Animation: Tạo hiệu ứng hiện ra nhẹ nhàng mà không cần AOS
+    var style = `<style>
+      @keyframes modalPop { 
+        0% { opacity: 0; transform: scale(0.95); } 
+        100% { opacity: 1; transform: scale(1); } 
+      }
+      .modal-content { animation: modalPop 0.3s ease-out forwards; }
+    </style>`;
+
+    // HTML Modal: Đã xóa 'data-aos' và thêm class 'modal-content'
+    var inner = style + 
+    '<div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close-apply></div>' + 
+    '<div class="relative z-10 max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden modal-content">' +
+      '<div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">' +
+        '<h3 class="font-bold text-slate-800 text-lg">Ứng tuyển: ' + (pos||'Vị trí') + '</h3>' +
+        '<button type="button" class="h-8 w-8 inline-flex items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 hover:text-red-500 hover:border-red-200 transition-colors" data-close-apply><i data-lucide="x" class="w-4 h-4"></i></button>' +
+      '</div>' +
+      '<div class="p-5 max-h-[80vh] overflow-y-auto">' + 
+        applyForm(pos) + 
+      '</div>' +
+    '</div>';
+
     wrap.innerHTML = inner;
     document.body.appendChild(wrap);
+    
+    // Khóa cuộn trang khi mở modal
+    document.body.style.overflow = 'hidden';
+
     if(window.lucide && typeof window.lucide.createIcons==='function'){ window.lucide.createIcons(); }
-    wrap.addEventListener('click', function(e){ var t = e.target && e.target.closest('[data-close-apply]'); if(t){ wrap.remove(); } });
+    
+    // Sự kiện đóng modal
+    wrap.addEventListener('click', function(e){ 
+      if(e.target.closest('[data-close-apply]')){ 
+        wrap.remove(); 
+        document.body.style.overflow = ''; // Mở lại cuộn trang
+      } 
+    });
   }
 
   // --- RENDER SECTIONS ---
