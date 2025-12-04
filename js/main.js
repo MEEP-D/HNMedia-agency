@@ -263,27 +263,41 @@
     };
 
     // --- 6. XỬ LÝ ĐIỀU HƯỚNG (NAVIGATION) ---
+   // --- 6. XỬ LÝ ĐIỀU HƯỚNG (NAVIGATION) ---
     document.querySelectorAll("[data-page-link]").forEach((a) => {
       a.addEventListener("click", (e) => {
         const p = a.getAttribute("data-page-link");
         if (p) {
           e.preventDefault();
+          
+          // 1. Cập nhật biến môi trường ngay lập tức
           document.body.dataset.page = p === "home" ? "home" : p;
           
-          if (typeof window.initContent === "function") window.initContent();
-          
+          // 2. Cập nhật giao diện nút bấm NGAY LẬP TỨC (Visual Feedback)
+          // Giúp người dùng thấy phản hồi tức thì, không cảm giác bị đơ
           setActive();
           
-          // --- SỬA LỖI MẤT MENU Ở ĐÂY ---
-          // Chỉ đóng menu nếu đang ở chế độ Mobile (tức là nút menu-btn đang hiển thị)
+          // 3. Xử lý đóng Menu Mobile (nếu đang mở)
           const menuBtn = document.getElementById("menu-btn");
+          // Kiểm tra xem nút menu có đang hiển thị không (tức là đang ở mobile)
           if (menuControl && menuBtn && getComputedStyle(menuBtn).display !== 'none') {
              menuControl.closeMenu();
           }
-          // ------------------------------
-          
-          // Cuộn lên đầu trang mượt mà
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+          // 4. Cuộn lên đầu trang TỨC THÌ (Bỏ smooth để tránh cảm giác chậm)
+          window.scrollTo(0, 0);
+
+          // 5. Tải nội dung (Dùng requestAnimationFrame để không chặn giao diện)
+          // Trình duyệt sẽ ưu tiên vẽ lại nút bấm sáng lên trước, sau đó mới tải nội dung
+          requestAnimationFrame(() => {
+            if (typeof window.initContent === "function") {
+                try {
+                    window.initContent();
+                } catch (err) {
+                    console.error("Lỗi tải nội dung:", err);
+                }
+            }
+          });
         }
       });
     });
