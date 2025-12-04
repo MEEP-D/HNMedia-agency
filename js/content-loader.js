@@ -29,7 +29,8 @@
     ld.textContent = JSON.stringify(org);
     document.head.appendChild(ld);
   }
-  function h1(t){ return '<h1 class="text-xl md:text-2xl font-semibold mb-3 text-slate-900">' + t + '</h1>'; }
+  // Đã sửa: Thêm font-bold và text-center cho các tiêu đề chính
+  function h1(t){ return '<h1 class="text-xl md:text-2xl font-bold mb-3 text-slate-900 text-center">' + t + '</h1>'; }
   
   // --- HÀM XỬ LÝ CUSTOM FIELDS ---
   
@@ -60,9 +61,10 @@
   function section(title, body, style, animationAttr){ 
     return `<section class="py-8 reveal" style="${style}" ${animationAttr}>
               <div class="max-w-6xl mx-auto px-4">
-                <div class="flex items-center gap-2 mb-4">
+                <!-- Đã sửa: Căn giữa tiêu đề Section -->
+                <div class="flex items-center justify-center gap-2 mb-4">
                   <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <h2 class="text-sm md:text-base font-medium text-slate-800 m-0">${title}</h2>
+                  <h2 class="text-sm md:text-base font-medium text-slate-800 m-0 text-center">${title}</h2>
                 </div>
                 ${body}
               </div>
@@ -91,7 +93,7 @@
 
     var bodyContent = '';
     var head = TF(s,'title') || TR('Tiêu đề khối','Content Block');
-    var sub = TF(s,'subtitle') ? ('<p class="text-xs text-slate-600 mb-2">' + TF(s,'subtitle') + '</p>') : '';
+    var sub = TF(s,'subtitle') ? ('<p class="text-xs text-slate-600 mb-2 text-center">' + TF(s,'subtitle') + '</p>') : ''; // Căn giữa Subtitle
 
     if(t==='grid'){ 
       var g = '<div class="' + gridResponsive() + '">' + ((s.items||[]).map(serviceCard).join('')) + '</div>'; 
@@ -108,18 +110,19 @@
       var body = (lang()==='en' && s.body_en ? s.body_en : (s.body||''));
       bodyContent = '<div class="' + cardGlass() + ' p-4"><div class="text-sm text-slate-700">' + body + '</div></div>';
     } else if(t==='cta'){ 
-      var a = '<a class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white text-sm px-4 py-2 hover:bg-emerald-600/90 shadow-sm" href="' + (s.ctaLink||'#') + '"><i data-lucide="arrow-right" class="h-4 w-4"></i><span>' + (TF(s,'ctaText')||TR('Xem thêm','Learn more')) + '</span></a>'; 
+      // Căn giữa CTA
+      var a = '<div class="text-center"><a class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white text-sm px-4 py-2 hover:bg-emerald-600/90 shadow-sm" href="' + (s.ctaLink||'#') + '"><i data-lucide="arrow-right" class="h-4 w-4"></i><span>' + (TF(s,'ctaText')||TR('Xem thêm','Learn more')) + '</span></a></div>'; 
       bodyContent = a;
     } 
     
     return section(head, bodyContent, style, animationAttr); 
   }
   
-  // --- RENDER LOGO ĐỐI TÁC (FIX: Tăng kích thước & Bỏ Grayscale) ---
+  // --- RENDER LOGO ĐỐI TÁC ---
   function partnerLogo(p){ 
     var src = (typeof p==='string') ? p : (p && (p.image||p.logo||p.url)) || ''; 
     var alt = (p && (p.name||p.title)) || TR('Đối tác','Partner'); 
-    // Thay đổi: Xóa filter grayscale và tăng h-16 lên h-20 (5rem)
+    // Thẻ img không còn filter grayscale
     return `<div class="flex-shrink-0 mx-6 h-20 flex items-center justify-center min-w-[150px]"> 
               <img src="${src}" alt="${alt}" class="h-full w-auto object-contain transition duration-300" loading="lazy" decoding="async">
             </div>`; 
@@ -143,10 +146,7 @@
     var list = (home && home.partners) || []; 
     if(!list.length) return featuredHtml; 
     
-    // Nhân bản danh sách 2 lần để tạo hiệu ứng cuộn vô hạn mượt mà
     var partnersRepeated = list.concat(list); 
-    
-    // Tính toán thời lượng dựa trên số lượng logo
     var dur = Math.max(15, list.length * 3); 
     
     var track = '<div class="flex marquee-track">' + partnersRepeated.map(partnerLogo).join('') + '</div>'; 
@@ -203,9 +203,6 @@
     var heroImg = (home.hero && home.hero.image) || 'images/hero/placeholder.jpg';
     var useMedia = heroVideo || heroGif || heroImg;
 
-    // Áp dụng layout_style (Đọc từ CMS)
-    var layoutStyle = (home.hero && home.hero.layout_style) || 'content_left_media_right';
-
     // *** Khôi phục logic Hero cũ theo yêu cầu của người dùng ***
     var hero;
     if((heroVideo || heroGif) && home.hero.fullscreen){
@@ -215,7 +212,29 @@
       hero = '<section class="py-0 reveal"><div class="relative min-h-screen">' + media + overlay + content + '</div></section>';
     } else {
       // Logic mặc định / Khối Hero 2 cột
-      hero = '<section class="py-8 reveal"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-2xl border border-slate-200 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-sky-400/10 p-6 overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center relative z-10"><div><div class="inline-flex items-center rounded-full bg-white/70 border border-slate-200 text-emerald-600 text-xs px-3 py-1 mb-2 shadow-sm">' + (home.hero && home.hero.slogan || '') + '</div>' + h1(home.hero && home.hero.title || '') + (home.hero && home.hero.subtitle ? ('<p class="text-sm text-slate-700 mb-3">' + home.hero.subtitle + '</p>') : '') + (home.hero && home.hero.ctaText ? ('<a class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white text-sm px-4 py-2 hover:bg-emerald-600/90 shadow-md" href="contact.html"><i data-lucide="phone" class="h-4 w-4"></i><span>' + home.hero.ctaText + '</span></a>') : '') + '</div><div><img class="rounded-2xl border border-slate-200 shadow-sm w-full" src="' + heroImg + '" alt="' + ((home.hero && home.hero.title) || 'Hero') + '" loading="eager" decoding="async"></div></div><div class="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-emerald-400/10" data-parallax="0.4"></div><div class="absolute -bottom-12 -right-12 w-56 h-56 rounded-full bg-sky-400/10" data-parallax="0.2"></div></div></div></section>';
+      // Đã sửa: Căn giữa nội dung Hero
+      var contentClasses = 'flex flex-col items-center text-center';
+      var contentInner = `
+        <div class="${contentClasses}">
+          <div class="inline-flex items-center rounded-full bg-white/70 border border-slate-200 text-emerald-600 text-xs px-3 py-1 mb-2 shadow-sm">${home.hero && home.hero.slogan || ''}</div>
+          ${h1(home.hero && home.hero.title || '')}
+          ${home.hero && home.hero.subtitle ? ('<p class="text-sm text-slate-700 mb-3">' + home.hero.subtitle + '</p>') : ''}
+          ${home.hero && home.hero.ctaText ? ('<a class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 text-white text-sm px-4 py-2 hover:bg-emerald-600/90 shadow-md" href="contact.html"><i data-lucide="phone" class="h-4 w-4"></i><span>' + home.hero.ctaText + '</span></a>') : ''}
+        </div>
+      `;
+
+      hero = `<section class="py-8 reveal">
+                <div class="max-w-6xl mx-auto px-4">
+                  <div class="relative rounded-2xl border border-slate-200 bg-gradient-to-r from-emerald-500/10 via-emerald-400/5 to-sky-400/10 p-6 overflow-hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center relative z-10">
+                      ${contentInner}
+                      <div><img class="rounded-2xl border border-slate-200 shadow-sm w-full" src="${heroImg}" alt="${((home.hero && home.hero.title) || 'Hero')}" loading="eager" decoding="async"></div>
+                    </div>
+                    <div class="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-emerald-400/10" data-parallax="0.4"></div>
+                    <div class="absolute -bottom-12 -right-12 w-56 h-56 rounded-full bg-sky-400/10" data-parallax="0.2"></div>
+                  </div>
+                </div>
+              </section>`;
     }
     // *** Kết thúc khôi phục ***
 
