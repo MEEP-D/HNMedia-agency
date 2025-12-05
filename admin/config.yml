@@ -428,7 +428,41 @@ collections:
               - { label: Ảnh, name: image, widget: image, required: false }
 
           - <<: *sections_config
+# --- NEWS ---
+      - file: content/news.json
+        label: Tin tức
+        name: news
+        format: json
+        fields:
+          - { label: Tiêu đề Trang, name: title, widget: string }
+          - { label: Tiêu đề Trang (EN), name: title_en, widget: string, required: false }
+          - { label: Mô tả Trang, name: description, widget: text, required: false }
+          - { label: Mô tả Trang (EN), name: description_en, widget: text, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
 
+          - label: Danh sách Bài viết
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.title}} - {{fields.date}}'
+            fields:
+              - { label: Slug (URL), name: slug, widget: string, hint: "Viết liền không dấu, gạch ngang. VD: khai-truong-chi-nhanh" }
+              - { label: Tiêu đề, name: title, widget: string }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Tóm tắt, name: summary, widget: text, hint: "Hiện ở danh sách bên ngoài" }
+              - { label: Tóm tắt (EN), name: summary_en, widget: text, required: false }
+              - { label: Ảnh đại diện, name: image, widget: image }
+              - { label: Tác giả, name: author, widget: string, default: "Admin", required: false }
+              - { label: Ngày đăng, name: date, widget: datetime, format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
+              
+              - { label: Nội dung bài viết, name: body, widget: markdown }
+              - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
+              
+              # Cho phép chèn Section vào cuối trang chi tiết bài viết (VD: CTA, Banner)
+              - <<: *sections_config
+
+          # Cho phép chèn Section vào trang danh sách tin tức chính
+          - <<: *sections_config
       # --- CONTACT ---
       - file: content/contact.json
         label: Liên hệ
@@ -448,3 +482,4 @@ collections:
           - { label: Zalo URL, name: zalo, widget: string, required: false }
 
           - <<: *sections_config
+      
