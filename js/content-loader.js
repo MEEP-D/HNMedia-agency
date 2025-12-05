@@ -304,7 +304,7 @@ function partnerLogo(p, sizeClass){
     // - Size: 'h-16' (Nhỏ hơn chút)
     var trustedHtml = '';
     if (trustedList.length > 0) {
-        trustedHtml = renderMarqueeSection(trustedList, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-19');
+        trustedHtml = renderMarqueeSection(trustedList, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-16');
     }
 
     return styles + strategicHtml + trustedHtml;
