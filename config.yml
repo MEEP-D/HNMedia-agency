@@ -9,7 +9,7 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
-media_folder: "public/images"
+media_folder: "/images"
 public_folder: "/images"
 local_backend: true
 publish_mode: editorial_workflow
