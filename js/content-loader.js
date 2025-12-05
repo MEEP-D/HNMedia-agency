@@ -605,6 +605,124 @@ function renderAbout(el, data) {
   // GỘP LẠI
   el.innerHTML = hero + visionMission + timelineHtml + teamHtml + renderSections(data.sections || []);
 }
+  // ============================================================
+  // [NEW] SERVICES PAGE RENDERER (UPGRADED)
+  // ============================================================
+  function renderServices(el, data) {
+    // 1. HERO SECTION (Split Layout)
+    var coverImg = data.cover || 'images/hero/services-placeholder.jpg';
+    var hero = `
+      <section class="py-16 md:py-24 bg-white overflow-hidden relative">
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div data-aos="fade-right">
+                    <div class="inline-block py-1.5 px-4 mb-6 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-widest border border-blue-100">
+                        ${TR('Giải pháp toàn diện', 'Our Solutions')}
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                        ${TF(data, 'title')}
+                    </h1>
+                    <div class="prose prose-lg text-slate-600 mb-8 leading-relaxed">
+                        ${TF(data, 'description') || TR('Cung cấp các giải pháp kỹ thuật số tiên tiến giúp doanh nghiệp bứt phá doanh thu và khẳng định thương hiệu.','Providing advanced digital solutions to help businesses break through revenue and affirm their brand.')}
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="document.getElementById('service-list').scrollIntoView({behavior:'smooth'})" class="px-8 py-3.5 bg-slate-900 text-white rounded-full font-bold hover:bg-emerald-600 transition-colors shadow-lg shadow-slate-900/20">
+                            ${TR('Xem dịch vụ','View Services')}
+                        </button>
+                    </div>
+                </div>
+                <div class="relative group" data-aos="fade-left">
+                    <div class="absolute inset-0 bg-blue-100 rounded-[2.5rem] -rotate-3 group-hover:-rotate-6 transition-transform duration-500"></div>
+                    <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+                         <img src="${coverImg}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Service Cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+    `;
+
+    // 2. PROCESS SECTION (Quy trình làm việc - Tương tự Timeline nhưng nằm ngang)
+    var steps = [
+        { num: '01', title: TR('Tư vấn & Khảo sát','Consult & Survey'), desc: TR('Lắng nghe nhu cầu, phân tích hiện trạng để đưa ra định hướng phù hợp nhất.','Listening to needs, analyzing status to provide the most suitable direction.'), icon: 'message-circle' },
+        { num: '02', title: TR('Đề xuất Giải pháp','Propose Solution'), desc: TR('Lên kế hoạch chi tiết, thiết kế demo và báo giá minh bạch, tối ưu.','Detailed planning, demo design and transparent, optimal quotation.'), icon: 'pen-tool' },
+        { num: '03', title: TR('Thực thi & Giám sát','Execute & Monitor'), desc: TR('Triển khai dự án với quy trình kiểm soát chất lượng nghiêm ngặt.','Project implementation with strict quality control process.'), icon: 'layers' },
+        { num: '04', title: TR('Bàn giao & Hỗ trợ','Handover & Support'), desc: TR('Đào tạo hướng dẫn sử dụng và cam kết đồng hành bảo trì dài hạn.','Training user manual and commitment to long-term maintenance support.'), icon: 'check-circle' }
+    ];
+
+    var processHtml = `
+      <section class="py-20 bg-slate-50 relative">
+         <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-down">
+                <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-white border border-emerald-100 px-4 py-1.5 rounded-full mb-6 inline-block shadow-sm">
+                    ${TR('Quy trình','Work Process')}
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">${TR('Quy trình làm việc chuẩn mực','Standard Working Process')}</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+                <div class="hidden lg:block absolute top-12 left-0 w-full h-0.5 bg-slate-200 -z-0"></div>
+
+                ${steps.map((s, i) => `
+                    <div class="relative group" data-aos="fade-up" data-aos-delay="${i * 100}">
+                        <div class="w-24 h-24 mx-auto bg-white border-4 border-white shadow-lg rounded-full flex items-center justify-center relative z-10 mb-6 group-hover:scale-110 group-hover:border-emerald-500 transition-all duration-300">
+                             <div class="text-slate-300 group-hover:text-emerald-600 transition-colors">
+                                <i data-lucide="${s.icon}" class="w-8 h-8"></i>
+                             </div>
+                             <div class="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-xs font-bold border-2 border-white">
+                                ${s.num}
+                             </div>
+                        </div>
+                        <div class="text-center px-4">
+                            <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors">${s.title}</h3>
+                            <p class="text-sm text-slate-500 leading-relaxed">${s.desc}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+         </div>
+      </section>
+    `;
+
+    // 3. MAIN SERVICE LIST
+    var listHtml = '';
+    if(data.items && data.items.length > 0) {
+        listHtml = `
+        <section id="service-list" class="py-24 bg-white">
+             <div class="max-w-6xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                    <div data-aos="fade-right">
+                        <h2 class="text-3xl font-bold text-slate-900 mb-2">${TR('Dịch vụ cung cấp','Our Services')}</h2>
+                        <p class="text-slate-500">${TR('Lựa chọn gói giải pháp phù hợp với doanh nghiệp của bạn.','Choose the right solution package for your business.')}</p>
+                    </div>
+                    <div class="h-px bg-slate-100 flex-1 mx-8 hidden md:block"></div>
+                </div>
+                
+                <div class="${gridThree()}">
+                    ${data.items.map((t, i) => serviceCard(t, i)).join('')}
+                </div>
+            </div>
+        </section>`;
+    }
+
+    // 4. CTA FOOTER
+    var ctaHtml = `
+      <section class="py-20 bg-slate-900 relative overflow-hidden text-center">
+         <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+         <div class="max-w-4xl mx-auto px-4 relative z-10" data-aos="zoom-in">
+             <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">${TR('Sẵn sàng bắt đầu dự án mới?','Ready to start a new project?')}</h2>
+             <p class="text-slate-400 mb-8 text-lg max-w-2xl mx-auto">${TR('Hãy để lại thông tin, đội ngũ chuyên gia của chúng tôi sẽ liên hệ tư vấn miễn phí trong vòng 24h.','Leave your information, our team of experts will contact you for free consultation within 24 hours.')}</p>
+             <a href="contact.html" class="inline-flex items-center gap-2 bg-emerald-600 text-white font-bold px-10 py-4 rounded-full hover:bg-emerald-500 hover:-translate-y-1 transition-all shadow-xl shadow-emerald-900/50">
+                <span>${TR('Liên hệ ngay','Contact Now')}</span>
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+             </a>
+         </div>
+      </section>
+    `;
+
+    // Combine
+    el.innerHTML = hero + processHtml + listHtml + ctaHtml + renderSections(data.sections || []);
+  }
   // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
@@ -628,6 +746,10 @@ function renderAbout(el, data) {
     else if (page === 'about') {
         var about = await fetchJson('content/about.json');
         renderAbout(el, about || {});
+    }
+    else if (page === 'services') {
+        var services = await fetchJson('content/services.json');
+        renderServices(el, services || {});
     }
     else if(page === 'news-detail'){ 
         var news = await fetchJson('content/news.json'); 
