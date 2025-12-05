@@ -868,6 +868,144 @@ function renderAbout(el, data) {
     // Combine
     el.innerHTML = hero + featuresHtml + listHtml + statsHtml + ctaHtml + renderSections(data.sections || []);
   }
+  // ============================================================
+  // [NEW] PORTFOLIO PAGE RENDERER (UPGRADED)
+  // ============================================================
+  function renderPortfolio(el, data) {
+    // 1. HERO SECTION (Dark Premium Style)
+    var coverImg = data.cover || 'images/hero/portfolio-placeholder.jpg';
+    var hero = `
+      <section class="py-20 md:py-28 bg-slate-900 overflow-hidden relative text-white">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div data-aos="fade-right">
+                    <div class="inline-flex items-center gap-2 py-1.5 px-4 mb-6 rounded-full bg-white/10 backdrop-blur border border-white/10 text-emerald-400 text-xs font-bold uppercase tracking-widest">
+                        <i data-lucide="briefcase" class="w-4 h-4"></i>
+                        ${TR('Dự án tiêu biểu', 'Featured Projects')}
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                        ${TF(data, 'title')}
+                    </h1>
+                    <div class="prose prose-lg text-slate-300 mb-8 leading-relaxed">
+                        ${TF(data, 'description') || TR('Tổng hợp những dự án thành công và các giải pháp sáng tạo chúng tôi đã thực hiện cho khách hàng.','Compilation of successful projects and creative solutions we have implemented for clients.')}
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="document.getElementById('portfolio-grid').scrollIntoView({behavior:'smooth'})" class="px-8 py-3.5 bg-emerald-600 text-white rounded-full font-bold hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/50 flex items-center gap-2">
+                            ${TR('Xem tất cả dự án','View All Projects')}
+                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="relative group hidden lg:block" data-aos="fade-left">
+                    <div class="absolute top-8 right-8 w-full h-full border-2 border-white/20 rounded-3xl z-0"></div>
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] z-10">
+                         <img src="${coverImg}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" alt="Portfolio Cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+    `;
+
+    // 2. STATS BAR (Floating)
+    var stats = [
+        { label: TR('Dự án hoàn thành','Completed Projects'), val: '150+' },
+        { label: TR('Năm kinh nghiệm','Years of Experience'), val: '10+' },
+        { label: TR('Giải thưởng','Awards Won'), val: '25+' },
+        { label: TR('Khách hàng','Happy Clients'), val: '98%' }
+    ];
+    
+    var statsHtml = `
+      <section class="relative z-20 -mt-10 px-4">
+        <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-100 p-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+            ${stats.map((s, i) => `
+                <div class="text-center relative md:after:content-[''] md:after:absolute md:after:right-0 md:after:top-1/2 md:after:-translate-y-1/2 md:after:h-10 md:after:w-px md:after:bg-slate-100 last:after:hidden" data-aos="fade-up" data-aos-delay="${i*50}">
+                    <div class="text-3xl font-black text-slate-900 mb-1">${s.val}</div>
+                    <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">${s.label}</div>
+                </div>
+            `).join('')}
+        </div>
+      </section>
+    `;
+
+    // 3. MAIN PROJECT GRID
+    var listHtml = '';
+    if(data.items && data.items.length > 0) {
+        listHtml = `
+        <section id="portfolio-grid" class="py-24 bg-slate-50">
+             <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">${TR('Thư viện dự án','Project Gallery')}</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto">${TR('Mỗi dự án là một câu chuyện thành công.','Every project is a success story.')}</p>
+                </div>
+                
+                <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    ${data.items.map((item, i) => `
+                        <div class="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer" data-aos="fade-up" data-aos-delay="${i * 100}">
+                            <div class="relative aspect-[4/3] overflow-hidden">
+                                <img src="${item.image}" alt="${TF(item, 'title')}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/60 transition-colors duration-300"></div>
+                                
+                                <div class="absolute inset-0 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6 text-center">
+                                    <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center mb-4 scale-0 group-hover:scale-100 transition-transform duration-500 delay-100">
+                                        <i data-lucide="search" class="w-6 h-6"></i>
+                                    </div>
+                                    <span class="text-emerald-300 font-bold text-xs uppercase tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">Case Study</span>
+                                </div>
+                            </div>
+
+                            <div class="p-6 relative">
+                                <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">${TF(item, 'title')}</h3>
+                                <p class="text-slate-500 text-sm line-clamp-2 mb-4">${TF(item, 'result') || TF(item, 'description')}</p>
+                                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">${TR('Xem chi tiết','View Details')}</span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all"></i>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </section>`;
+    }
+
+    // 4. CLIENTS/PARTNERS (Optional Reuse)
+    var clientsHtml = `
+      <section class="py-20 bg-white border-t border-slate-100">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-10">${TR('Được tin tưởng bởi các thương hiệu hàng đầu','Trusted by Top Brands')}</p>
+            <div class="flex flex-wrap justify-center gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                 <div class="h-10 w-32 bg-slate-200 rounded animate-pulse"></div>
+                 <div class="h-10 w-32 bg-slate-200 rounded animate-pulse delay-100"></div>
+                 <div class="h-10 w-32 bg-slate-200 rounded animate-pulse delay-200"></div>
+                 <div class="h-10 w-32 bg-slate-200 rounded animate-pulse delay-300"></div>
+            </div>
+        </div>
+      </section>
+    `;
+
+    // 5. CTA
+    var ctaHtml = `
+      <section class="py-24 bg-slate-900 relative overflow-hidden text-center">
+         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black"></div>
+         <div class="max-w-4xl mx-auto px-4 relative z-10" data-aos="zoom-in">
+             <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">${TR('Bạn có ý tưởng tuyệt vời?','Have a great idea?')}</h2>
+             <p class="text-slate-400 mb-10 text-lg max-w-2xl mx-auto">${TR('Hãy để chúng tôi giúp bạn hiện thực hóa nó thành một sản phẩm kỹ thuật số đẳng cấp.','Let us help you turn it into a world-class digital product.')}</p>
+             <a href="contact.html" class="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-10 py-4 rounded-full hover:bg-emerald-500 hover:text-white hover:scale-105 transition-all shadow-xl">
+                <span>${TR('Bắt đầu dự án','Start a Project')}</span>
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+             </a>
+         </div>
+      </section>
+    `;
+
+    // Combine
+    el.innerHTML = hero + statsHtml + listHtml + clientsHtml + ctaHtml + renderSections(data.sections || []);
+  }
   // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
@@ -899,6 +1037,10 @@ function renderAbout(el, data) {
     else if (page === 'courses') {
         var courses = await fetchJson('content/courses.json');
         renderCourses(el, courses || {});
+    }
+    else if (page === 'portfolio') {
+        var portfolio = await fetchJson('content/portfolio.json');
+        renderPortfolio(el, portfolio || {});
     }
     else if(page === 'news-detail'){ 
         var news = await fetchJson('content/news.json'); 
