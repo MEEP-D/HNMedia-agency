@@ -1,18 +1,24 @@
 (function(){
   "use strict";
-// --- [FIX] THÊM CSS TRÁNH GIẬT LAYOUT ---
   const style = document.createElement('style');
   style.innerHTML = `
-      #app { transition: opacity 0.5s ease-out; opacity: 0; }
-      #app.loaded { opacity: 1; }
-      /* Giữ chỗ cho ảnh trước khi load để không bị co thành hình vuông */
+      /* Ẩn nội dung chính ban đầu */
+      #app { 
+          opacity: 0; 
+          transition: opacity 0.4s ease-out; 
+          visibility: hidden; /* Đảm bảo không chiếm chỗ khi chưa hiện */
+      }
+      /* Class này sẽ được thêm vào khi mọi thứ đã sẵn sàng */
+      #app.loaded { 
+          opacity: 1; 
+          visibility: visible; 
+      }
+      /* Giữ một chiều cao tối thiểu cho ảnh để tránh bị thu lại thành 0px */
       img { min-height: 1px; } 
   `;
   document.head.appendChild(style);
-  // --- CẤU HÌNH ---
   const AOS_CONFIG = { once: true, offset: 60, duration: 800, easing: 'ease-out-cubic' };
 
-  // --- 1. UTILS ---
   function q(name){ var s = new URLSearchParams(location.search); return s.get(name); }
   async function fetchJson(p){ try{ var r = await fetch(p); if(!r.ok) return null; return await r.json(); } catch(e){ return null; } }
   function lang(){ return document.body && document.body.dataset && document.body.dataset.lang==='en' ? 'en' : 'vi'; }
@@ -1620,49 +1626,53 @@ function renderAbout(el, data) {
     if(window.lucide) window.lucide.createIcons();
 
     // 3. Khởi tạo AOS (Hiệu ứng cuộn) - Delay nhẹ để đảm bảo DOM đã ổn định
-    setTimeout(() => { 
+   setTimeout(() => { 
         if(window.AOS) {
-            window.AOS.init(AOS_CONFIG);
-            // Refresh lại AOS lần nữa phòng trường hợp ảnh load chậm làm thay đổi chiều cao
-            window.AOS.refresh(); 
+            // Nếu chưa init thì init, nếu rồi thì refresh
+            if (!window.AOS.initialized) {
+                window.AOS.init(AOS_CONFIG);
+                window.AOS.initialized = true; // Đánh dấu đã init
+            } else {
+                window.AOS.refresh(); 
+            }
         }
-    }, 150);
+    }, 100);
   }
-
-  // --- INIT ---
- // ============================================================
-  // INIT (TỐI ƯU HÓA PERFOMANCE)
-  // ============================================================
   window.initContent = async function(){ 
     setupNavigation();
     
-    // 1. Lấy Config trước để biết thời gian intro
+    // 1. Lấy thông tin cấu hình trước
     var cfg = await fetchJson('content/config.json');
-    var introDuration = (cfg && cfg.intro && cfg.intro.enable) ? (cfg.intro.duration * 1000) : 0;
+    // Tính thời gian intro (nếu có bật)
+    var introTime = (cfg && cfg.intro && cfg.intro.enable) ? (cfg.intro.duration * 1000) : 0;
+    
     var loadingScreen = document.getElementById('loading-screen');
-    
-    // 2. Bắt đầu tải nội dung chính song song với Intro
-    // Sử dụng Promise.all để đảm bảo cả Intro chạy xong VÀ Dữ liệu tải xong mới hiện web
-    var startLoad = Date.now();
-    
-    await loadAndRenderContent(); // Render HTML vào DOM nhưng #app vẫn đang opacity: 0
+    var appElement = document.getElementById('app');
 
-    // 3. Tính toán thời gian còn lại của Intro
-    var elapsed = Date.now() - startLoad;
-    var remainingTime = Math.max(0, introDuration - elapsed);
+    // 2. Bắt đầu tính giờ
+    var startTime = Date.now();
+    
+    // 3. Tải và render nội dung chính (Đây là việc nặng nhất)
+    // Hàm này giờ đây là async và chúng ta sẽ 'await' nó
+    await loadAndRenderContent();
 
-    // 4. Đợi nốt thời gian Intro (nếu có) rồi mới tắt Loading Screen
+    // 4. Tính toán thời gian còn lại cần chờ (để đảm bảo chạy đủ thời gian intro)
+    var elapsedTime = Date.now() - startTime;
+    var remainingTime = Math.max(0, introTime - elapsedTime);
+
+    // 5. Đợi nốt thời gian còn lại, sau đó mới hiện trang web
     setTimeout(() => {
-        // Fade in nội dung chính
-        document.getElementById('app').classList.add('loaded');
+        // a. Hiện nội dung chính lên (Fade-in mượt mà)
+        if (appElement) appElement.classList.add('loaded');
         
-        // Refresh AOS một lần nữa để chắc chắn các phần tử đã đúng vị trí
+        // b. Refresh lại AOS một lần nữa để chắc chắn vị trí các phần tử đã đúng
         if(window.AOS) window.AOS.refresh();
 
-        // Tắt màn hình chờ
+        // c. Tắt màn hình chờ (Loading Screen)
         if(loadingScreen){ 
             loadingScreen.style.opacity = '0'; 
             loadingScreen.style.transition = 'opacity 0.5s ease';
+            // Đợi hiệu ứng mờ dần kết thúc rồi mới ẩn hoàn toàn
             setTimeout(()=> {
                 loadingScreen.style.display = 'none';
             }, 500); 
@@ -1670,5 +1680,10 @@ function renderAbout(el, data) {
     }, remainingTime);
   };
 
-  if (document.readyState !== 'loading') { window.initContent(); } else { document.addEventListener('DOMContentLoaded', window.initContent); }
-})();
+  // Sự kiện để bắt đầu chạy script
+  if (document.readyState !== 'loading') { 
+      window.initContent(); 
+  } else { 
+      document.addEventListener('DOMContentLoaded', window.initContent); 
+  }
+})(); // Kết thúc IIFE
