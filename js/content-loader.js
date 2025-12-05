@@ -1173,6 +1173,175 @@ function renderAbout(el, data) {
     // Combine
     el.innerHTML = hero + featuredHtml + gridHtml + newsletterHtml + renderSections(data.sections || []);
   }
+  // ============================================================
+  // [NEW] CAREERS PAGE RENDERER (UPGRADED)
+  // ============================================================
+  function renderCareers(el, data) {
+    // 1. HERO SECTION (Culture Focused)
+    var coverImg = data.cover || 'images/hero/careers-placeholder.jpg';
+    var hero = `
+      <section class="py-16 md:py-24 bg-orange-50 overflow-hidden relative">
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div data-aos="fade-right">
+                    <div class="inline-flex items-center gap-2 py-1.5 px-4 mb-6 rounded-full bg-white text-orange-600 text-xs font-bold uppercase tracking-widest border border-orange-100 shadow-sm">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        ${TR('Gia nhập đội ngũ', 'Join Our Team')}
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                        ${TF(data, 'title')}
+                    </h1>
+                    <div class="prose prose-lg text-slate-600 mb-8 leading-relaxed">
+                        ${TF(data, 'description') || TR('Tìm kiếm cơ hội phát triển sự nghiệp tại môi trường làm việc năng động, sáng tạo và đầy thử thách thú vị.','Find career development opportunities in a dynamic, creative and challenging work environment.')}
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="document.getElementById('positions').scrollIntoView({behavior:'smooth'})" class="px-8 py-3.5 bg-slate-900 text-white rounded-full font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-slate-900/20 flex items-center gap-2">
+                            ${TR('Xem vị trí mở','View Openings')}
+                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="relative group" data-aos="fade-left">
+                    <div class="absolute inset-0 bg-orange-200 rounded-tr-[5rem] rounded-bl-[5rem] rotate-3 group-hover:rotate-6 transition-transform duration-500"></div>
+                    <div class="relative rounded-tr-[5rem] rounded-bl-[5rem] overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+                         <img src="${coverImg}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Careers Cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+    `;
+
+    // 2. PERKS & BENEFITS
+    var perks = [
+        { title: TR('Thu nhập hấp dẫn','Competitive Salary'), desc: TR('Lương thưởng cạnh tranh, đánh giá tăng lương định kỳ 2 lần/năm.','Competitive salary and bonus, salary review twice a year.'), icon: 'banknote', bg: 'bg-emerald-50', color: 'text-emerald-600' },
+        { title: TR('Đào tạo chuyên sâu','Training & Growth'), desc: TR('Được tài trợ khóa học, tham gia hội thảo và mentoring từ chuyên gia.','Sponsored courses, workshops and mentoring from experts.'), icon: 'book-open', bg: 'bg-blue-50', color: 'text-blue-600' },
+        { title: TR('Môi trường mở','Open Environment'), desc: TR('Văn phòng hiện đại, đồng nghiệp thân thiện, tôn trọng sự khác biệt.','Modern office, friendly colleagues, respect for differences.'), icon: 'smile', bg: 'bg-yellow-50', color: 'text-yellow-600' },
+        { title: TR('Chăm sóc sức khỏe','Health Care'), desc: TR('Bảo hiểm sức khỏe cao cấp, khám sức khỏe định kỳ hàng năm.','Premium health insurance, annual health check-up.'), icon: 'heart', bg: 'bg-red-50', color: 'text-red-600' }
+    ];
+
+    var perksHtml = `
+      <section class="py-20 bg-white">
+         <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-down">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">${TR('Tại sao chọn chúng tôi?','Why Choose Us?')}</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">${TR('Chúng tôi cam kết mang lại cuộc sống tốt đẹp nhất cho nhân viên.','We are committed to providing the best life for our employees.')}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                ${perks.map((p, i) => `
+                    <div class="p-6 rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i*100}">
+                        <div class="w-12 h-12 ${p.bg} ${p.color} rounded-xl flex items-center justify-center mb-4">
+                            <i data-lucide="${p.icon}" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">${p.title}</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">${p.desc}</p>
+                    </div>
+                `).join('')}
+            </div>
+         </div>
+      </section>
+    `;
+
+    // 3. HIRING PROCESS (Timeline Horizontal)
+    var steps = [
+        { step: '01', title: 'Ứng tuyển' },
+        { step: '02', title: 'Sơ loại' },
+        { step: '03', title: 'Phỏng vấn' },
+        { step: '04', title: 'Tiếp nhận' }
+    ];
+    var processHtml = `
+      <section class="py-16 bg-slate-50 border-y border-slate-200">
+         <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-10"><h3 class="font-bold text-xl uppercase tracking-widest text-slate-400">${TR('Quy trình tuyển dụng','Hiring Process')}</h3></div>
+            <div class="flex flex-col md:flex-row justify-between items-center relative gap-8 md:gap-0">
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-200 -z-0 -translate-y-1/2 rounded-full"></div>
+                ${steps.map((s,i) => `
+                    <div class="relative z-10 flex flex-col items-center bg-slate-50 px-4" data-aos="zoom-in" data-aos-delay="${i*100}">
+                        <div class="w-12 h-12 bg-white border-4 border-slate-200 text-slate-400 rounded-full flex items-center justify-center font-bold mb-3 shadow-sm group-hover:border-orange-500 group-hover:text-orange-500 transition-colors">
+                            ${s.step}
+                        </div>
+                        <div class="font-bold text-slate-800">${s.title}</div>
+                    </div>
+                `).join('')}
+            </div>
+         </div>
+      </section>
+    `;
+
+    // 4. POSITIONS LIST
+    var listHtml = '';
+    if(data.positions && data.positions.length > 0) {
+        listHtml = `
+        <section id="positions" class="py-24 bg-white">
+             <div class="max-w-6xl mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-2">${TR('Vị trí đang tuyển','Open Positions')}</h2>
+                        <p class="text-slate-500">${TR('Hãy tìm vị trí phù hợp và gửi CV cho chúng tôi ngay hôm nay.','Find a suitable position and send us your CV today.')}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-4 py-2 bg-slate-100 rounded-full text-xs font-bold text-slate-600 cursor-pointer hover:bg-slate-200">All</span>
+                        <span class="px-4 py-2 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-400 cursor-pointer hover:border-slate-900 hover:text-slate-900">Developer</span>
+                        <span class="px-4 py-2 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-400 cursor-pointer hover:border-slate-900 hover:text-slate-900">Design</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${data.positions.map((p, i) => {
+                        var jobTitle = (TF(p,'title') || '').replace(/'/g, "\\'");
+                        return `
+                        <div class="group flex flex-col bg-white rounded-2xl border border-slate-200 p-6 hover:border-orange-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i * 50}">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="briefcase" class="w-5 h-5"></i>
+                                </div>
+                                <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                                    ${TF(p, 'location') || 'Hanoi'}
+                                </span>
+                            </div>
+                            
+                            <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">${TF(p, 'title')}</h3>
+                            
+                            <div class="flex items-center gap-4 text-xs text-slate-500 font-medium mb-4">
+                                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Full-time</span>
+                                <span class="flex items-center gap-1"><i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> Negotiable</span>
+                            </div>
+
+                            <p class="text-slate-500 text-sm line-clamp-3 mb-6 flex-1 leading-relaxed border-t border-slate-50 pt-3">
+                                ${TF(p, 'summary')}
+                            </p>
+                            
+                            <button type="button" onclick="window.openApplyModal('${jobTitle}')" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-sm font-bold px-4 py-3 hover:bg-orange-600 transition-all shadow-md">
+                                <span>${TR('Ứng tuyển ngay','Apply Now')}</span>
+                                <i data-lucide="send" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </section>`;
+    } else {
+        listHtml = `<div class="py-24 text-center text-slate-500">${TR('Hiện chưa có vị trí nào đang mở.','No open positions at the moment.')}</div>`;
+    }
+
+    // 5. CTA TALENT POOL
+    var ctaHtml = `
+      <section class="py-20 bg-slate-900 relative overflow-hidden text-center text-white">
+         <div class="max-w-3xl mx-auto px-4 relative z-10" data-aos="zoom-in">
+             <h2 class="text-2xl md:text-3xl font-bold mb-4">${TR('Chưa tìm thấy vị trí phù hợp?','Did not find a suitable role?')}</h2>
+             <p class="text-slate-400 mb-8">${TR('Đừng lo, hãy gửi CV của bạn vào Kho nhân tài. Chúng tôi sẽ liên hệ ngay khi có cơ hội phù hợp.','Don\'t worry, submit your CV to our Talent Pool. We will contact you as soon as a suitable opportunity arises.')}</p>
+             <button onclick="window.openApplyModal('Talent Pool')" class="inline-flex items-center gap-2 bg-white text-slate-900 font-bold px-8 py-3.5 rounded-full hover:bg-orange-500 hover:text-white transition-all shadow-lg">
+                <span>${TR('Gửi CV của tôi','Submit my CV')}</span>
+                <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+             </button>
+         </div>
+      </section>
+    `;
+
+    // Combine
+    el.innerHTML = hero + perksHtml + processHtml + listHtml + ctaHtml + renderSections(data.sections || []);
+  }
   // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
@@ -1216,6 +1385,10 @@ function renderAbout(el, data) {
     else if(page === 'news-detail'){ 
         var news = await fetchJson('content/news.json'); 
         renderNewsDetail(el, news||{});
+    }
+    else if (page === 'careers') {
+        var careers = await fetchJson('content/careers.json');
+        renderCareers(el, careers || {});
     }
     else if(page === 'course-detail'){ 
         var courses = await fetchJson('content/courses.json');
