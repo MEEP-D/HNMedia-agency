@@ -33,22 +33,7 @@
       "event": "Đạt 100+ khách hàng"
     }
   ],
-  "cover": "/images/3374825268217454051.jpg",
-  "sections": [
-    {
-      "type": "grid",
-      "title": "Live",
-      "items": [
-        {
-          "title": "Live",
-          "title_en": "Live1",
-          "description": "LiveLiveLiveLive",
-          "description_en": "Live",
-          "image": "/images/picture1.png",
-          "link": "Live"
-        }
-      ]
-    }
-  ],
+  "cover": "/images/thiết-kế-chưa-có-tên-1-.png",
+  "sections": [],
   "title_en": "Dạy Bạn Cách Live - Trao Bạn Cách Thắng"
 }
