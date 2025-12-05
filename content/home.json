@@ -79,7 +79,8 @@
   "partners": [
     {
       "name": "Tập đoàn Thực phẩm Sunrise",
-      "image": "/images/1667009420681.jpg"
+      "image": "/images/1667009420681.jpg",
+      "is_strategic": true
     },
     {
       "name": "Hệ thống Chiếu sáng FutureLight",
