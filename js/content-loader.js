@@ -158,47 +158,38 @@ function partnerLogo(p, sizeClass){
     var h = sizeClass || 'h-20';
     return `<div class="flex-shrink-0 mx-8 ${h} flex items-center justify-center hover:scale-110 transition-transform duration-300"><img src="${src}" class="h-full w-auto object-contain" loading="lazy"></div>`; 
 }  
+  // Tìm và thay thế toàn bộ hàm renderPartners bằng đoạn này:
+  
   function renderPartners(home){ 
-    var featured = home.featured_partner_logo ? `<section class="py-12 reveal" data-aos="fade-up"><div class="max-w-6xl mx-auto px-4 text-center"><p class="text-xs font-bold text-slate-400 mb-6 tracking-[0.2em] uppercase">${TR('Đối tác chiến lược','Strategic Partner')}</p><img src="${home.featured_partner_logo}" class="mx-auto h-24 md:h-32 object-contain hover:scale-105 transition-transform duration-500 drop-shadow-sm" loading="lazy"/></div></section>` : '';
-    
-    var list = (home && home.partners) || []; 
-    if(!list.length) return featured; 
+    var list = (home && home.partners) || [];
+    var strategicList = (home && home.strategic_partners) || list; 
 
-    // Nhân bản danh sách 4 lần để đảm bảo độ dài vô tận trên mọi màn hình
-    var fullList = [...list, ...list, ...list, ...list];
-    
-    var track = '<div class="flex marquee-track">' + fullList.map(partnerLogo).join('') + '</div>'; 
-    
-    return featured + `
-    <section class="py-10 reveal border-t border-slate-100 bg-slate-50/50" data-aos="fade-in">
-        <div class="w-full overflow-hidden">
-            <p class="text-center text-xs font-bold text-slate-400 mb-8 tracking-[0.2em] uppercase">${TR('Được tin tưởng bởi','Trusted By')}</p>
-            <div class="marquee-wrapper relative group">
-                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
-                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
-                ${track}
-            </div>
-        </div>
-        <style>
-            .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
-            .marquee-track {
-                display: flex;
-                width: max-content;
-                /* Thời gian chạy dựa trên độ dài danh sách, đảm bảo tốc độ đều */
-                animation: scroll-x ${Math.max(30, list.length * 5)}s linear infinite; 
-            }
-            /* Khi di chuột vào thì dừng lại để xem rõ hơn */
-            .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
-            
-            @keyframes scroll-x {
-                0% { transform: translateX(0); }
-                /* Dịch chuyển -25% vì chúng ta nhân bản 4 lần. 
-                   Hết 1 set (-25%) nó sẽ khớp hoàn hảo với set tiếp theo */
-                100% { transform: translateX(-25%); } 
-            }
-        </style>
-    </section>`;
-}
+    // CSS cho hiệu ứng chạy trái/phải
+    var styles = `
+    <style>
+       .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
+       .marquee-track { display: flex; width: max-content; }
+       .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
+       
+       /* Chạy sang trái (Mặc định) */
+       .animate-scroll-left { animation: scroll-left var(--duration, 30s) linear infinite; }
+       @keyframes scroll-left { 
+           0% { transform: translateX(0); } 
+           100% { transform: translateX(-25%); } 
+       }
+
+       /* Chạy sang phải (Ngược lại) */
+       .animate-scroll-right { animation: scroll-right var(--duration, 30s) linear infinite; }
+       @keyframes scroll-right { 
+           0% { transform: translateX(-25%); } 
+           100% { transform: translateX(0); } 
+       }
+    </style>`;
+    var strategicHtml = renderMarqueeSection(strategicList, TR('Đối tác chiến lược','Strategic Partner'), 'right', 'h-24');
+    var trustedHtml = renderMarqueeSection(list, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-19');
+
+    return styles + strategicHtml + trustedHtml;
+  }
 
   function renderHome(el, home, svc, crs, port){
     var hero;
