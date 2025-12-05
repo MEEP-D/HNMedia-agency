@@ -151,8 +151,13 @@
     return section(head, bodyContent, style, animAttr); 
   }
 
-  function partnerLogo(p){ var src = (typeof p==='string')?p:(p&&(p.image||p.logo||p.url))||''; return `<div class="flex-shrink-0 mx-8 h-20 flex items-center justify-center hover:scale-110 transition-transform duration-300"><img src="${src}" class="h-full w-auto object-contain" loading="lazy"></div>`; }
-  
+// Tìm hàm partnerLogo và sửa thành:
+function partnerLogo(p, sizeClass){ 
+    var src = (typeof p==='string')?p:(p&&(p.image||p.logo||p.url))||''; 
+    // Mặc định là h-20 nếu không truyền sizeClass
+    var h = sizeClass || 'h-20';
+    return `<div class="flex-shrink-0 mx-8 ${h} flex items-center justify-center hover:scale-110 transition-transform duration-300"><img src="${src}" class="h-full w-auto object-contain" loading="lazy"></div>`; 
+}  
   function renderPartners(home){ 
     var featured = home.featured_partner_logo ? `<section class="py-12 reveal" data-aos="fade-up"><div class="max-w-6xl mx-auto px-4 text-center"><p class="text-xs font-bold text-slate-400 mb-6 tracking-[0.2em] uppercase">${TR('Đối tác chiến lược','Strategic Partner')}</p><img src="${home.featured_partner_logo}" class="mx-auto h-24 md:h-32 object-contain hover:scale-105 transition-transform duration-500 drop-shadow-sm" loading="lazy"/></div></section>` : '';
     
@@ -209,7 +214,7 @@
                 <div class="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
                 <div class="relative z-20 text-center text-white px-4 max-w-5xl" data-aos="zoom-out">
                   <div class="inline-block py-1.5 px-4 mb-6 rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-300 text-xs font-bold uppercase tracking-widest">${home.hero.slogan||'Welcome'}</div>
-                  <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight drop-shadow-2xl">${home.hero.title||''}</h1>
+                  <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-sans mb-6 leading-tight drop-shadow-2xl">${home.hero.title||''}</h1>
                   <p class="mb-10 max-w-2xl mx-auto text-lg md:text-xl text-white/95 font-light leading-relaxed drop-shadow-md">${home.hero.subtitle||''}</p>
                   ${home.hero.ctaText ? `<a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white font-bold px-10 py-4 hover:bg-emerald-500 transition-all hover:scale-105 shadow-2xl shadow-emerald-900/50 text-base" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-5 h-5"></i></a>`:''}
                 </div>
@@ -257,7 +262,68 @@
     
     el.innerHTML = `<div class="max-w-4xl mx-auto px-4 py-12">${head}${meta}${cover}${body}</div>` + renderSections(item.sections||[]);
   }
+  // Tìm hàm renderPartners và thay thế toàn bộ nội dung bên trong bằng:
+function renderPartners(home){ 
+    var list = (home && home.partners) || [];
+    var strategicList = (home && home.strategic_partners) || list; 
 
+    // CSS define keyframes cho chạy trái và phải
+    var styles = `
+    <style>
+       .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
+       .marquee-track { display: flex; width: max-content; }
+       .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
+       
+       /* Class chạy sang TRÁI */
+       .animate-scroll-left { animation: scroll-left var(--duration, 30s) linear infinite; }
+       @keyframes scroll-left { 
+           0% { transform: translateX(0); } 
+           100% { transform: translateX(-25%); } 
+       }
+
+       /* Class chạy sang PHẢI */
+       .animate-scroll-right { animation: scroll-right var(--duration, 30s) linear infinite; }
+       @keyframes scroll-right { 
+           0% { transform: translateX(-25%); } 
+           100% { transform: translateX(0); } 
+       }
+    </style>`;
+
+    // --- CẤU HÌNH Ở ĐÂY ---
+    
+    // 1. Dòng Đối tác chiến lược: Chạy sang PHẢI ('right'), kích thước thường ('h-20')
+    var strategicHtml = renderMarqueeSection(strategicList, TR('Đối tác chiến lược','Strategic Partner'), 'right', 'h-20');
+
+    // 2. Dòng Đối tác tin tưởng: Chạy sang TRÁI ('left'), kích thước TO ('h-32')
+    var trustedHtml = renderMarqueeSection(list, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-32');
+
+    return styles + strategicHtml + trustedHtml;
+}
+// Thêm hàm mới này hoặc sửa hàm cũ tương ứng:
+function renderMarqueeSection(list, title, direction, sizeClass) {
+    if(!list || !list.length) return '';
+    
+    var fullList = [...list, ...list, ...list, ...list]; // Nhân bản logo để chạy mượt
+    
+    // Logic chọn class animation dựa trên hướng
+    var animClass = direction === 'right' ? 'animate-scroll-right' : 'animate-scroll-left';
+    
+    var track = `<div class="flex marquee-track ${animClass}">${fullList.map(p => partnerLogo(p, sizeClass)).join('')}</div>`;
+
+    var duration = Math.max(30, list.length * 5); // Tính toán tốc độ
+
+    return `
+    <section class="py-10 reveal border-t border-slate-100 bg-slate-50/50" data-aos="fade-in">
+        <div class="w-full overflow-hidden">
+            ${title ? `<p class="text-center text-xs font-bold text-slate-400 mb-8 tracking-[0.2em] uppercase">${title}</p>` : ''}
+            <div class="marquee-wrapper relative group" style="--duration:${duration}s">
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
+                ${track}
+            </div>
+        </div>
+    </section>`;
+}
   // --- 7. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
