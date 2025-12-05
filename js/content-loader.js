@@ -460,7 +460,117 @@
      
     el.innerHTML = `<div class="max-w-4xl mx-auto px-4 py-12">${head}${meta}${cover}${body}</div>` + renderSections(item.sections||[]);
   }
+// --- [NEW] HÀM RENDER RIÊNG CHO TRANG ABOUT ---
+function renderAbout(el, data) {
+  // 1. HERO SECTION (Layout chia đôi: Chữ trái - Ảnh phải)
+  var coverImg = data.cover || 'images/hero/about-placeholder.jpg';
+  var hero = `
+    <section class="py-16 md:py-24 bg-slate-50 overflow-hidden relative">
+      <div class="max-w-6xl mx-auto px-4 relative z-10">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+              <div data-aos="fade-right">
+                  <div class="inline-block py-1.5 px-4 mb-6 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest border border-emerald-200">
+                      ${TR('Về chúng tôi', 'About Us')}
+                  </div>
+                  <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                      ${TF(data, 'title')}
+                  </h1>
+                  <div class="prose prose-lg text-slate-600 mb-8 leading-relaxed">
+                      ${TF(data, 'description') || TR('Chúng tôi kiến tạo những giá trị số bền vững, đồng hành cùng sự phát triển của doanh nghiệp bạn.','We create sustainable digital values, accompanying your business development.')}
+                  </div>
+                  <div class="flex gap-4">
+                      <a href="#vision" class="px-8 py-3.5 bg-slate-900 text-white rounded-full font-bold hover:bg-emerald-600 transition-colors shadow-lg shadow-slate-900/20">
+                          ${TR('Khám phá','Explore')}
+                      </a>
+                  </div>
+              </div>
+              <div class="relative group" data-aos="fade-left">
+                  <div class="absolute inset-0 bg-emerald-200 rounded-[2.5rem] rotate-3 group-hover:rotate-6 transition-transform duration-500"></div>
+                  <div class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white aspect-[4/3]">
+                       <img src="${coverImg}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="About Cover">
+                  </div>
+              </div>
+          </div>
+      </div>
+    </section>
+  `;
 
+  // 2. VISION & MISSION (Giao diện thẻ bài - Card)
+  var visionMission = `
+    <section id="vision" class="py-20 relative">
+      <div class="max-w-5xl mx-auto px-4">
+           <div class="grid md:grid-cols-2 gap-8">
+              <div class="group bg-white p-10 rounded-3xl border border-slate-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="0">
+                  <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <i data-lucide="eye" class="w-8 h-8"></i>
+                  </div>
+                  <h3 class="text-2xl font-bold text-slate-900 mb-4">${TR('Tầm nhìn','Vision')}</h3>
+                  <p class="text-slate-600 leading-relaxed text-lg">${TF(data, 'vision')}</p>
+              </div>
+              <div class="group bg-white p-10 rounded-3xl border border-slate-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                   <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <i data-lucide="target" class="w-8 h-8"></i>
+                  </div>
+                  <h3 class="text-2xl font-bold text-slate-900 mb-4">${TR('Sứ mệnh','Mission')}</h3>
+                   <p class="text-slate-600 leading-relaxed text-lg">${TF(data, 'mission')}</p>
+              </div>
+           </div>
+      </div>
+    </section>
+  `;
+
+  // 3. LỊCH SỬ HÌNH THÀNH (Timeline dọc)
+  var timelineHtml = '';
+  if(data.history && data.history.length > 0) {
+      var events = data.history.map((h, i) => `
+          <div class="relative pl-8 md:pl-12 group" data-aos="fade-up" data-aos-delay="${i * 50}">
+              <div class="absolute left-[-9px] top-1.5 w-5 h-5 rounded-full bg-emerald-500 border-4 border-white shadow-md group-hover:scale-125 group-hover:bg-emerald-600 transition-all z-10"></div>
+              <div class="mb-10">
+                  <span class="inline-block py-1 px-3 rounded bg-slate-100 text-slate-600 font-bold text-xs mb-2 group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
+                      ${h.year}
+                  </span>
+                  <h4 class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                      ${TF(h, 'event')}
+                  </h4>
+              </div>
+          </div>
+      `).join('');
+
+      timelineHtml = `
+          <section class="py-20 bg-slate-50/50">
+              <div class="max-w-3xl mx-auto px-4">
+                  <div class="text-center mb-12">
+                       <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full mb-4 inline-block">${TR('Chặng đường','Journey')}</span>
+                      <h2 class="text-3xl font-bold text-slate-900">${TR('Lịch sử hình thành','Our History')}</h2>
+                  </div>
+                  <div class="relative border-l-2 border-emerald-100 ml-3 md:ml-0 md:translate-x-[0.5px]">
+                      ${events}
+                  </div>
+              </div>
+          </section>
+      `;
+  }
+
+  // 4. ĐỘI NGŨ (Team Grid)
+  var teamHtml = '';
+  if(data.team && data.team.length > 0) {
+      teamHtml = `
+      <section class="py-20">
+           <div class="max-w-6xl mx-auto px-4">
+              <div class="text-center mb-12">
+                   <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full mb-4 inline-block">${TR('Con người','People')}</span>
+                  <h2 class="text-3xl font-bold text-slate-900">${TR('Đội ngũ chuyên gia','Our Experts')}</h2>
+              </div>
+              <div class="${gridThree()}">
+                  ${data.team.map((t, i) => personCard(t, i)).join('')}
+              </div>
+          </div>
+      </section>`;
+  }
+
+  // GỘP LẠI
+  el.innerHTML = hero + visionMission + timelineHtml + teamHtml + renderSections(data.sections || []);
+}
   // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
@@ -480,6 +590,10 @@
         var crs = await fetchJson('content/courses.json');
         var prt = await fetchJson('content/portfolio.json');
         renderHome(el, home||{}, svc||{}, crs||{}, prt||{});
+    }
+    else if (page === 'about') {
+        var about = await fetchJson('content/about.json');
+        renderAbout(el, about || {});
     }
     else if(page === 'news-detail'){ 
         var news = await fetchJson('content/news.json'); 
