@@ -1,6 +1,14 @@
 (function(){
   "use strict";
-
+// --- [FIX] THÊM CSS TRÁNH GIẬT LAYOUT ---
+  const style = document.createElement('style');
+  style.innerHTML = `
+      #app { transition: opacity 0.5s ease-out; opacity: 0; }
+      #app.loaded { opacity: 1; }
+      /* Giữ chỗ cho ảnh trước khi load để không bị co thành hình vuông */
+      img { min-height: 1px; } 
+  `;
+  document.head.appendChild(style);
   // --- CẤU HÌNH ---
   const AOS_CONFIG = { once: true, offset: 60, duration: 800, easing: 'ease-out-cubic' };
 
@@ -1606,18 +1614,60 @@ function renderAbout(el, data) {
     }
     
     setTimeout(() => { if(window.AOS) window.AOS.init(AOS_CONFIG); }, 100);
+    el.classList.add('loaded');
+
+    // 2. Khởi tạo Icons
+    if(window.lucide) window.lucide.createIcons();
+
+    // 3. Khởi tạo AOS (Hiệu ứng cuộn) - Delay nhẹ để đảm bảo DOM đã ổn định
+    setTimeout(() => { 
+        if(window.AOS) {
+            window.AOS.init(AOS_CONFIG);
+            // Refresh lại AOS lần nữa phòng trường hợp ảnh load chậm làm thay đổi chiều cao
+            window.AOS.refresh(); 
+        }
+    }, 150);
   }
 
   // --- INIT ---
+ // ============================================================
+  // INIT (TỐI ƯU HÓA PERFOMANCE)
+  // ============================================================
   window.initContent = async function(){ 
     setupNavigation();
+    
+    // 1. Lấy Config trước để biết thời gian intro
     var cfg = await fetchJson('content/config.json');
+    var introDuration = (cfg && cfg.intro && cfg.intro.enable) ? (cfg.intro.duration * 1000) : 0;
     var loadingScreen = document.getElementById('loading-screen');
-    setTimeout(async () => {
-        await loadAndRenderContent();
-        if(window.lucide) window.lucide.createIcons();
-        if(loadingScreen){ loadingScreen.style.opacity = '0'; setTimeout(()=>loadingScreen.style.display='none', 500); }
-    }, (cfg && cfg.intro && cfg.intro.enable ? cfg.intro.duration * 1000 : 0));
+    
+    // 2. Bắt đầu tải nội dung chính song song với Intro
+    // Sử dụng Promise.all để đảm bảo cả Intro chạy xong VÀ Dữ liệu tải xong mới hiện web
+    var startLoad = Date.now();
+    
+    await loadAndRenderContent(); // Render HTML vào DOM nhưng #app vẫn đang opacity: 0
+
+    // 3. Tính toán thời gian còn lại của Intro
+    var elapsed = Date.now() - startLoad;
+    var remainingTime = Math.max(0, introDuration - elapsed);
+
+    // 4. Đợi nốt thời gian Intro (nếu có) rồi mới tắt Loading Screen
+    setTimeout(() => {
+        // Fade in nội dung chính
+        document.getElementById('app').classList.add('loaded');
+        
+        // Refresh AOS một lần nữa để chắc chắn các phần tử đã đúng vị trí
+        if(window.AOS) window.AOS.refresh();
+
+        // Tắt màn hình chờ
+        if(loadingScreen){ 
+            loadingScreen.style.opacity = '0'; 
+            loadingScreen.style.transition = 'opacity 0.5s ease';
+            setTimeout(()=> {
+                loadingScreen.style.display = 'none';
+            }, 500); 
+        }
+    }, remainingTime);
   };
 
   if (document.readyState !== 'loading') { window.initContent(); } else { document.addEventListener('DOMContentLoaded', window.initContent); }
