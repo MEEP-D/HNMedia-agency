@@ -9,7 +9,7 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
-media_folder: "/images"
+media_folder: "public/images" # Khuyên dùng public/images cho NextJS/Gatsby
 public_folder: "/images"
 local_backend: true
 publish_mode: editorial_workflow
@@ -17,6 +17,7 @@ publish_mode: editorial_workflow
 site_url: https://hn-media-agency.vercel.app
 display_url: https://hn-media-agency.vercel.app
 
+# Tự động xử lý Slug tiếng Việt (VD: "Giới thiệu" -> "gioi-thieu")
 slug:
   encoding: "ascii"
   clean_accents: true
@@ -24,10 +25,7 @@ slug:
 
 # ============================================================
 # ĐỊNH NGHĨA DÙNG CHUNG (REUSABLE FIELDS)
-# ============================================================
-
-# ============================================================
-# ĐỊNH NGHĨA DÙNG CHUNG (REUSABLE FIELDS)
+# Phần này định nghĩa đầy đủ cấu trúc Section như code cũ của bạn
 # ============================================================
 
 x-sections_config: &sections_config
@@ -37,6 +35,7 @@ x-sections_config: &sections_config
   collapsed: true
   summary: '{{fields.title}} [{{fields.type}}]'
   fields:
+    # 1. LOẠI & TIÊU ĐỀ
     - label: Loại Section
       name: type
       widget: select
@@ -53,6 +52,7 @@ x-sections_config: &sections_config
     - { label: Mô tả phụ, name: subtitle, widget: text, required: false }
     - { label: Mô tả phụ (EN), name: subtitle_en, widget: text, required: false }
 
+    # 2. CẤU HÌNH HIỂN THỊ (Animation & Background)
     - label: Hiệu ứng Animation
       name: animation
       widget: object
@@ -76,9 +76,11 @@ x-sections_config: &sections_config
         - { label: Ảnh nền, name: image, widget: image, required: false }
         - { label: Gradient CSS, name: gradient, widget: string, required: false }
 
+    # 3. NỘI DUNG CHI TIẾT
     - { label: Nội dung chính (Text), name: body, widget: markdown, required: false }
     - { label: Nội dung chính (EN), name: body_en, widget: markdown, required: false }
 
+    # 4. DANH SÁCH ITEM (Cho Grid/CTA)
     - label: Items (Dùng cho GRID/CTA)
       name: items
       widget: list
@@ -93,32 +95,34 @@ x-sections_config: &sections_config
         - { label: Ảnh/Icon, name: image, widget: image, required: false }
         - { label: Link liên kết, name: link, widget: string, required: false }
 
-    # --- SỬA LỖI Ở ĐÂY ---
-    # Chuyển từ 'fields' (nhiều trường con) sang 'field' (một trường đơn)
-    # để tương thích với dữ liệu ảnh hiện có đang bị lỗi.
+    # 5. DANH SÁCH ẢNH (Cho Gallery)
     - label: Images (Dùng cho GALLERY)
       name: images
       widget: list
       collapsed: true
       required: false
-      field: { label: Chọn ảnh, name: image, widget: image }
-    # ---------------------
+      summary: '{{fields.image}}'
+      fields:
+        - { label: Chọn ảnh, name: image, widget: image }
+        - { label: Chú thích, name: caption, widget: string, required: false }
+        - { label: Alt Text (SEO), name: alt_text, widget: string, required: false }
 
+    # 6. NÚT CTA RIÊNG LẺ
     - { label: Nút CTA (Text), name: ctaText, widget: string, required: false }
     - { label: Nút CTA (Text EN), name: ctaText_en, widget: string, required: false }
     - { label: Link Nút CTA, name: ctaLink, widget: string, required: false }
+
 # ============================================================
 # COLLECTIONS
 # ============================================================
 collections:
   # ------------------------------------------------------------
-  # CÀI ĐẶT (SETTINGS) - Bao gồm Config chung và Footer
+  # CÀI ĐẶT (SETTINGS)
   # ------------------------------------------------------------
   - name: settings
     label: ⚙️ Cài đặt
-    description: Cấu hình chung, thương hiệu và Footer
+    description: Cấu hình chung và thương hiệu, intro, màu sắc
     files:
-      # --- FILE 1: CONFIG CHUNG ---
       - file: content/config.json
         label: Cấu hình chung
         name: site
@@ -158,12 +162,14 @@ collections:
               - { label: Màu chính, name: primary, widget: string }
               - { label: Màu phụ, name: accent, widget: string }
 
-      # --- FILE 2: FOOTER (Đã chuyển vào trong Settings) ---
-      - file: content/footer.json
-        label: Chân trang (Footer)
-        name: footer
-        format: json
-        fields:
+  # ------------------------------------------------------------
+  # SEO
+  # ------------------------------------------------------------
+  - file: content/footer.json
+    label: Chân trang (Footer)
+    name: footer
+    format: json
+    fields:
           - { label: Tên hiển thị (Brand Name), name: brand_name, widget: string, required: false, default: "Media Agency" }
           - { label: Logo Footer, name: logo, widget: image, required: false, hint: "Để trống sẽ dùng logo mặc định trong Cấu hình chung" }
           - { label: Mô tả ngắn, name: description, widget: text, required: false, hint: "Hiện dưới logo ở chân trang" }
@@ -189,10 +195,6 @@ collections:
                   - { label: Tên link, name: text, widget: string }
                   - { label: Tên link (EN), name: text_en, widget: string, required: false }
                   - { label: Đường dẫn (URL), name: url, widget: string, hint: "Ví dụ: /contact.html hoặc #services" }
-
-  # ------------------------------------------------------------
-  # SEO
-  # ------------------------------------------------------------
   - name: seo
     label: 🔍 SEO
     files:
@@ -267,15 +269,18 @@ collections:
             name: partners
             widget: list
             collapsed: true
-            summary: '{{fields.name}}'
+            # Hiển thị dấu sao ⭐ bên cạnh tên nếu là đối tác chiến lược để dễ quản lý
+            summary: '{{fields.name}} {{fields.is_strategic ? "(⭐ Chiến lược)" : ""}}'
             fields:
               - { label: Tên đối tác, name: name, widget: string }
               - { label: Logo, name: image, widget: image }
+              # Thêm dòng này để bật tắt chế độ Chiến lược
               - { label: Là đối tác chiến lược?, name: is_strategic, widget: boolean, default: false, required: false }
 
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
 
+          # GỌI LẠI CẤU TRÚC SECTION ĐÃ ĐỊNH NGHĨA Ở TRÊN
           - <<: *sections_config
 
       # --- ABOUT ---
@@ -423,7 +428,41 @@ collections:
               - { label: Ảnh, name: image, widget: image, required: false }
 
           - <<: *sections_config
+# --- NEWS ---
+      - file: content/news.json
+        label: Tin tức
+        name: news
+        format: json
+        fields:
+          - { label: Tiêu đề Trang, name: title, widget: string }
+          - { label: Tiêu đề Trang (EN), name: title_en, widget: string, required: false }
+          - { label: Mô tả Trang, name: description, widget: text, required: false }
+          - { label: Mô tả Trang (EN), name: description_en, widget: text, required: false }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
 
+          - label: Danh sách Bài viết
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.title}} - {{fields.date}}'
+            fields:
+              - { label: Slug (URL), name: slug, widget: string, hint: "Viết liền không dấu, gạch ngang. VD: khai-truong-chi-nhanh" }
+              - { label: Tiêu đề, name: title, widget: string }
+              - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+              - { label: Tóm tắt, name: summary, widget: text, hint: "Hiện ở danh sách bên ngoài" }
+              - { label: Tóm tắt (EN), name: summary_en, widget: text, required: false }
+              - { label: Ảnh đại diện, name: image, widget: image }
+              - { label: Tác giả, name: author, widget: string, default: "Admin", required: false }
+              - { label: Ngày đăng, name: date, widget: datetime, format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
+              
+              - { label: Nội dung bài viết, name: body, widget: markdown }
+              - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
+              
+              # Cho phép chèn Section vào cuối trang chi tiết bài viết (VD: CTA, Banner)
+              - <<: *sections_config
+
+          # Cho phép chèn Section vào trang danh sách tin tức chính
+          - <<: *sections_config
       # --- CONTACT ---
       - file: content/contact.json
         label: Liên hệ
@@ -443,3 +482,4 @@ collections:
           - { label: Zalo URL, name: zalo, widget: string, required: false }
 
           - <<: *sections_config
+      
