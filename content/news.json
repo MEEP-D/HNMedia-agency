@@ -1,15 +1,47 @@
 {
-  "title": "Tin tức",
-  "cover": "",
+  "title": "Tin tức & Sự kiện",
+  "description": "Cập nhật những xu hướng marketing mới nhất và các hoạt động nổi bật của HN Media Agency.",
+  "cover": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2070&auto=format&fit=crop",
   "items": [
     {
-      "slug": "khai-truong-chi-nhanh-moi",
-      "title": "Khai trương chi nhánh mới",
-      "summary": "Chúng tôi chính thức khai trương chi nhánh tại Hà Nội.",
-      "image": "images/news/sample-1.jpg",
-      "author": "Media Agency",
-      "date": "2025-11-20",
-      "body": "<p>Ngày 20/11/2025, Media Agency khai trương chi nhánh mới tại Hà Nội, mở rộng dịch vụ truyền thông và marketing tới nhiều doanh nghiệp hơn.</p><p>Sự kiện đánh dấu bước phát triển mới trong hành trình đồng hành cùng thương hiệu Việt.</p>"
+      "slug": "khai-truong-chi-nhanh-moi-ha-noi",
+      "title": "HN Media chính thức khai trương chi nhánh chiến lược tại Hà Nội",
+      "summary": "Đánh dấu cột mốc quan trọng trong hành trình 5 năm phát triển, HN Media Agency chính thức mở rộng văn phòng tại Thủ đô, mang đến giải pháp truyền thông toàn diện cho doanh nghiệp miền Bắc.",
+      "image": "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop",
+      "author": "Ban Truyền Thông",
+      "date": "20/11/2025",
+      "body": "<p>Sáng ngày 20/11/2025, trong không khí hân hoan và trang trọng, HN Media Agency đã chính thức cắt băng khánh thành văn phòng chi nhánh mới tại tòa nhà Lotte Center, Hà Nội.</p><h3>Cột mốc của sự trưởng thành</h3><p>Sự kiện này không chỉ đánh dấu sự hiện diện vật lý của HN Media tại thị trường miền Bắc đầy tiềm năng mà còn khẳng định cam kết đồng hành sâu rộng hơn với các đối tác chiến lược. Với không gian làm việc hiện đại, sáng tạo rộng hơn 500m2, chi nhánh Hà Nội được kỳ vọng sẽ là nơi ra đời của những chiến dịch marketing đột phá.</p><h3>Dịch vụ trọng tâm tại chi nhánh mới</h3><p>Tại văn phòng Hà Nội, chúng tôi sẽ tập trung đẩy mạnh các mảng dịch vụ:</p><ul><li><strong>Performance Marketing:</strong> Tối ưu hóa chuyển đổi số cho doanh nghiệp SMEs.</li><li><strong>Branding & Production:</strong> Sản xuất TVC, Video Viral với đội ngũ In-house chuyên nghiệp.</li><li><strong>KOLs Booking:</strong> Kết nối thương hiệu với mạng lưới hơn 500+ Influencers tại miền Bắc.</li></ul><p>Phát biểu tại buổi lễ, CEO của HN Media chia sẻ: <em>\"Hà Nội là trái tim của cả nước, việc đặt chân đến đây là giấc mơ ấp ủ từ ngày đầu thành lập. Chúng tôi mang đến đây không chỉ công nghệ, kỹ thuật mà còn là sự tận tâm và khát khao cùng doanh nghiệp Việt vươn tầm.\"</em></p>",
+      "sections": [
+        {
+          "type": "cta",
+          "title": "Hợp tác cùng chúng tôi",
+          "subtitle": "Liên hệ ngay với chi nhánh Hà Nội để nhận ưu đãi khai trương lên đến 30%.",
+          "ctaText": "Liên hệ ngay",
+          "ctaLink": "contact.html"
+        }
+      ]
+    },
+    {
+      "slug": "xu-huong-video-marketing-2026",
+      "title": "Dự báo 5 xu hướng Video Marketing sẽ thống trị năm 2026",
+      "summary": "Video ngắn (Short-form), AI Video và nội dung tương tác đang thay đổi cuộc chơi. Doanh nghiệp cần chuẩn bị gì để không bị bỏ lại phía sau trong cuộc đua nội dung số?",
+      "image": "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=2000&auto=format&fit=crop",
+      "author": "Minh Tuấn - Senior Planner",
+      "date": "05/12/2025",
+      "body": "<p>Năm 2025 đã chứng kiến sự bùng nổ của TikTok Shop và YouTube Shorts. Bước sang năm 2026, Video Marketing sẽ tiếp tục tiến hóa với sự hỗ trợ mạnh mẽ của công nghệ. Dưới đây là 5 xu hướng mà mọi Marketer cần lưu ý:</p><h3>1. AI-Generated Video (Video tạo bởi AI)</h3><p>Không còn là những thước phim gượng gạo, AI giờ đây có thể tạo ra video chất lượng cao với kịch bản, giọng đọc và hình ảnh chân thực đến 99%. Điều này giúp doanh nghiệp tiết kiệm chi phí sản xuất và tăng tốc độ ra nội dung gấp 10 lần.</p><h3>2. Shoppable Video (Video mua sắm trực tiếp)</h3><p>Người dùng ngày càng lười rời khỏi nền tảng giải trí để mua hàng. Xu hướng tích hợp giỏ hàng ngay trong video review, livestream sẽ trở thành tiêu chuẩn bắt buộc cho các nhãn hàng bán lẻ.</p><h3>3. Silent Video (Video không âm thanh)</h3><p>85% video trên Facebook được xem khi tắt tiếng. Việc đầu tư vào Typography (nghệ thuật chữ), phụ đề động (dynamic captions) và hình ảnh trực quan sẽ quyết định việc giữ chân người xem trong 3 giây đầu tiên.</p><h3>4. Interactive Video (Video tương tác)</h3><p>Cho phép người xem chọn hướng đi của câu chuyện hoặc click vào các điểm nóng (hotspots) trên video để khám phá sản phẩm. Đây là cách tuyệt vời để tăng thời gian onsite (Time-on-site).</p><p><strong>Kết luận:</strong> Thích ứng nhanh là chìa khóa. Tại HN Media, chúng tôi đã sẵn sàng các gói giải pháp Video Marketing 2026 tích hợp AI để giúp thương hiệu của bạn dẫn đầu xu hướng.</p>",
+      "sections": [
+        {
+          "type": "text",
+          "title": "Bạn cần tư vấn chiến lược?",
+          "body": "Đừng để thương hiệu của bạn chìm nghỉm giữa biển thông tin. Hãy để đội ngũ sáng tạo của chúng tôi giúp bạn kể câu chuyện thương hiệu theo cách ấn tượng nhất."
+        },
+        {
+          "type": "cta",
+          "title": "Nhận tư vấn miễn phí",
+          "ctaText": "Gặp chuyên gia",
+          "ctaLink": "contact.html"
+        }
+      ]
     }
   ]
 }
