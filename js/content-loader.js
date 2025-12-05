@@ -1006,6 +1006,173 @@ function renderAbout(el, data) {
     // Combine
     el.innerHTML = hero + statsHtml + listHtml + clientsHtml + ctaHtml + renderSections(data.sections || []);
   }
+  // ============================================================
+  // [NEW] NEWS PAGE RENDERER (UPGRADED)
+  // ============================================================
+  function renderNews(el, data) {
+    // 1. HERO SECTION (Blog Header)
+    var hero = `
+      <section class="pt-20 pb-12 md:pt-28 md:pb-20 bg-slate-50 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-64 h-64 bg-emerald-200/40 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-80 h-80 bg-blue-200/40 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10" data-aos="fade-down">
+            <div class="inline-block py-1 px-3 mb-4 rounded-full bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-widest shadow-sm">
+                Blog & Updates
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                ${TF(data, 'title')}
+            </h1>
+            <p class="text-slate-500 text-lg mb-10 max-w-2xl mx-auto">
+                ${TF(data, 'description') || TR('Cập nhật những xu hướng mới nhất về công nghệ, marketing và câu chuyện thành công của chúng tôi.','Update the latest trends in technology, marketing and our success stories.')}
+            </p>
+            
+            <div class="max-w-xl mx-auto">
+                <div class="relative group mb-6">
+                    <input type="text" placeholder="${TR('Tìm kiếm bài viết...','Search articles...')}" class="w-full py-4 pl-6 pr-14 rounded-full border border-slate-200 shadow-sm focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all">
+                    <button class="absolute right-2 top-2 bottom-2 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 group-focus-within:bg-emerald-500 group-focus-within:text-white transition-all">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="flex flex-wrap justify-center gap-2 text-sm text-slate-500">
+                    <span class="font-bold mr-2 text-slate-400">Trending:</span>
+                    <span class="cursor-pointer hover:text-emerald-600 transition-colors">#DigitalMarketing</span>
+                    <span class="cursor-pointer hover:text-emerald-600 transition-colors">#DesignTrends</span>
+                    <span class="cursor-pointer hover:text-emerald-600 transition-colors">#Technology</span>
+                </div>
+            </div>
+        </div>
+      </section>
+    `;
+
+    // 2. FEATURED POST (Lấy bài mới nhất làm tiêu điểm)
+    var items = data.items || [];
+    var featuredHtml = '';
+    var gridHtml = '';
+
+    if (items.length > 0) {
+        // Tách bài đầu tiên làm Featured
+        var feat = items[0];
+        var others = items.slice(1);
+
+        // Featured Section
+        featuredHtml = `
+        <section class="py-12 relative -mt-10 z-20 px-4">
+            <div class="max-w-6xl mx-auto">
+                <a href="?page=news-detail&id=${feat.slug}" data-page-link="news-detail" class="group relative block rounded-3xl overflow-hidden bg-white shadow-xl border border-slate-100 hover:shadow-2xl transition-all duration-300" data-aos="fade-up">
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <div class="relative h-64 md:h-auto overflow-hidden">
+                            <img src="${feat.image}" alt="${TF(feat, 'title')}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-emerald-600 uppercase tracking-wide">
+                                ${TR('Mới nhất','Latest')}
+                            </div>
+                        </div>
+                        <div class="p-8 md:p-12 flex flex-col justify-center">
+                            <div class="flex items-center gap-3 text-slate-400 text-xs font-bold uppercase tracking-wider mb-4">
+                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> ${feat.date}</span>
+                                <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
+                                <span>${feat.author || 'Admin'}</span>
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-4 group-hover:text-emerald-600 transition-colors leading-tight">
+                                ${TF(feat, 'title')}
+                            </h2>
+                            <p class="text-slate-500 mb-6 line-clamp-3 leading-relaxed">
+                                ${TF(feat, 'summary')}
+                            </p>
+                            <div class="flex items-center text-emerald-600 font-bold text-sm uppercase tracking-widest group/btn">
+                                ${TR('Đọc ngay','Read Now')} 
+                                <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover/btn:translate-x-2 transition-transform"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+        `;
+
+        // Grid Section (Các bài còn lại)
+        if (others.length > 0) {
+            gridHtml = `
+            <section class="py-16 bg-white">
+                <div class="max-w-6xl mx-auto px-4">
+                    <h3 class="font-bold text-xl text-slate-900 mb-8 flex items-center gap-2">
+                        <span class="w-2 h-8 bg-emerald-500 rounded-full"></span>
+                        ${TR('Bài viết mới','Recent Articles')}
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${others.map((item, i) => `
+                            <a href="?page=news-detail&id=${item.slug}" data-page-link="news-detail" class="group flex flex-col h-full bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i * 100}">
+                                <div class="relative h-52 overflow-hidden bg-slate-100">
+                                    <img src="${item.image}" alt="${TF(item, 'title')}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+                                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors"></div>
+                                </div>
+                                <div class="p-6 flex flex-col flex-1">
+                                    <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                                        <span class="flex items-center gap-1.5 font-medium"><i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-500"></i> ${item.date}</span>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
+                                        ${TF(item, 'title')}
+                                    </h4>
+                                    <p class="text-slate-500 text-sm line-clamp-3 mb-4 flex-1">
+                                        ${TF(item, 'summary')}
+                                    </p>
+                                    <div class="pt-4 border-t border-slate-50 flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+                                                <i data-lucide="user" class="w-3 h-3"></i>
+                                            </div>
+                                            <span class="text-xs font-bold text-slate-500">${item.author || 'Writer'}</span>
+                                        </div>
+                                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider group-hover:translate-x-1 transition-transform">Read &rarr;</span>
+                                    </div>
+                                </div>
+                            </a>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="mt-12 flex justify-center gap-2">
+                        <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:border-emerald-500 hover:text-emerald-600 transition-colors"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                        <button class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center shadow-lg shadow-emerald-500/30">1</button>
+                        <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 font-bold hover:border-emerald-500 hover:text-emerald-600 transition-colors">2</button>
+                        <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 font-bold hover:border-emerald-500 hover:text-emerald-600 transition-colors">3</button>
+                        <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:border-emerald-500 hover:text-emerald-600 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+    } else {
+        // Fallback if no items
+        gridHtml = `<div class="py-20 text-center text-slate-400">Chưa có bài viết nào.</div>`;
+    }
+
+    // 3. NEWSLETTER CTA
+    var newsletterHtml = `
+      <section class="py-20 bg-gradient-to-br from-emerald-900 to-slate-900 relative overflow-hidden text-white">
+         <div class="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+         
+         <div class="max-w-4xl mx-auto px-4 text-center relative z-10" data-aos="zoom-in">
+             <div class="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur rounded-2xl mb-6 text-emerald-400">
+                <i data-lucide="mail" class="w-8 h-8"></i>
+             </div>
+             <h2 class="text-3xl font-bold mb-4">${TR('Đăng ký nhận bản tin','Subscribe to our Newsletter')}</h2>
+             <p class="text-slate-300 mb-8 max-w-lg mx-auto">${TR('Nhận những bài viết mới nhất, tài liệu chuyên sâu và ưu đãi độc quyền trực tiếp vào email của bạn.','Get the latest articles, in-depth resources and exclusive offers directly to your email.')}</p>
+             
+             <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Đã đăng ký!');">
+                 <input type="email" placeholder="Email address" required class="flex-1 bg-white/10 border border-white/20 rounded-xl px-5 py-3.5 text-white placeholder-slate-400 outline-none focus:bg-white/20 focus:border-emerald-500 transition-all">
+                 <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-3.5 rounded-xl transition-colors shadow-lg">
+                    ${TR('Đăng ký','Subscribe')}
+                 </button>
+             </form>
+             <p class="mt-4 text-xs text-slate-500">${TR('Chúng tôi cam kết không spam. Hủy đăng ký bất cứ lúc nào.','No spam guaranteed. Unsubscribe anytime.')}</p>
+         </div>
+      </section>
+    `;
+
+    // Combine
+    el.innerHTML = hero + featuredHtml + gridHtml + newsletterHtml + renderSections(data.sections || []);
+  }
   // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
@@ -1041,6 +1208,10 @@ function renderAbout(el, data) {
     else if (page === 'portfolio') {
         var portfolio = await fetchJson('content/portfolio.json');
         renderPortfolio(el, portfolio || {});
+    }
+    else if (page === 'news') {
+        var news = await fetchJson('content/news.json');
+        renderNews(el, news || {});
     }
     else if(page === 'news-detail'){ 
         var news = await fetchJson('content/news.json'); 
