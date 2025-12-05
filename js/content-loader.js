@@ -1342,6 +1342,138 @@ function renderAbout(el, data) {
     // Combine
     el.innerHTML = hero + perksHtml + processHtml + listHtml + ctaHtml + renderSections(data.sections || []);
   }
+  // ============================================================
+  // [NEW] CONTACT PAGE RENDERER (UPGRADED)
+  // ============================================================
+  function renderContact(el, data) {
+    // 1. HERO SECTION
+    var coverImg = data.image || 'images/hero/contact-placeholder.jpg'; // Dùng ảnh cover nếu có, hoặc placeholder
+    
+    var hero = `
+      <section class="pt-24 pb-12 md:pt-32 md:pb-20 bg-slate-50 relative overflow-hidden">
+         <div class="absolute top-0 right-0 w-96 h-96 bg-emerald-200/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+         <div class="absolute bottom-0 left-0 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+
+         <div class="max-w-4xl mx-auto px-4 text-center relative z-10" data-aos="fade-down">
+            <div class="inline-flex items-center gap-2 py-1.5 px-4 mb-6 rounded-full bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-widest shadow-sm">
+                <i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i>
+                ${TR('Kết nối ngay', 'Get in Touch')}
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                ${TF(data, 'title') || TR('Liên hệ với chúng tôi','Contact Us')}
+            </h1>
+            <p class="text-slate-500 text-lg mb-0 max-w-2xl mx-auto">
+                ${TR('Chúng tôi luôn sẵn sàng lắng nghe ý kiến của bạn. Hãy gửi tin nhắn hoặc ghé thăm văn phòng của chúng tôi.','We are always ready to listen to your opinions. Send a message or visit our office.')}
+            </p>
+         </div>
+      </section>
+    `;
+
+    // 2. MAIN CONTENT (Info + Form)
+    var infoCards = [
+        { title: 'Hotline', val: data.phone, icon: 'phone', link: `tel:${data.phone}`, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { title: 'Email', val: data.email, icon: 'mail', link: `mailto:${data.email}`, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { title: TR('Địa chỉ','Address'), val: data.address, icon: 'map-pin', link: '#map-section', color: 'text-orange-600', bg: 'bg-orange-50' }
+    ];
+
+    var socialHtml = '';
+    if(data.facebook || data.zalo) {
+        socialHtml = `
+            <div class="mt-8 pt-8 border-t border-slate-100">
+                <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">${TR('Mạng xã hội','Follow Us')}</h3>
+                <div class="flex gap-4">
+                    ${data.facebook ? `<a href="${data.facebook}" target="_blank" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30"><i data-lucide="facebook" class="w-5 h-5"></i></a>` : ''}
+                    ${data.zalo ? `<a href="${data.zalo}" target="_blank" class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/30 font-bold text-xs">Zalo</a>` : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    var mainContent = `
+      <section class="py-12 md:py-20 bg-white relative">
+         <div class="max-w-6xl mx-auto px-4">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+                
+                <div data-aos="fade-right">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-8">${TR('Thông tin liên hệ','Contact Information')}</h2>
+                    <div class="space-y-6">
+                        ${infoCards.map((item, i) => `
+                            <a href="${item.link}" class="flex items-start gap-4 p-4 rounded-2xl border border-slate-100 bg-white hover:border-emerald-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+                                <div class="w-12 h-12 ${item.bg} ${item.color} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="${item.icon}" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">${item.title}</div>
+                                    <div class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">${item.val}</div>
+                                </div>
+                            </a>
+                        `).join('')}
+                    </div>
+                    ${socialHtml}
+                </div>
+
+                <div data-aos="fade-left">
+                    <div class="bg-white p-8 md:p-10 rounded-3xl border border-slate-100 shadow-2xl shadow-slate-200/50 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 to-blue-500"></div>
+                        
+                        <h2 class="text-2xl font-bold text-slate-900 mb-2">${TR('Gửi tin nhắn','Send Message')}</h2>
+                        <p class="text-slate-500 mb-8 text-sm">${TR('Vui lòng điền vào biểu mẫu bên dưới, chúng tôi sẽ phản hồi trong vòng 24h.','Please fill out the form below, we will reply within 24 hours.')}</p>
+                        
+                        <form name="contact" method="POST" data-netlify="true" class="space-y-5">
+                            <input type="hidden" name="form-name" value="contact">
+                            
+                            <div class="grid md:grid-cols-2 gap-5">
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-700 uppercase ml-1">${TR('Họ tên','Full Name')}</label>
+                                    <input class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all" name="name" required placeholder="Nguyen Van A">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-700 uppercase ml-1">Email</label>
+                                    <input type="email" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all" name="email" required placeholder="example@email.com">
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 uppercase ml-1">${TR('Tiêu đề (Tùy chọn)','Subject (Optional)')}</label>
+                                <input class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all" name="subject" placeholder="${TR('Hợp tác dự án...','Project collaboration...')}">
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-700 uppercase ml-1">${TR('Nội dung','Message')}</label>
+                                <textarea class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 transition-all min-h-[120px]" name="message" required placeholder="${TR('Nội dung tin nhắn...','Your message...')}"></textarea>
+                            </div>
+
+                            <button class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-emerald-600 transition-all shadow-lg shadow-slate-900/20 flex items-center justify-center gap-2 group">
+                                <span>${TR('Gửi ngay','Send Now')}</span>
+                                <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+         </div>
+      </section>
+    `;
+
+    // 3. MAP SECTION
+    var mapHtml = '';
+    if (data.mapEmbed) {
+        mapHtml = `
+            <section id="map-section" class="w-full h-[400px] md:h-[500px] relative bg-slate-100 grayscale hover:grayscale-0 transition-all duration-700">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                    <span class="text-slate-400 text-sm animate-pulse">Loading Map...</span>
+                </div>
+                <div class="absolute inset-0 z-0 [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:border-0">
+                    ${data.mapEmbed}
+                </div>
+            </section>
+        `;
+    }
+
+    // Combine
+    el.innerHTML = hero + mainContent + mapHtml + renderSections(data.sections || []);
+  }
   // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
@@ -1389,6 +1521,10 @@ function renderAbout(el, data) {
     else if (page === 'careers') {
         var careers = await fetchJson('content/careers.json');
         renderCareers(el, careers || {});
+    }
+    else if(page === 'contact'){
+        var contact = await fetchJson('content/contact.json');
+        renderContact(el, contact || {});
     }
     else if(page === 'course-detail'){ 
         var courses = await fetchJson('content/courses.json');
