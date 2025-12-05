@@ -520,37 +520,71 @@ function renderAbout(el, data) {
   `;
 
   // 3. LỊCH SỬ HÌNH THÀNH (Timeline dọc)
+  // 3. LỊCH SỬ HÌNH THÀNH (NÂNG CẤP CHI TIẾT)
   var timelineHtml = '';
   if(data.history && data.history.length > 0) {
       var events = data.history.map((h, i) => `
-          <div class="relative pl-8 md:pl-12 group" data-aos="fade-up" data-aos-delay="${i * 50}">
-              <div class="absolute left-[-9px] top-1.5 w-5 h-5 rounded-full bg-emerald-500 border-4 border-white shadow-md group-hover:scale-125 group-hover:bg-emerald-600 transition-all z-10"></div>
-              <div class="mb-10">
-                  <span class="inline-block py-1 px-3 rounded bg-slate-100 text-slate-600 font-bold text-xs mb-2 group-hover:bg-emerald-100 group-hover:text-emerald-700 transition-colors">
+          <div class="relative pl-8 sm:pl-32 py-2 group" data-aos="fade-up" data-aos-delay="${i * 100}">
+              
+              <div class="flex flex-col sm:flex-row items-start sm:items-center sm:absolute left-0 top-2 sm:top-8 w-full sm:w-28 sm:justify-end sm:pr-8 mb-2 sm:mb-0 z-10">
+                  <span class="text-3xl sm:text-4xl font-black text-slate-200 group-hover:text-emerald-500 transition-colors duration-300">
                       ${h.year}
                   </span>
-                  <h4 class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-                      ${TF(h, 'event')}
-                  </h4>
+              </div>
+
+              <div class="absolute left-0 sm:left-32 top-0 bottom-0 w-px bg-slate-200 group-last:bottom-auto group-last:h-8"></div>
+              <div class="absolute left-[-5px] sm:left-[123px] top-4 sm:top-10 w-3 h-3 rounded-full bg-emerald-500 border-4 border-emerald-100 ring-2 ring-white shadow-sm group-hover:scale-150 group-hover:ring-emerald-200 transition-all duration-300 z-20"></div>
+
+              <div class="relative bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ml-4 sm:ml-8">
+                  <div class="absolute top-4 sm:top-10 -left-2 w-4 h-4 bg-white border-l border-b border-slate-100 transform rotate-45 z-0"></div>
+                  
+                  <div class="relative z-10">
+                      <div class="flex items-center gap-3 mb-3">
+                           <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider border border-emerald-100">
+                              Dấu ấn
+                           </span>
+                           <span class="h-px flex-1 bg-slate-100"></span>
+                      </div>
+                      <h4 class="text-lg md:text-xl font-bold text-slate-800 leading-snug">
+                          ${TF(h, 'event')}
+                      </h4>
+                      ${h.description ? `<p class="mt-3 text-slate-500 text-sm leading-relaxed border-t border-slate-50 pt-3">${TF(h, 'description')}</p>` : ''}
+                  </div>
               </div>
           </div>
       `).join('');
 
       timelineHtml = `
-          <section class="py-20 bg-slate-50/50">
-              <div class="max-w-3xl mx-auto px-4">
-                  <div class="text-center mb-12">
-                       <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full mb-4 inline-block">${TR('Chặng đường','Journey')}</span>
-                      <h2 class="text-3xl font-bold text-slate-900">${TR('Lịch sử hình thành','Our History')}</h2>
+          <section class="py-24 bg-slate-50 relative overflow-hidden">
+              <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+              
+              <div class="max-w-4xl mx-auto px-4 relative z-10">
+                  <div class="text-center mb-16" data-aos="fade-down">
+                       <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-white border border-emerald-100 px-4 py-1.5 rounded-full mb-6 inline-block shadow-sm">
+                          ${TR('Hành trình phát triển','Our Journey')}
+                       </span>
+                      <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                          ${TR('Lịch sử hình thành','Company History')}
+                      </h2>
+                      <p class="text-slate-500 max-w-lg mx-auto">
+                          ${TR('Những cột mốc đáng nhớ trên con đường kiến tạo giá trị và khẳng định vị thế.','Memorable milestones on the path of creating value and affirming position.')}
+                      </p>
                   </div>
-                  <div class="relative border-l-2 border-emerald-100 ml-3 md:ml-0 md:translate-x-[0.5px]">
+
+                  <div class="relative pl-4 sm:pl-0">
                       ${events}
+                  </div>
+                  
+                  <div class="relative pl-8 sm:pl-32 pt-8" data-aos="fade-up">
+                       <div class="ml-4 sm:ml-8 flex items-center gap-4 text-slate-400 text-sm font-medium italic">
+                          <span class="w-8 h-px bg-slate-300"></span>
+                          ${TR('Và tiếp tục vươn xa...','And continuing to grow...')}
+                       </div>
                   </div>
               </div>
           </section>
       `;
   }
-
   // 4. ĐỘI NGŨ (Team Grid)
   var teamHtml = '';
   if(data.team && data.team.length > 0) {
