@@ -264,7 +264,7 @@ collections:
             name: partners
             widget: list
             collapsed: true
-            summary: '{{fields.name}} {{fields.is_strategic ? "(⭐ Chiến lược)" : ""}}'
+            summary: '{{fields.name}}'
             fields:
               - { label: Tên đối tác, name: name, widget: string }
               - { label: Logo, name: image, widget: image }
