@@ -74,7 +74,7 @@
   function cardBase(idx){ return `data-aos="fade-up" data-aos-delay="${(idx||0)*100}" class="group h-full flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-emerald-500/30 hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden"`; }
   function cardGlass(){ return 'rounded-2xl border border-white/40 bg-white/70 backdrop-blur-md shadow-sm'; }
 
-  // --- 4. BASIC CARDS (Dùng cho các trang danh sách chung) ---
+  // --- 4. BASIC CARDS ---
   function serviceCard(s, i){ 
     var img = s.image ? `<div class="relative h-48 overflow-hidden bg-slate-50 border-b border-slate-100"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${s.image}" alt="${TF(s,'title')}" loading="lazy"></div>` : ''; 
     return `<div ${cardBase(i)}>${img}<div class="p-5 flex flex-col flex-1"><div class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors mb-2">${TF(s,'title')}</div><p class="text-sm text-slate-500 leading-relaxed line-clamp-3">${TF(s,'description')}</p></div></div>`; 
@@ -145,14 +145,12 @@
 
   // --- 7. HOME SPECIALIZED RENDERERS ---
 
-  // Helper cho Logo đối tác
   function partnerLogo(p, sizeClass){ 
     var src = (typeof p==='string')?p:(p&&(p.image||p.logo||p.url))||''; 
     var h = sizeClass || 'h-20';
     return `<div class="flex-shrink-0 mx-8 ${h} flex items-center justify-center hover:scale-110 transition-transform duration-300"><img src="${src}" class="h-full w-auto object-contain" loading="lazy"></div>`; 
   }
 
-  // Helper cho Dòng chạy chữ (Marquee)
   function renderMarqueeSection(list, title, direction, sizeClass) {
     if(!list || !list.length) return '';
     var fullList = [...list, ...list, ...list, ...list]; 
@@ -173,7 +171,6 @@
     </section>`;
   }
 
-  // Render Section Đối tác (Phân loại Chiến lược / Tin tưởng)
   function renderPartners(home){ 
     var allPartners = (home && home.partners) || [];
     var strategicList = (home && home.strategic_partners) || allPartners.filter(function(p){ 
@@ -270,7 +267,7 @@
       `;
   }
 
-  // Render Section Dịch vụ (Card hiện đại)
+  // --- [FIX] CĂN GIỮA DỊCH VỤ ---
   function renderHomeServices(svc) {
       if (!svc || !svc.items || svc.items.length === 0) return '';
       
@@ -290,27 +287,25 @@
         </div>
       `).join('');
 
+      // Đã sửa class "text-center" cho phần header
       return `
       <section class="py-20 relative" data-section="services">
          <div class="max-w-6xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6" data-aos="fade-up">
-                <div class="max-w-2xl">
-                    <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full mb-4 inline-block">${TR('Dịch vụ','Services')}</span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">${TF(svc, 'title') || TR('Giải pháp toàn diện','Comprehensive Solutions')}</h2>
-                </div>
-                <a href="?page=services" data-page-link="services" class="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-full border border-slate-200 text-slate-400 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all"><i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+            <div class="text-center mb-12" data-aos="fade-up">
+                <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full mb-4 inline-block">${TR('Dịch vụ','Services')}</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">${TF(svc, 'title') || TR('Giải pháp toàn diện','Comprehensive Solutions')}</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 ${items}
             </div>
-             <div class="mt-8 text-center md:hidden">
-                <a href="?page=services" data-page-link="services" class="text-sm font-bold text-slate-900 border-b border-slate-900 pb-0.5">${TR('Xem tất cả dịch vụ','View All Services')}</a>
+             <div class="mt-8 text-center">
+                <a href="?page=services" data-page-link="services" class="inline-flex items-center justify-center gap-2 text-sm font-bold text-slate-900 hover:text-emerald-600 transition-colors border-b border-transparent hover:border-emerald-600 pb-0.5">${TR('Xem tất cả dịch vụ','View All Services')} <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
             </div>
          </div>
       </section>`;
   }
 
-  // Render Section Thành tựu (Cinematic Slide)
+  // --- [FIX] CĂN GIỮA PORTFOLIO ---
   function renderHomePortfolio(prt) {
       if (!prt || !prt.items || prt.items.length === 0) return '';
       
@@ -328,12 +323,11 @@
 
       return `
       <section class="py-20 bg-slate-900 text-white overflow-hidden" data-section="portfolio">
-         <div class="max-w-6xl mx-auto px-4 mb-10 flex items-center justify-between">
-            <div>
-                 <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest border border-emerald-500/30 px-3 py-1 rounded-full mb-4 inline-block">${TR('Thành tựu','Portfolio')}</span>
-                 <h2 class="text-3xl md:text-4xl font-bold">${TF(prt, 'title') || TR('Dự án tiêu biểu','Featured Projects')}</h2>
-            </div>
-             <div class="flex gap-2">
+         <div class="max-w-6xl mx-auto px-4 mb-10 text-center">
+             <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest border border-emerald-500/30 px-3 py-1 rounded-full mb-4 inline-block">${TR('Thành tựu','Portfolio')}</span>
+             <h2 class="text-3xl md:text-4xl font-bold mb-6">${TF(prt, 'title') || TR('Dự án tiêu biểu','Featured Projects')}</h2>
+             
+             <div class="flex justify-center gap-3">
                 <button class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-slate-900 transition-colors" onclick="document.getElementById('port-scroll').scrollBy({left: -300, behavior: 'smooth'})"><i data-lucide="arrow-left" class="w-4 h-4"></i></button>
                 <button class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-slate-900 transition-colors" onclick="document.getElementById('port-scroll').scrollBy({left: 300, behavior: 'smooth'})"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
             </div>
@@ -350,7 +344,6 @@
       </section>`;
   }
 
-  // Render Section Khóa học (Edu Card)
   function renderHomeCourses(crs) {
       if (!crs || !crs.items || crs.items.length === 0) return '';
       
@@ -392,7 +385,6 @@
 
   // --- 8. PAGE RENDERERS ---
 
-  // RENDER HOME (Tích hợp tất cả các thành phần)
   function renderHome(el, home, svc, crs, port){
     // 1. Hero
     var hero;
@@ -416,15 +408,14 @@
       hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg shadow-slate-200 hover:bg-emerald-600 hover:shadow-emerald-200 transition-all hover:-translate-y-1" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
     }
 
-    // 2. Intro Text
     var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
     
-    // 3. Stats & Features
     var stats = renderStats();
     var features = renderWhyChooseUs();
 
-    // 4. Quick Nav (Chips)
-    var chips = `<div class="max-w-6xl mx-auto px-4 sticky top-16 z-30 pointer-events-none"><div class="pointer-events-auto inline-flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-full shadow-lg px-6 mx-auto absolute left-1/2 -translate-x-1/2" data-aos="fade-in"><button onclick="document.querySelector('[data-section=\\'services\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dịch vụ','Services')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'portfolio\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dự án','Projects')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'courses\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Đào tạo','Academy')}</button></div></div>`;
+    // [FIX] CĂN GIỮA CHIPS (QUICK NAV)
+    // Sửa "absolute" thành Flexbox container để đảm bảo luôn ở giữa
+    var chips = `<div class="sticky top-16 z-30 pointer-events-none w-full"><div class="max-w-6xl mx-auto px-4 flex justify-center"><div class="pointer-events-auto inline-flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-full shadow-lg px-6" data-aos="fade-in"><button onclick="document.querySelector('[data-section=\\'services\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dịch vụ','Services')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'portfolio\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dự án','Projects')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'courses\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Đào tạo','Academy')}</button></div></div></div>`;
     
     // 5. Gọi các hàm render mới
     var newServices = renderHomeServices(svc);
@@ -437,7 +428,6 @@
                    renderSections(home.sections||[]);
   }
 
-  // Render Generic Page (About, Services List, etc.)
   function renderGeneric(el, data, type){
     var wrapperStart = `<div class="max-w-6xl mx-auto px-4 py-8">`;
     var wrapperEnd = `</div>`;
