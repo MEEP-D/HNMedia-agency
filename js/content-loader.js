@@ -441,7 +441,7 @@ function partnerLogo(p, sizeClass){
                    renderSections(home.sections||[]);
   }
 
-  function renderGeneric(el, data, type){
+function renderGeneric(el, data, type){
     var wrapperStart = `<div class="max-w-6xl mx-auto px-4 py-8">`;
     var wrapperEnd = `</div>`;
     var head = h1(TF(data,'title'));
