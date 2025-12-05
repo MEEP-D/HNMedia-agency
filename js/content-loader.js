@@ -10,7 +10,7 @@
   function lang(){ return document.body && document.body.dataset && document.body.dataset.lang==='en' ? 'en' : 'vi'; }
   function TF(obj, key){ var l = lang(); var ke = key + '_en'; return l==='en' && obj && obj[ke] ? obj[ke] : (obj && obj[key]) || ''; }
   function TR(vi, en){ return lang()==='en' ? (en||vi) : vi; }
-  
+   
   function setSEO(seo, page, cfg){
     var item = seo && (seo[page==='home'?'index':page]);
     if(item && item.title){ document.title = item.title; }
@@ -22,16 +22,12 @@
   // --- 2. NAVIGATION ---
   function setupNavigation() {
     document.body.addEventListener('click', async (e) => {
-        // Tìm thẻ a hoặc phần tử có data-page-link
         const link = e.target.closest('[data-page-link]');
         if (link) {
             e.preventDefault();
             const target = link.getAttribute('data-page-link');
             const href = link.getAttribute('href');
-            
-            // Cập nhật URL trình duyệt mà không load lại trang
             if(href && href !== '#') window.history.pushState({page: target}, '', href);
-            
             document.body.dataset.page = target;
             const menu = document.getElementById('menu');
             if(menu && !menu.classList.contains('hidden') && window.innerWidth < 768) {
@@ -46,12 +42,12 @@
 
   // --- 3. UI HELPER ---
   function h1(t){ return '<h1 class="text-xl md:text-2xl font-bold mb-6 text-slate-900 tracking-tight relative inline-block" data-aos="fade-right">' + t + '<span class="absolute -bottom-2 left-0 w-12 h-1 bg-emerald-500 rounded-full"></span></h1>'; }
-  
+   
   function getAnimAttr(anim) {
     if (!anim || anim.type === 'none') return '';
     return `data-aos="${anim.type||'fade-up'}" data-aos-delay="${anim.delay||0}" data-aos-duration="${(anim.duration||0.8)*1000}"`;
   }
-  
+   
   function getBackgroundStyle(bg) {
     if (!bg || bg.type === 'none') return '';
     if (bg.type === 'color') return `background-color: ${bg.color};`;
@@ -74,19 +70,16 @@
   function gridResponsive(){ return 'grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'; }
   function gridThree(){ return 'grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'; }
   function galleryGrid(){ return 'grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4'; }
-  
+   
   function cardBase(idx){ return `data-aos="fade-up" data-aos-delay="${(idx||0)*100}" class="group h-full flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-emerald-500/30 hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden"`; }
   function cardGlass(){ return 'rounded-2xl border border-white/40 bg-white/70 backdrop-blur-md shadow-sm'; }
 
-  // --- 4. CARDS (ĐÃ SỬA: Chuyển div thành a cho Course và News) ---
-  
+  // --- 4. BASIC CARDS (Dùng cho các trang danh sách chung) ---
   function serviceCard(s, i){ 
     var img = s.image ? `<div class="relative h-48 overflow-hidden bg-slate-50 border-b border-slate-100"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${s.image}" alt="${TF(s,'title')}" loading="lazy"></div>` : ''; 
-    // Service thường ít có trang chi tiết riêng, nhưng nếu muốn bấm được thì có thể trỏ về contact
     return `<div ${cardBase(i)}>${img}<div class="p-5 flex flex-col flex-1"><div class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors mb-2">${TF(s,'title')}</div><p class="text-sm text-slate-500 leading-relaxed line-clamp-3">${TF(s,'description')}</p></div></div>`; 
   }
 
-  // [FIX] Course Card: Dùng thẻ <a> để bao quanh, trỏ đúng link chi tiết
   function courseCard(c, i){ 
     var img = c.image ? `<div class="relative h-48 overflow-hidden bg-slate-50 border-b border-slate-100"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${c.image}" alt="${TF(c,'title')}" loading="lazy"></div>` : ''; 
     var link = `?page=course-detail&id=${c.slug}`;
@@ -107,7 +100,6 @@
       return `<div ${cardBase(i)}>${img}<div class="p-5"><div class="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors mb-1">${TF(p,'title')}</div><p class="text-sm text-slate-500">${TF(p,'result')}</p></div></div>`; 
   }
 
-  // [FIX] News Card: Dùng thẻ <a> để bao quanh, trỏ đúng link chi tiết
   function newsCard(n, i){ 
     var img = n.image ? `<div class="relative h-48 overflow-hidden bg-slate-50 border-b border-slate-100"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${n.image}" alt="${TF(n,'title')}" loading="lazy"></div>` : ''; 
     var date = n.date ? `<div class="text-[11px] text-emerald-600 font-bold mb-2 uppercase tracking-wide">${n.date}</div>` : ''; 
@@ -126,21 +118,21 @@
   }
 
   function careerCard(p, i){ var jobTitle = (TF(p,'title') || '').replace(/'/g, "\\'"); return `<div ${cardBase(i)}><div class="p-6 flex flex-col h-full"><div class="flex justify-between items-start mb-4"><span class="bg-emerald-50 text-emerald-600 rounded-lg p-2"><i data-lucide="briefcase" class="w-5 h-5"></i></span><span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-1 rounded uppercase">${TF(p,'location')}</span></div><div class="text-lg font-bold text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors">${TF(p,'title')}</div><p class="text-sm text-slate-500 mb-6 line-clamp-3 flex-1">${TF(p,'summary')}</p><button type="button" onclick="window.openApplyModal('${jobTitle}')" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-sm font-bold px-4 py-3 hover:bg-emerald-600 transition-all shadow-md cursor-pointer"><span>${TR('Ứng tuyển ngay','Apply Now')}</span></button></div></div>`; }
-  
+   
   function personCard(t, i){ return `<div ${cardBase(i)}><div class="p-6 flex items-center gap-5"><img src="${t.photo||''}" alt="${TF(t,'name')}" class="w-16 h-16 rounded-full border-2 border-white shadow-md object-cover" loading="lazy"><div><div class="text-base font-bold text-slate-900">${TF(t,'name')}</div><div class="text-xs text-emerald-600 font-bold uppercase tracking-wide mt-1">${TF(t,'role')}</div></div></div></div>`; }
-  
+   
   function imageTile(src, alt, idx){ return `<div class="group relative rounded-2xl overflow-hidden aspect-square shadow-sm cursor-zoom-in" data-aos="zoom-in" data-aos-delay="${idx*50}"><img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="${src}" alt="${alt||'Ảnh'}" loading="lazy"></div>`; }
 
   // --- 5. MODAL FORM ---
   function applyForm(pos){ const cls="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"; return `<form name="apply" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data"><input type="hidden" name="form-name" value="apply"><input type="hidden" name="position" value="${pos||''}"><div class="space-y-4"><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Họ tên</label><input class="${cls}" type="text" name="name" required></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Email</label><input class="${cls}" type="email" name="email" required></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">SĐT</label><input class="${cls}" type="tel" name="phone" required></div></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">CV</label><input class="${cls}" type="file" name="cv" accept=".pdf,.doc,.docx" required></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Portfolio</label><input class="${cls}" type="url" name="resume"></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Giới thiệu</label><textarea class="${cls}" name="message" rows="3" required></textarea></div><button class="w-full rounded-xl bg-emerald-600 text-white font-bold text-sm px-6 py-3.5 hover:bg-emerald-700 transition-all shadow-lg mt-2" type="submit">Gửi hồ sơ</button></div></form>`; }
   window.openApplyModal = function(pos){ var m=document.getElementById('apply-modal'); if(m) m.remove(); var wrap=document.createElement('div'); wrap.id='apply-modal'; wrap.className='fixed inset-0 z-[9999] flex items-center justify-center p-4'; wrap.innerHTML=`<style>@keyframes pop{0%{opacity:0;transform:scale(0.95)}100%{opacity:1;transform:scale(1)}}</style><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close></div><div class="relative z-10 max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" style="animation:pop 0.3s ease-out forwards"><div class="p-5 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-20"><div class="font-bold text-slate-800 text-lg">Ứng tuyển: ${pos||'Vị trí'}</div><button class="h-8 w-8 inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" data-close><i data-lucide="x" class="w-4 h-4"></i></button></div><div class="p-6 overflow-y-auto bg-white">${applyForm(pos)}</div></div>`; document.body.appendChild(wrap); document.body.style.overflow='hidden'; if(window.lucide) window.lucide.createIcons(); wrap.addEventListener('click',e=>{if(e.target.closest('[data-close]')){wrap.remove();document.body.style.overflow='';}}); }
 
-  // --- 6. RENDERERS ---
+  // --- 6. RENDERERS (Generic Sections) ---
   function renderSections(sections){ if(!sections||!sections.length) return ''; return sections.map(renderSection).join(''); }
-  
+   
   function renderSection(s){ 
     if (!s || !s.type) return '';
-    var t = s.type||'grid'; var animAttr = getAnimAttr(s.animation); var style = getBackgroundStyle(s.background);     
+    var t = s.type||'grid'; var animAttr = getAnimAttr(s.animation); var style = getBackgroundStyle(s.background);      
     var head = TF(s,'title') || TR('Tiêu đề khối','Content Block');
     var sub = TF(s,'subtitle') ? ('<p class="text-base text-slate-500 mb-8 max-w-2xl mx-auto text-center" data-aos="fade-in">' + TF(s,'subtitle') + '</p>') : ''; 
     var bodyContent = '';
@@ -151,48 +143,70 @@
     return section(head, bodyContent, style, animAttr); 
   }
 
-// Tìm hàm partnerLogo và sửa thành:
-function partnerLogo(p, sizeClass){ 
+  // --- 7. HOME SPECIALIZED RENDERERS ---
+
+  // Helper cho Logo đối tác
+  function partnerLogo(p, sizeClass){ 
     var src = (typeof p==='string')?p:(p&&(p.image||p.logo||p.url))||''; 
-    // Mặc định là h-20 nếu không truyền sizeClass
     var h = sizeClass || 'h-20';
     return `<div class="flex-shrink-0 mx-8 ${h} flex items-center justify-center hover:scale-110 transition-transform duration-300"><img src="${src}" class="h-full w-auto object-contain" loading="lazy"></div>`; 
-}  
-  // Tìm và thay thế toàn bộ hàm renderPartners bằng đoạn này:
-  
-  function renderPartners(home){ 
-    var list = (home && home.partners) || [];
-    var strategicList = (home && home.strategic_partners) || list; 
+  }
 
-    // CSS cho hiệu ứng chạy trái/phải
+  // Helper cho Dòng chạy chữ (Marquee)
+  function renderMarqueeSection(list, title, direction, sizeClass) {
+    if(!list || !list.length) return '';
+    var fullList = [...list, ...list, ...list, ...list]; 
+    var animClass = direction === 'right' ? 'animate-scroll-right' : 'animate-scroll-left';
+    var track = `<div class="flex marquee-track ${animClass}">${fullList.map(p => partnerLogo(p, sizeClass)).join('')}</div>`;
+    var duration = Math.max(30, list.length * 5); 
+
+    return `
+    <section class="py-10 reveal border-t border-slate-100 bg-slate-50/50" data-aos="fade-in">
+        <div class="w-full overflow-hidden">
+            ${title ? `<p class="text-center text-xs font-bold text-slate-400 mb-8 tracking-[0.2em] uppercase">${title}</p>` : ''}
+            <div class="marquee-wrapper relative group" style="--duration:${duration}s">
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
+                ${track}
+            </div>
+        </div>
+    </section>`;
+  }
+
+  // Render Section Đối tác (Phân loại Chiến lược / Tin tưởng)
+  function renderPartners(home){ 
+    var allPartners = (home && home.partners) || [];
+    var strategicList = (home && home.strategic_partners) || allPartners.filter(function(p){ 
+        return p.type === 'strategic' || p.is_strategic === true; 
+    });
+    var trustedList = (home && home.strategic_partners) ? allPartners : allPartners.filter(function(p){ 
+        return p.type !== 'strategic' && p.is_strategic !== true; 
+    });
+
     var styles = `
     <style>
        .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
        .marquee-track { display: flex; width: max-content; }
        .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
-       
-       /* Chạy sang trái (Mặc định) */
        .animate-scroll-left { animation: scroll-left var(--duration, 30s) linear infinite; }
-       @keyframes scroll-left { 
-           0% { transform: translateX(0); } 
-           100% { transform: translateX(-25%); } 
-       }
-
-       /* Chạy sang phải (Ngược lại) */
+       @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
        .animate-scroll-right { animation: scroll-right var(--duration, 30s) linear infinite; }
-       @keyframes scroll-right { 
-           0% { transform: translateX(-25%); } 
-           100% { transform: translateX(0); } 
-       }
+       @keyframes scroll-right { 0% { transform: translateX(-25%); } 100% { transform: translateX(0); } }
     </style>`;
-    var strategicHtml = renderMarqueeSection(strategicList, TR('Đối tác chiến lược','Strategic Partner'), 'right', 'h-24');
-    var trustedHtml = renderMarqueeSection(list, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-19');
+
+    var strategicHtml = '';
+    if (strategicList.length > 0) {
+        strategicHtml = renderMarqueeSection(strategicList, TR('Đối tác chiến lược','Strategic Partner'), 'right', 'h-24');
+    }
+    var trustedHtml = '';
+    if (trustedList.length > 0) {
+        trustedHtml = renderMarqueeSection(trustedList, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-16');
+    }
 
     return styles + strategicHtml + trustedHtml;
   }
 
-  // --- [MỚI] Render Section Dịch vụ (Giao diện Card hiện đại) ---
-  // --- 1. Hàm hiển thị Thống kê (Stats) ---
+  // Render Section Thống kê
   function renderStats(){
     const stats = [
         { num: '500+', label: TR('Dự án hoàn thành','Projects Completed'), icon: 'check-circle' },
@@ -223,7 +237,7 @@ function partnerLogo(p, sizeClass){
     </section>`;
   }
 
-  // --- 2. Hàm hiển thị "Tại sao chọn chúng tôi" ---
+  // Render Section Tại sao chọn chúng tôi
   function renderWhyChooseUs(){
       const features = [
           { title: TR('Sáng tạo đột phá','Creative Innovation'), desc: TR('Luôn cập nhật xu hướng mới nhất để tạo ra những sản phẩm độc bản.','Always updating the latest trends to create unique products.'), icon: 'zap' },
@@ -256,7 +270,7 @@ function partnerLogo(p, sizeClass){
       `;
   }
 
-  // --- 3. Render Section Dịch vụ (Giao diện Card hiện đại) ---
+  // Render Section Dịch vụ (Card hiện đại)
   function renderHomeServices(svc) {
       if (!svc || !svc.items || svc.items.length === 0) return '';
       
@@ -296,7 +310,7 @@ function partnerLogo(p, sizeClass){
       </section>`;
   }
 
-  // --- 4. Render Section Thành tựu (Slide trượt ngang Cinematic) ---
+  // Render Section Thành tựu (Cinematic Slide)
   function renderHomePortfolio(prt) {
       if (!prt || !prt.items || prt.items.length === 0) return '';
       
@@ -336,7 +350,7 @@ function partnerLogo(p, sizeClass){
       </section>`;
   }
 
-  // --- 5. Render Section Khóa học (Giao diện Edu chuyên nghiệp) ---
+  // Render Section Khóa học (Edu Card)
   function renderHomeCourses(crs) {
       if (!crs || !crs.items || crs.items.length === 0) return '';
       
@@ -376,9 +390,11 @@ function partnerLogo(p, sizeClass){
       </section>`;
   }
 
-  // --- 6. RENDER HOME CHÍNH (GỌI TẤT CẢ CÁC HÀM TRÊN) ---
+  // --- 8. PAGE RENDERERS ---
+
+  // RENDER HOME (Tích hợp tất cả các thành phần)
   function renderHome(el, home, svc, crs, port){
-    // 1. Hero Section
+    // 1. Hero
     var hero;
     var heroImg = (home.hero && home.hero.image) || 'images/hero/placeholder.jpg';
     if(home.hero && home.hero.fullscreen){
@@ -403,7 +419,7 @@ function partnerLogo(p, sizeClass){
     // 2. Intro Text
     var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
     
-    // 3. Stats & Features (Đã được định nghĩa ở trên)
+    // 3. Stats & Features
     var stats = renderStats();
     var features = renderWhyChooseUs();
 
@@ -420,33 +436,14 @@ function partnerLogo(p, sizeClass){
                    `<div class="pt-10">` + newServices + newPortfolio + newCourses + `</div>` + 
                    renderSections(home.sections||[]);
   }
-    // 2. Intro Text
-    var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
-    
-    // 3. Stats & Features (Giữ lại theo yêu cầu trước đó)
-    var stats = renderStats();
-    var features = renderWhyChooseUs();
 
-    // 4. Quick Nav (Chips)
-    var chips = `<div class="max-w-6xl mx-auto px-4 sticky top-16 z-30 pointer-events-none"><div class="pointer-events-auto inline-flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-full shadow-lg px-6 mx-auto absolute left-1/2 -translate-x-1/2" data-aos="fade-in"><button onclick="document.querySelector('[data-section=\\'services\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dịch vụ','Services')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'portfolio\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dự án','Projects')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'courses\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Đào tạo','Academy')}</button></div></div>`;
-    
-    // 5. [NÂNG CẤP] Gọi các hàm render mới
-    var newServices = renderHomeServices(svc);
-    var newPortfolio = renderHomePortfolio(port);
-    var newCourses = renderHomeCourses(crs);
-
-    // Gộp tất cả lại
-    el.innerHTML = hero + renderPartners(home) + intro + stats + features + chips + 
-                   `<div class="pt-10">` + newServices + newPortfolio + newCourses + `</div>` + 
-                   renderSections(home.sections||[]);
-  }
-
-function renderGeneric(el, data, type){
+  // Render Generic Page (About, Services List, etc.)
+  function renderGeneric(el, data, type){
     var wrapperStart = `<div class="max-w-6xl mx-auto px-4 py-8">`;
     var wrapperEnd = `</div>`;
     var head = h1(TF(data,'title'));
     var cover = data.cover ? `<div data-aos="zoom-in" class="rounded-3xl overflow-hidden shadow-xl h-[400px] mb-12"><img class="w-full h-full object-cover" src="${data.cover}" alt="Cover"></div>` : '';
-    
+     
     var content = '';
     if(type==='about'){
        content = `<div class="grid md:grid-cols-2 gap-8 mb-12" data-aos="fade-up"><div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100"><b class="text-xl text-slate-900 block mb-3">${TR('Tầm nhìn','Vision')}</b><p class="text-slate-600 leading-relaxed">${TF(data,'vision')}</p></div><div class="bg-blue-50 p-8 rounded-3xl border border-blue-100"><b class="text-xl text-slate-900 block mb-3">${TR('Sứ mệnh','Mission')}</b><p class="text-slate-600 leading-relaxed">${TF(data,'mission')}</p></div></div><div class="mb-12"><h2 class="text-xl font-bold text-center mb-8 uppercase tracking-widest">Đội ngũ</h2><div class="${gridThree()}">${(data.team||[]).map((t,i)=>personCard(t,i)).join('')}</div></div>`;
@@ -465,107 +462,27 @@ function renderGeneric(el, data, type){
   function renderNewsDetail(el, news){
     var id = q('id'); var item = (news.items||[]).find(x=>x.slug===id);
     if(!item){ el.innerHTML = `<div class="max-w-6xl mx-auto px-4 py-20 text-center font-bold text-slate-400">Không tìm thấy tin tức</div>`; return; }
-    
+     
     var head = h1(TF(item,'title')||'');
     var cover = item.image ? (`<div data-aos="zoom-in" class="relative rounded-2xl overflow-hidden shadow-lg mb-8"><img class="w-full h-auto object-cover" src="${item.image}" alt="${item.title||'Tin tức'}" loading="eager"></div>`) : '';
     var meta = item.date ? (`<div class="flex items-center gap-4 text-sm text-slate-500 mb-6 border-b border-slate-100 pb-4"><span class="flex items-center gap-1"><i data-lucide="calendar" class="w-4 h-4 text-emerald-500"></i> ${item.date}</span>${item.author ? ('<span class="flex items-center gap-1"><i data-lucide="user" class="w-4 h-4 text-emerald-500"></i> ' + item.author + '</span>') : ''}</div>`) : '';
     var body = `<article class="bg-white p-8 md:p-10 rounded-2xl border border-slate-100 shadow-sm" data-aos="fade-up"><div class="prose prose-slate prose-lg max-w-none text-slate-700 leading-loose">${window.marked ? marked.parse(lang()==='en' && item.body_en ? item.body_en : (item.body||'')) : (item.body||'')}</div></article>`;
-    
+     
     el.innerHTML = `<div class="max-w-4xl mx-auto px-4 py-12">${head}${meta}${cover}${body}</div>` + renderSections(item.sections||[]);
   }
-  // Tìm hàm renderPartners và thay thế toàn bộ nội dung bên trong bằng:
-// Tìm và thay thế toàn bộ hàm renderPartners bằng đoạn này:
-  
-  function renderPartners(home){ 
-    // 1. Lấy toàn bộ danh sách đối tác từ JSON
-    var allPartners = (home && home.partners) || [];
-    
-    // 2. LỌC DANH SÁCH (Setting phân loại)
-    
-    // Nhóm Chiến lược: Lấy những item có "type": "strategic" HOẶC nằm trong mảng riêng 'strategic_partners'
-    var strategicList = (home && home.strategic_partners) || allPartners.filter(function(p){ 
-        return p.type === 'strategic' || p.is_strategic === true; 
-    });
 
-    // Nhóm Tin tưởng: Lấy những item CÒN LẠI (không phải chiến lược)
-    // Nếu đã dùng mảng riêng thì dùng mảng 'partners', còn không thì lọc ngược lại
-    var trustedList = (home && home.strategic_partners) ? allPartners : allPartners.filter(function(p){ 
-        return p.type !== 'strategic' && p.is_strategic !== true; 
-    });
-
-    // CSS cho hiệu ứng chạy
-    var styles = `
-    <style>
-       .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
-       .marquee-track { display: flex; width: max-content; }
-       .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
-       
-       /* Chạy sang trái */
-       .animate-scroll-left { animation: scroll-left var(--duration, 30s) linear infinite; }
-       @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
-
-       /* Chạy sang phải */
-       .animate-scroll-right { animation: scroll-right var(--duration, 30s) linear infinite; }
-       @keyframes scroll-right { 0% { transform: translateX(-25%); } 100% { transform: translateX(0); } }
-    </style>`;
-
-    // --- HIỂN THỊ ---
-    
-    // 1. Hàng trên: ĐỐI TÁC CHIẾN LƯỢC (Nếu có dữ liệu thì mới hiện)
-    // - Hướng: 'right' (Sang phải)
-    // - Size: 'h-24' (To nhất)
-    var strategicHtml = '';
-    if (strategicList.length > 0) {
-        strategicHtml = renderMarqueeSection(strategicList, TR('Đối tác chiến lược','Strategic Partner'), 'right', 'h-24');
-    }
-
-    // 2. Hàng dưới: ĐỐI TÁC TIN TƯỞNG (Nếu có dữ liệu thì mới hiện)
-    // - Hướng: 'left' (Sang trái)
-    // - Size: 'h-16' (Nhỏ hơn chút)
-    var trustedHtml = '';
-    if (trustedList.length > 0) {
-        trustedHtml = renderMarqueeSection(trustedList, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-16');
-    }
-
-    return styles + strategicHtml + trustedHtml;
-  }
-// Thêm hàm mới này hoặc sửa hàm cũ tương ứng:
-function renderMarqueeSection(list, title, direction, sizeClass) {
-    if(!list || !list.length) return '';
-    
-    var fullList = [...list, ...list, ...list, ...list]; // Nhân bản logo để chạy mượt
-    
-    // Logic chọn class animation dựa trên hướng
-    var animClass = direction === 'right' ? 'animate-scroll-right' : 'animate-scroll-left';
-    
-    var track = `<div class="flex marquee-track ${animClass}">${fullList.map(p => partnerLogo(p, sizeClass)).join('')}</div>`;
-
-    var duration = Math.max(30, list.length * 5); // Tính toán tốc độ
-
-    return `
-    <section class="py-10 reveal border-t border-slate-100 bg-slate-50/50" data-aos="fade-in">
-        <div class="w-full overflow-hidden">
-            ${title ? `<p class="text-center text-xs font-bold text-slate-400 mb-8 tracking-[0.2em] uppercase">${title}</p>` : ''}
-            <div class="marquee-wrapper relative group" style="--duration:${duration}s">
-                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 to-transparent z-10"></div>
-                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 to-transparent z-10"></div>
-                ${track}
-            </div>
-        </div>
-    </section>`;
-}
-  // --- 7. MAIN LOAD LOGIC ---
+  // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
     var cfg = await fetchJson('content/config.json');
     var seo = await fetchJson('content/seo.json');
     setSEO(seo, page, cfg);
-    
+     
     var brandEl = document.querySelector('a[data-page-link="home"]');
     if(brandEl && cfg?.brand) { var logoHtml = cfg.brand.logo ? `<img src="${cfg.brand.logo}" class="h-8 w-auto rounded shadow-sm">` : ''; var nameHtml = `<span class="font-bold text-lg tracking-tight text-emerald-600">${cfg.brand.name}</span>`; brandEl.innerHTML = `<div class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">${logoHtml}${nameHtml}</div>`; }
 
     var el = document.getElementById('app');
-    
+     
     // ROUTING
     if(page === 'home' || page === 'index'){
         var home = await fetchJson('content/home.json');
@@ -626,7 +543,6 @@ function renderMarqueeSection(list, title, direction, sizeClass) {
         `;
 
         // 3. Render các cột liên kết (nếu có trong footer.json)
-        // Cấu trúc mong đợi: columns: [{title: "Về chúng tôi", links: [{text: "Giới thiệu", url: "#"}]}]
         var linksContent = '';
         if(footerData && footerData.columns){
             linksContent = footerData.columns.map(col => `
