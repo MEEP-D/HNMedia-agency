@@ -26,6 +26,10 @@ slug:
 # ĐỊNH NGHĨA DÙNG CHUNG (REUSABLE FIELDS)
 # ============================================================
 
+# ============================================================
+# ĐỊNH NGHĨA DÙNG CHUNG (REUSABLE FIELDS)
+# ============================================================
+
 x-sections_config: &sections_config
   label: Các khối nội dung (Sections)
   name: sections
@@ -89,21 +93,20 @@ x-sections_config: &sections_config
         - { label: Ảnh/Icon, name: image, widget: image, required: false }
         - { label: Link liên kết, name: link, widget: string, required: false }
 
+    # --- SỬA LỖI Ở ĐÂY ---
+    # Chuyển từ 'fields' (nhiều trường con) sang 'field' (một trường đơn)
+    # để tương thích với dữ liệu ảnh hiện có đang bị lỗi.
     - label: Images (Dùng cho GALLERY)
       name: images
       widget: list
       collapsed: true
       required: false
-      summary: '{{fields.image}}'
-      fields:
-        - { label: Chọn ảnh, name: image, widget: image }
-        - { label: Chú thích, name: caption, widget: string, required: false }
-        - { label: Alt Text (SEO), name: alt_text, widget: string, required: false }
+      field: { label: Chọn ảnh, name: image, widget: image }
+    # ---------------------
 
     - { label: Nút CTA (Text), name: ctaText, widget: string, required: false }
     - { label: Nút CTA (Text EN), name: ctaText_en, widget: string, required: false }
     - { label: Link Nút CTA, name: ctaLink, widget: string, required: false }
-
 # ============================================================
 # COLLECTIONS
 # ============================================================
