@@ -192,6 +192,71 @@ function partnerLogo(p, sizeClass){
   }
 
   // --- [MỚI] Render Section Dịch vụ (Giao diện Card hiện đại) ---
+  // --- 1. Hàm hiển thị Thống kê (Stats) ---
+  function renderStats(){
+    const stats = [
+        { num: '500+', label: TR('Dự án hoàn thành','Projects Completed'), icon: 'check-circle' },
+        { num: '98%', label: TR('Khách hàng hài lòng','Happy Clients'), icon: 'heart' },
+        { num: '50+', label: TR('Đối tác chiến lược','Strategic Partners'), icon: 'users' },
+        { num: '10+', label: TR('Năm kinh nghiệm','Years Experience'), icon: 'award' }
+    ];
+    
+    const items = stats.map((s, i) => `
+        <div class="text-center p-6" data-aos="fade-up" data-aos-delay="${i * 100}">
+            <div class="inline-flex items-center justify-center w-12 h-12 mb-4 rounded-full bg-emerald-500/10 text-emerald-400">
+                <i data-lucide="${s.icon}" class="w-6 h-6"></i>
+            </div>
+            <div class="text-4xl font-bold text-white mb-2 tracking-tight">${s.num}</div>
+            <div class="text-sm font-bold text-slate-400 uppercase tracking-wider">${s.label}</div>
+        </div>
+    `).join('');
+
+    return `
+    <section class="py-16 bg-slate-900 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-slate-800/50">
+                ${items}
+            </div>
+        </div>
+    </section>`;
+  }
+
+  // --- 2. Hàm hiển thị "Tại sao chọn chúng tôi" ---
+  function renderWhyChooseUs(){
+      const features = [
+          { title: TR('Sáng tạo đột phá','Creative Innovation'), desc: TR('Luôn cập nhật xu hướng mới nhất để tạo ra những sản phẩm độc bản.','Always updating the latest trends to create unique products.'), icon: 'zap' },
+          { title: TR('Quy trình chuyên nghiệp','Professional Process'), desc: TR('Hệ thống làm việc bài bản từ khâu ý tưởng đến hậu kỳ.','Systematic workflow from ideation to post-production.'), icon: 'layers' },
+          { title: TR('Chi phí tối ưu','Optimal Cost'), desc: TR('Giải pháp hiệu quả nhất với ngân sách của doanh nghiệp.','The most effective solution for the business budget.'), icon: 'trending-up' }
+      ];
+
+      const items = features.map((f, i) => `
+        <div class="group p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i * 100}">
+            <div class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                <i data-lucide="${f.icon}" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 mb-3">${f.title}</h3>
+            <p class="text-slate-500 leading-relaxed">${f.desc}</p>
+        </div>
+      `).join('');
+
+      return `
+      <section class="py-20 bg-slate-50/50">
+        <div class="max-w-6xl mx-auto px-4">
+             <div class="text-center mb-12" data-aos="fade-down">
+                <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full mb-4 inline-block">Giá trị cốt lõi</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Tại sao chọn chúng tôi?</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                ${items}
+            </div>
+        </div>
+      </section>
+      `;
+  }
+
+  // --- 3. Render Section Dịch vụ (Giao diện Card hiện đại) ---
   function renderHomeServices(svc) {
       if (!svc || !svc.items || svc.items.length === 0) return '';
       
@@ -231,7 +296,7 @@ function partnerLogo(p, sizeClass){
       </section>`;
   }
 
-  // --- [MỚI] Render Section Thành tựu (Slide trượt ngang Cinematic) ---
+  // --- 4. Render Section Thành tựu (Slide trượt ngang Cinematic) ---
   function renderHomePortfolio(prt) {
       if (!prt || !prt.items || prt.items.length === 0) return '';
       
@@ -271,7 +336,7 @@ function partnerLogo(p, sizeClass){
       </section>`;
   }
 
-  // --- [MỚI] Render Section Khóa học (Giao diện Edu chuyên nghiệp) ---
+  // --- 5. Render Section Khóa học (Giao diện Edu chuyên nghiệp) ---
   function renderHomeCourses(crs) {
       if (!crs || !crs.items || crs.items.length === 0) return '';
       
@@ -311,7 +376,7 @@ function partnerLogo(p, sizeClass){
       </section>`;
   }
 
-  // --- UPDATED RENDER HOME ---
+  // --- 6. RENDER HOME CHÍNH (GỌI TẤT CẢ CÁC HÀM TRÊN) ---
   function renderHome(el, home, svc, crs, port){
     // 1. Hero Section
     var hero;
@@ -335,6 +400,26 @@ function partnerLogo(p, sizeClass){
       hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg shadow-slate-200 hover:bg-emerald-600 hover:shadow-emerald-200 transition-all hover:-translate-y-1" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
     }
 
+    // 2. Intro Text
+    var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
+    
+    // 3. Stats & Features (Đã được định nghĩa ở trên)
+    var stats = renderStats();
+    var features = renderWhyChooseUs();
+
+    // 4. Quick Nav (Chips)
+    var chips = `<div class="max-w-6xl mx-auto px-4 sticky top-16 z-30 pointer-events-none"><div class="pointer-events-auto inline-flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-full shadow-lg px-6 mx-auto absolute left-1/2 -translate-x-1/2" data-aos="fade-in"><button onclick="document.querySelector('[data-section=\\'services\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dịch vụ','Services')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'portfolio\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dự án','Projects')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'courses\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Đào tạo','Academy')}</button></div></div>`;
+    
+    // 5. Gọi các hàm render mới
+    var newServices = renderHomeServices(svc);
+    var newPortfolio = renderHomePortfolio(port);
+    var newCourses = renderHomeCourses(crs);
+
+    // Gộp tất cả lại
+    el.innerHTML = hero + renderPartners(home) + intro + stats + features + chips + 
+                   `<div class="pt-10">` + newServices + newPortfolio + newCourses + `</div>` + 
+                   renderSections(home.sections||[]);
+  }
     // 2. Intro Text
     var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
     
