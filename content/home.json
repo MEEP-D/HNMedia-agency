@@ -96,7 +96,8 @@
     },
     {
       "image": "/images/picture1.png",
-      "name": "Đối tác Chiến lược Global"
+      "name": "Đối tác Chiến lược Global",
+      "is_strategic": true
     },
     {
       "name": "Sáng tạo Nghệ thuật ArtSpace",
@@ -104,7 +105,8 @@
     },
     {
       "name": "23123123",
-      "image": "/images/thiết-kế-chưa-có-tên-1-.png"
+      "image": "/images/thiết-kế-chưa-có-tên-1-.png",
+      "is_strategic": true
     }
   ],
   "featured_partner_logo": "/images/picture1.png"
