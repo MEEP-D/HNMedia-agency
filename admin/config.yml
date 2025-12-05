@@ -265,11 +265,17 @@ collections:
 
           - { label: Logo Đối tác Nổi bật, name: featured_partner_logo, widget: image, required: false }
           
-          - label: Danh sách Đối tác khác
+          - label: Danh sách Đối tác
             name: partners
             widget: list
             collapsed: true
-            fields: [{label: Tên, name: name, widget: string}, {label: Logo, name: image, widget: image}]
+            # Hiển thị dấu sao ⭐ bên cạnh tên nếu là đối tác chiến lược để dễ quản lý
+            summary: '{{fields.name}} {{fields.is_strategic ? "(⭐ Chiến lược)" : ""}}'
+            fields:
+              - { label: Tên đối tác, name: name, widget: string }
+              - { label: Logo, name: image, widget: image }
+              # Thêm dòng này để bật tắt chế độ Chiến lược
+              - { label: Là đối tác chiến lược?, name: is_strategic, widget: boolean, default: false, required: false }
 
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
