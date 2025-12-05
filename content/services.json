@@ -26,29 +26,6 @@
       "description": "Dashboard, báo cáo"
     }
   ],
-  "sections": [
-    {
-      "items": [
-        {
-          "title": "abc",
-          "description": "**aacxczx**",
-          "description_en": "[Livescvxvbcvbcvb](https://hn-media-agency.vercel.app/course-detail.html?id=performance-ads)",
-          "link": "acxczxczxczxc",
-          "image": "/images/picture1.png"
-        }
-      ],
-      "body": "![liver](/images/picture1.png \"live\")",
-      "ctaLink": "xcvxcvxcv",
-      "ctaText_en": "xcvxcvxcv",
-      "background": {
-        "type": "color",
-        "color": "xanh"
-      },
-      "subtitle_en": "Live",
-      "subtitle": "Live",
-      "title": "Live",
-      "type": "text",
-      "ctaText": "xcvxxcvxcvxv"
-    }
-  ]
+  "sections": [],
+  "cover": "/images/penci_ai_image_1764864234613.jpg"
 }
