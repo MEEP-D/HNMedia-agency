@@ -191,21 +191,141 @@ function partnerLogo(p, sizeClass){
     return styles + strategicHtml + trustedHtml;
   }
 
+  // --- [MỚI] Render Section Dịch vụ (Giao diện Card hiện đại) ---
+  function renderHomeServices(svc) {
+      if (!svc || !svc.items || svc.items.length === 0) return '';
+      
+      const items = svc.items.slice(0, 4).map((item, i) => `
+        <div class="group relative bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-emerald-900/10 hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i * 100}">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-50 to-transparent rounded-bl-full -z-0 opacity-50 group-hover:scale-150 transition-transform duration-500"></div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 mb-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                     ${item.image ? `<img src="${item.image}" class="w-8 h-8 object-contain">` : `<i data-lucide="layers" class="w-7 h-7"></i>`}
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors">${TF(item, 'title')}</h3>
+                <p class="text-slate-500 text-sm leading-relaxed line-clamp-3 mb-6">${TF(item, 'description')}</p>
+                <a href="contact.html" class="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-400 group-hover:text-emerald-600 transition-colors">
+                    ${TR('Tìm hiểu thêm','Learn More')} <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+      `).join('');
+
+      return `
+      <section class="py-20 relative" data-section="services">
+         <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6" data-aos="fade-up">
+                <div class="max-w-2xl">
+                    <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full mb-4 inline-block">${TR('Dịch vụ','Services')}</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">${TF(svc, 'title') || TR('Giải pháp toàn diện','Comprehensive Solutions')}</h2>
+                </div>
+                <a href="?page=services" data-page-link="services" class="hidden md:inline-flex items-center justify-center w-12 h-12 rounded-full border border-slate-200 text-slate-400 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all"><i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                ${items}
+            </div>
+             <div class="mt-8 text-center md:hidden">
+                <a href="?page=services" data-page-link="services" class="text-sm font-bold text-slate-900 border-b border-slate-900 pb-0.5">${TR('Xem tất cả dịch vụ','View All Services')}</a>
+            </div>
+         </div>
+      </section>`;
+  }
+
+  // --- [MỚI] Render Section Thành tựu (Slide trượt ngang Cinematic) ---
+  function renderHomePortfolio(prt) {
+      if (!prt || !prt.items || prt.items.length === 0) return '';
+      
+      const items = prt.items.slice(0, 6).map((item, i) => `
+        <div class="snap-center shrink-0 w-[85vw] sm:w-[400px] relative group rounded-3xl overflow-hidden aspect-[4/5] cursor-pointer shadow-lg" data-aos="fade-up" data-aos-delay="${i * 100}">
+            <img src="${item.image}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                <div class="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">Case Study</div>
+                <h3 class="text-2xl font-bold text-white mb-2 leading-tight">${TF(item, 'title')}</h3>
+                <p class="text-slate-300 text-sm line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">${TF(item, 'result')}</p>
+            </div>
+        </div>
+      `).join('');
+
+      return `
+      <section class="py-20 bg-slate-900 text-white overflow-hidden" data-section="portfolio">
+         <div class="max-w-6xl mx-auto px-4 mb-10 flex items-center justify-between">
+            <div>
+                 <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest border border-emerald-500/30 px-3 py-1 rounded-full mb-4 inline-block">${TR('Thành tựu','Portfolio')}</span>
+                 <h2 class="text-3xl md:text-4xl font-bold">${TF(prt, 'title') || TR('Dự án tiêu biểu','Featured Projects')}</h2>
+            </div>
+             <div class="flex gap-2">
+                <button class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-slate-900 transition-colors" onclick="document.getElementById('port-scroll').scrollBy({left: -300, behavior: 'smooth'})"><i data-lucide="arrow-left" class="w-4 h-4"></i></button>
+                <button class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-slate-900 transition-colors" onclick="document.getElementById('port-scroll').scrollBy({left: 300, behavior: 'smooth'})"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+         </div>
+         
+         <div id="port-scroll" class="flex gap-6 overflow-x-auto snap-x snap-mandatory px-4 md:px-[max(1rem,calc((100vw-72rem)/2))] pb-10 hide-scrollbar" style="scrollbar-width: none; -ms-overflow-style: none;">
+            ${items}
+            <div class="snap-center shrink-0 w-[200px] flex items-center justify-center">
+                 <a href="?page=portfolio" data-page-link="portfolio" class="w-20 h-20 rounded-full border border-white/20 flex items-center justify-center hover:scale-110 hover:bg-emerald-600 hover:border-emerald-600 transition-all text-white">
+                    <span class="text-xs font-bold uppercase text-center">${TR('Xem<br>tất cả','View<br>All')}</span>
+                 </a>
+            </div>
+         </div>
+      </section>`;
+  }
+
+  // --- [MỚI] Render Section Khóa học (Giao diện Edu chuyên nghiệp) ---
+  function renderHomeCourses(crs) {
+      if (!crs || !crs.items || crs.items.length === 0) return '';
+      
+      const items = crs.items.slice(0, 3).map((item, i) => `
+        <a href="?page=course-detail&id=${item.slug}" data-page-link="course-detail" class="group flex flex-col bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i * 100}">
+            <div class="relative h-56 overflow-hidden">
+                <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur text-slate-900 text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                    ${item.format || 'Online'}
+                </div>
+            </div>
+            <div class="p-6 flex flex-col flex-1">
+                <div class="flex items-center gap-2 text-slate-500 text-xs font-bold mb-3 uppercase tracking-wide">
+                    <i data-lucide="clock" class="w-3 h-3 text-emerald-500"></i> ${item.duration}
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">${TF(item, 'title')}</h3>
+                <p class="text-slate-500 text-sm line-clamp-2 mb-6 flex-1">${TF(item, 'summary')}</p>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-sm font-bold text-slate-900">${TR('Đăng ký ngay','Register Now')}</span>
+                    <span class="w-8 h-8 rounded-full bg-slate-50 text-slate-900 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors"><i data-lucide="arrow-up-right" class="w-4 h-4"></i></span>
+                </div>
+            </div>
+        </a>
+      `).join('');
+
+      return `
+      <section class="py-20 bg-slate-50" data-section="courses">
+         <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12" data-aos="fade-down">
+                <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest bg-white border border-slate-100 px-3 py-1 rounded-full mb-4 inline-block">${TR('Đào tạo','Academy')}</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">${TF(crs, 'title') || TR('Khóa học chuyên sâu','Professional Courses')}</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                ${items}
+            </div>
+         </div>
+      </section>`;
+  }
+
+  // --- UPDATED RENDER HOME ---
   function renderHome(el, home, svc, crs, port){
+    // 1. Hero Section
     var hero;
     var heroImg = (home.hero && home.hero.image) || 'images/hero/placeholder.jpg';
-    
     if(home.hero && home.hero.fullscreen){
       var media = home.hero.video 
         ? `<video src="${home.hero.video}" class="absolute inset-0 w-full h-full object-cover z-0" autoplay muted loop playsinline></video>` 
         : `<img src="${heroImg}" class="absolute inset-0 w-full h-full object-cover object-center z-0 animate-scale-slow" alt="Hero" loading="eager">`;
-      
       hero = `<section class="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden bg-slate-900">
                 ${media}
-                <div class="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-black/40 z-10 pointer-events-none"></div>
                 <div class="relative z-20 text-center text-white px-4 max-w-5xl" data-aos="zoom-out">
                   <div class="inline-block py-1.5 px-4 mb-6 rounded-full bg-white/10 backdrop-blur border border-white/20 text-emerald-300 text-xs font-bold uppercase tracking-widest">${home.hero.slogan||'Welcome'}</div>
-                  <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-sans mb-6 leading-tight drop-shadow-2xl">${home.hero.title||''}</h1>
+                  <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-sans mb-6 leading-tight drop-shadow-2xl capitalize">${home.hero.title||''}</h1>
                   <p class="mb-10 max-w-2xl mx-auto text-lg md:text-xl text-white/95 font-light leading-relaxed drop-shadow-md">${home.hero.subtitle||''}</p>
                   ${home.hero.ctaText ? `<a class="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white font-bold px-10 py-4 hover:bg-emerald-500 transition-all hover:scale-105 shadow-2xl shadow-emerald-900/50 text-base" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-5 h-5"></i></a>`:''}
                 </div>
@@ -214,11 +334,26 @@ function partnerLogo(p, sizeClass){
     } else {
       hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg shadow-slate-200 hover:bg-emerald-600 hover:shadow-emerald-200 transition-all hover:-translate-y-1" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
     }
-    
+
+    // 2. Intro Text
     var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
-    var chips = `<div class="max-w-6xl mx-auto px-4 sticky top-16 z-30"><div class="flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border-b border-slate-100 rounded-b-2xl shadow-sm" data-aos="fade-in"><button data-page-target="all" class="shrink-0 rounded-full bg-slate-900 text-white px-5 py-2 text-xs font-bold shadow-md hover:bg-emerald-600 transition-colors">${TR('Tất cả','All')}</button><button data-page-target="services" class="shrink-0 rounded-full bg-white border border-slate-200 px-5 py-2 text-xs font-bold text-slate-600 hover:text-emerald-600 hover:border-emerald-200 transition-colors">${TR('Dịch vụ','Services')}</button><button data-page-target="courses" class="shrink-0 rounded-full bg-white border border-slate-200 px-5 py-2 text-xs font-bold text-slate-600 hover:text-emerald-600 hover:border-emerald-200 transition-colors">${TR('Khóa học','Courses')}</button></div></div>`;
     
-    el.innerHTML = hero + chips + renderPartners(home) + intro + `<div data-section="services">${section(TR('Dịch vụ','Services'), `<div class="${gridResponsive()}">${(svc.items||[]).slice(0,8).map((it,i)=>serviceCard(it,i)).join('')}</div>`,'','')}</div>` + `<div data-section="courses">${section(TR('Khóa học','Courses'), `<div class="${gridResponsive()}">${(crs.items||[]).slice(0,8).map((it,i)=>courseCard(it,i)).join('')}</div>`,'','')}</div>` + `<div data-section="portfolio">${section(TR('Thành tựu','Portfolio'), `<div class="${gridResponsive()}">${(port.items||[]).slice(0,8).map((it,i)=>caseCard(it,i)).join('')}</div>`,'','')}</div>` + renderSections(home.sections||[]);
+    // 3. Stats & Features (Giữ lại theo yêu cầu trước đó)
+    var stats = renderStats();
+    var features = renderWhyChooseUs();
+
+    // 4. Quick Nav (Chips)
+    var chips = `<div class="max-w-6xl mx-auto px-4 sticky top-16 z-30 pointer-events-none"><div class="pointer-events-auto inline-flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-full shadow-lg px-6 mx-auto absolute left-1/2 -translate-x-1/2" data-aos="fade-in"><button onclick="document.querySelector('[data-section=\\'services\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dịch vụ','Services')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'portfolio\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dự án','Projects')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'courses\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Đào tạo','Academy')}</button></div></div>`;
+    
+    // 5. [NÂNG CẤP] Gọi các hàm render mới
+    var newServices = renderHomeServices(svc);
+    var newPortfolio = renderHomePortfolio(port);
+    var newCourses = renderHomeCourses(crs);
+
+    // Gộp tất cả lại
+    el.innerHTML = hero + renderPartners(home) + intro + stats + features + chips + 
+                   `<div class="pt-10">` + newServices + newPortfolio + newCourses + `</div>` + 
+                   renderSections(home.sections||[]);
   }
 
   function renderGeneric(el, data, type){
