@@ -723,6 +723,151 @@ function renderAbout(el, data) {
     // Combine
     el.innerHTML = hero + processHtml + listHtml + ctaHtml + renderSections(data.sections || []);
   }
+  // ============================================================
+  // [NEW] COURSES PAGE RENDERER (UPGRADED)
+  // ============================================================
+  function renderCourses(el, data) {
+    // 1. HERO SECTION (Academy Style)
+    var coverImg = data.cover || 'images/hero/courses-placeholder.jpg';
+    var hero = `
+      <section class="py-16 md:py-24 bg-indigo-50 overflow-hidden relative">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-200/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                <div data-aos="fade-right">
+                    <div class="inline-flex items-center gap-2 py-1.5 px-4 mb-6 rounded-full bg-white text-indigo-600 text-xs font-bold uppercase tracking-widest border border-indigo-100 shadow-sm">
+                        <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                        ${TR('Đào tạo chuyên sâu', 'Professional Training')}
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                        ${TF(data, 'title')}
+                    </h1>
+                    <div class="prose prose-lg text-slate-600 mb-8 leading-relaxed">
+                        ${TF(data, 'description') || TR('Hệ thống khóa học thực chiến, cập nhật xu hướng công nghệ mới nhất giúp bạn làm chủ kỹ năng và bứt phá thu nhập.','Practical course system, updating the latest technology trends to help you master skills and break through income.')}
+                    </div>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="document.getElementById('course-list').scrollIntoView({behavior:'smooth'})" class="px-8 py-3.5 bg-indigo-600 text-white rounded-full font-bold hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-500/30 flex items-center gap-2">
+                            ${TR('Xem khóa học','Browse Courses')}
+                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="relative group" data-aos="fade-left">
+                    <div class="absolute inset-0 bg-indigo-600/10 rounded-[2rem] rotate-6 group-hover:rotate-12 transition-transform duration-500"></div>
+                    <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white aspect-square">
+                         <img src="${coverImg}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Course Cover">
+                         
+                         <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg border border-white flex items-center gap-3 animate-bounce-slow">
+                            <div class="w-10 h-10 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center">
+                                <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-500 font-bold uppercase">Rating</div>
+                                <div class="text-lg font-bold text-slate-900">4.9/5.0</div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+    `;
+
+    // 2. BENEFITS / FEATURES
+    var benefits = [
+        { title: TR('Giáo trình thực chiến','Practical Curriculum'), desc: TR('Nội dung được đúc kết từ dự án thực tế, loại bỏ lý thuyết sáo rỗng.','Content derived from real projects, eliminating empty theory.'), icon: 'book-open', color: 'text-indigo-600', bg: 'bg-indigo-50' },
+        { title: TR('Mentor tận tâm','Dedicated Mentors'), desc: TR('Đội ngũ giảng viên là các chuyên gia hàng đầu, hỗ trợ 1:1.','Instructors are top experts, providing 1:1 support.'), icon: 'users', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { title: TR('Chứng chỉ uy tín','Prestige Certificate'), desc: TR('Cấp chứng nhận hoàn thành, hỗ trợ giới thiệu việc làm đầu ra.','Completion certificate issued, job placement support.'), icon: 'award', color: 'text-orange-600', bg: 'bg-orange-50' }
+    ];
+
+    var featuresHtml = `
+      <section class="py-16 bg-white relative -mt-10 z-20">
+         <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                ${benefits.map((b, i) => `
+                    <div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-xl shadow-slate-200/50 hover:-translate-y-2 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i*100}">
+                        <div class="w-14 h-14 ${b.bg} ${b.color} rounded-2xl flex items-center justify-center mb-6">
+                            <i data-lucide="${b.icon}" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-3">${b.title}</h3>
+                        <p class="text-slate-500 leading-relaxed text-sm">${b.desc}</p>
+                    </div>
+                `).join('')}
+            </div>
+         </div>
+      </section>
+    `;
+
+    // 3. COURSE LIST
+    var listHtml = '';
+    if(data.items && data.items.length > 0) {
+        listHtml = `
+        <section id="course-list" class="py-24 bg-slate-50">
+             <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16" data-aos="fade-down">
+                    <span class="text-indigo-600 font-bold text-xs uppercase tracking-widest bg-white border border-indigo-100 px-4 py-1.5 rounded-full mb-6 inline-block shadow-sm">
+                        ${TR('Chương trình học','Curriculum')}
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">${TR('Khám phá các khóa học','Explore Courses')}</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto">${TR('Tìm kiếm khóa học phù hợp với trình độ và mục tiêu nghề nghiệp của bạn.','Find the course that suits your level and career goals.')}</p>
+                </div>
+                
+                <div class="${gridThree()}">
+                    ${data.items.map((t, i) => courseCard(t, i)).join('')}
+                </div>
+            </div>
+        </section>`;
+    }
+
+    // 4. STATS BAR
+    var statsHtml = `
+      <section class="py-16 bg-slate-900 text-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-800">
+                <div data-aos="fade-up" data-aos-delay="0">
+                    <div class="text-4xl font-bold mb-2 text-indigo-400">20+</div>
+                    <div class="text-xs uppercase font-bold tracking-wider text-slate-400">Khóa học</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl font-bold mb-2 text-indigo-400">1000+</div>
+                    <div class="text-xs uppercase font-bold tracking-wider text-slate-400">Học viên</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl font-bold mb-2 text-indigo-400">50+</div>
+                    <div class="text-xs uppercase font-bold tracking-wider text-slate-400">Chuyên gia</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-4xl font-bold mb-2 text-indigo-400">98%</div>
+                    <div class="text-xs uppercase font-bold tracking-wider text-slate-400">Hài lòng</div>
+                </div>
+            </div>
+        </div>
+      </section>
+    `;
+
+    // 5. CTA REGISTRATION
+    var ctaHtml = `
+      <section class="py-20 bg-white relative overflow-hidden">
+         <div class="max-w-4xl mx-auto px-4 text-center relative z-10" data-aos="zoom-in">
+             <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-pulse">
+                <i data-lucide="zap" class="w-8 h-8"></i>
+             </div>
+             <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">${TR('Chưa biết bắt đầu từ đâu?','Don\'t know where to start?')}</h2>
+             <p class="text-slate-500 mb-8 text-lg max-w-2xl mx-auto">${TR('Đừng lo lắng, hãy để lại thông tin để nhận lộ trình học tập cá nhân hóa miễn phí từ chuyên gia.','Don\'t worry, leave your info to receive a free personalized learning path from experts.')}</p>
+             <form class="max-w-md mx-auto relative flex items-center" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã đăng ký!');">
+                <input type="email" required placeholder="${TR('Nhập email của bạn...','Enter your email...')}" class="w-full bg-slate-50 border border-slate-200 rounded-full py-4 pl-6 pr-36 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all">
+                <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-full px-6 transition-colors shadow-md text-sm">
+                    ${TR('Tư vấn','Get Advice')}
+                </button>
+             </form>
+         </div>
+      </section>
+    `;
+
+    // Combine
+    el.innerHTML = hero + featuresHtml + listHtml + statsHtml + ctaHtml + renderSections(data.sections || []);
+  }
   // --- 9. MAIN LOAD LOGIC ---
   async function loadAndRenderContent(){
     var page = document.body.dataset.page || 'home';
@@ -750,6 +895,10 @@ function renderAbout(el, data) {
     else if (page === 'services') {
         var services = await fetchJson('content/services.json');
         renderServices(el, services || {});
+    }
+    else if (page === 'courses') {
+        var courses = await fetchJson('content/courses.json');
+        renderCourses(el, courses || {});
     }
     else if(page === 'news-detail'){ 
         var news = await fetchJson('content/news.json'); 
