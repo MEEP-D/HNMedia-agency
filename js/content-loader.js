@@ -254,42 +254,61 @@ function partnerLogo(p, sizeClass){
     el.innerHTML = `<div class="max-w-4xl mx-auto px-4 py-12">${head}${meta}${cover}${body}</div>` + renderSections(item.sections||[]);
   }
   // Tìm hàm renderPartners và thay thế toàn bộ nội dung bên trong bằng:
-function renderPartners(home){ 
-    var list = (home && home.partners) || [];
-    var strategicList = (home && home.strategic_partners) || list; 
+// Tìm và thay thế toàn bộ hàm renderPartners bằng đoạn này:
+  
+  function renderPartners(home){ 
+    // 1. Lấy toàn bộ danh sách đối tác từ JSON
+    var allPartners = (home && home.partners) || [];
+    
+    // 2. LỌC DANH SÁCH (Setting phân loại)
+    
+    // Nhóm Chiến lược: Lấy những item có "type": "strategic" HOẶC nằm trong mảng riêng 'strategic_partners'
+    var strategicList = (home && home.strategic_partners) || allPartners.filter(function(p){ 
+        return p.type === 'strategic' || p.is_strategic === true; 
+    });
 
-    // CSS define keyframes cho chạy trái và phải
+    // Nhóm Tin tưởng: Lấy những item CÒN LẠI (không phải chiến lược)
+    // Nếu đã dùng mảng riêng thì dùng mảng 'partners', còn không thì lọc ngược lại
+    var trustedList = (home && home.strategic_partners) ? allPartners : allPartners.filter(function(p){ 
+        return p.type !== 'strategic' && p.is_strategic !== true; 
+    });
+
+    // CSS cho hiệu ứng chạy
     var styles = `
     <style>
        .marquee-wrapper { overflow: hidden; white-space: nowrap; position: relative; }
        .marquee-track { display: flex; width: max-content; }
        .marquee-wrapper:hover .marquee-track { animation-play-state: paused; }
        
-       /* Class chạy sang TRÁI */
+       /* Chạy sang trái */
        .animate-scroll-left { animation: scroll-left var(--duration, 30s) linear infinite; }
-       @keyframes scroll-left { 
-           0% { transform: translateX(0); } 
-           100% { transform: translateX(-25%); } 
-       }
+       @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-25%); } }
 
-       /* Class chạy sang PHẢI */
+       /* Chạy sang phải */
        .animate-scroll-right { animation: scroll-right var(--duration, 30s) linear infinite; }
-       @keyframes scroll-right { 
-           0% { transform: translateX(-25%); } 
-           100% { transform: translateX(0); } 
-       }
+       @keyframes scroll-right { 0% { transform: translateX(-25%); } 100% { transform: translateX(0); } }
     </style>`;
 
-    // --- CẤU HÌNH Ở ĐÂY ---
+    // --- HIỂN THỊ ---
     
-    // 1. Dòng Đối tác chiến lược: Chạy sang PHẢI ('right'), kích thước thường ('h-20')
-    var strategicHtml = renderMarqueeSection(strategicList, TR('Đối tác chiến lược','Strategic Partner'), 'right', 'h-20');
+    // 1. Hàng trên: ĐỐI TÁC CHIẾN LƯỢC (Nếu có dữ liệu thì mới hiện)
+    // - Hướng: 'right' (Sang phải)
+    // - Size: 'h-24' (To nhất)
+    var strategicHtml = '';
+    if (strategicList.length > 0) {
+        strategicHtml = renderMarqueeSection(strategicList, TR('Đối tác chiến lược','Strategic Partner'), 'right', 'h-24');
+    }
 
-    // 2. Dòng Đối tác tin tưởng: Chạy sang TRÁI ('left'), kích thước TO ('h-32')
-    var trustedHtml = renderMarqueeSection(list, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-32');
+    // 2. Hàng dưới: ĐỐI TÁC TIN TƯỞNG (Nếu có dữ liệu thì mới hiện)
+    // - Hướng: 'left' (Sang trái)
+    // - Size: 'h-16' (Nhỏ hơn chút)
+    var trustedHtml = '';
+    if (trustedList.length > 0) {
+        trustedHtml = renderMarqueeSection(trustedList, TR('Được tin tưởng bởi','Trusted By'), 'left', 'h-16');
+    }
 
     return styles + strategicHtml + trustedHtml;
-}
+  }
 // Thêm hàm mới này hoặc sửa hàm cũ tương ứng:
 function renderMarqueeSection(list, title, direction, sizeClass) {
     if(!list || !list.length) return '';
