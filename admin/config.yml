@@ -9,7 +9,7 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
-media_folder: "public/images" # Khuyên dùng public/images cho NextJS/Gatsby
+media_folder: "public/images"
 public_folder: "/images"
 local_backend: true
 publish_mode: editorial_workflow
@@ -17,7 +17,7 @@ publish_mode: editorial_workflow
 site_url: https://hn-media-agency.vercel.app
 display_url: https://hn-media-agency.vercel.app
 
-# Tự động xử lý Slug tiếng Việt (VD: "Giới thiệu" -> "gioi-thieu")
+# Tự động xử lý Slug tiếng Việt
 slug:
   encoding: "ascii"
   clean_accents: true
@@ -25,7 +25,6 @@ slug:
 
 # ============================================================
 # ĐỊNH NGHĨA DÙNG CHUNG (REUSABLE FIELDS)
-# Phần này định nghĩa đầy đủ cấu trúc Section như code cũ của bạn
 # ============================================================
 
 x-sections_config: &sections_config
@@ -163,9 +162,6 @@ collections:
               - { label: Màu phụ, name: accent, widget: string }
 
   # ------------------------------------------------------------
-  # SEO
-  # ------------------------------------------------------------
-    # ------------------------------------------------------------
   # FOOTER
   # ------------------------------------------------------------
   - name: footer
@@ -198,6 +194,9 @@ collections:
                   - { label: Tên link (EN), name: text_en, widget: string, required: false }
                   - { label: Đường dẫn (URL), name: url, widget: string }
 
+  # ------------------------------------------------------------
+  # SEO
+  # ------------------------------------------------------------
   - name: seo
     label: 🔍 SEO
     files:
@@ -281,7 +280,6 @@ collections:
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
 
-          # GỌI LẠI CẤU TRÚC SECTION (Chỉ hoạt động nếu phần 2 bên trên tồn tại)
           - <<: *sections_config
 
       # --- ABOUT ---
@@ -429,7 +427,8 @@ collections:
               - { label: Ảnh, name: image, widget: image, required: false }
 
           - <<: *sections_config
-# --- NEWS ---
+
+      # --- NEWS ---
       - file: content/news.json
         label: Tin tức
         name: news
@@ -458,7 +457,9 @@ collections:
               
               - { label: Nội dung bài viết, name: body, widget: markdown }
               - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
+
           - <<: *sections_config
+
       # --- CONTACT ---
       - file: content/contact.json
         label: Liên hệ
@@ -478,4 +479,3 @@ collections:
           - { label: Zalo URL, name: zalo, widget: string, required: false }
 
           - <<: *sections_config
-      
