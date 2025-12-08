@@ -208,48 +208,45 @@ collections:
   # PAGES
   # ------------------------------------------------------------
   - name: pages
-    label: 📄 Nội dung Trang
+    label: "📄 Các trang nội dung"
     files:
-
-      # HOME
-      - file: content/home.json
-        label: Trang chủ
-        name: home
+      - file: content/about.json
+        label: Giới thiệu
+        name: about
         format: json
         fields:
-          - label: Hero Banner
-            name: hero
-            widget: object
-            fields:
-              - { label: Slogan, name: slogan, widget: string }
-              - { label: Slogan EN, name: slogan_en, widget: string, required: false }
-              - { label: Tiêu đề, name: title, widget: string }
-              - { label: Tiêu đề EN, name: title_en, widget: string, required: false }
-              - { label: Mô tả, name: subtitle, widget: text }
-              - { label: Mô tả EN, name: subtitle_en, widget: text, required: false }
-              - { label: CTA Text, name: ctaText, widget: string }
-              - { label: CTA Text EN, name: ctaText_en, widget: string, required: false }
-              - { label: Ảnh Hero, name: image, widget: image }
-              - { label: Video, name: video, widget: string, required: false }
-              - { label: GIF, name: gif, widget: image, required: false }
-              - { label: Fullscreen, name: fullscreen, widget: boolean, default: false }
-              - { label: Bố cục, name: layout_style, widget: select, options: [content_left_media_right, media_full_width, media_center_small], default: content_left_media_right }
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
+          - { label: Ảnh Cover, name: cover, widget: image }
+          - { label: Mô tả, name: description, widget: markdown }
+          - { label: Mô tả (EN), name: description_en, widget: markdown, required: false }
+          - <<: *sections_config
 
-          - { label: Logo đối tác nổi bật, name: featured_partner_logo, widget: image, required: false }
+      - file: content/services.json
+        label: Dịch vụ
+        name: services
+        format: json
+        fields:
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Ảnh Cover, name: cover, widget: image }
+          - <<: *sections_config
 
-          - label: Đối tác
-            name: partners
-            widget: list
-            collapsed: true
-            summary: '{{fields.name}} {{fields.is_strategic ? "(⭐)" : ""}}'
-            fields:
-              - { label: Tên, name: name, widget: string }
-              - { label: Logo, name: image, widget: image }
-              - { label: Chiến lược?, name: is_strategic, widget: boolean, default: false }
+      - file: content/portfolio.json
+        label: Thành tựu
+        name: portfolio
+        format: json
+        fields:
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Ảnh Cover, name: cover, widget: image }
+          - <<: *sections_config
 
-          - { label: Giới thiệu nhanh, name: intro, widget: text }
-          - { label: Giới thiệu EN, name: intro_en, widget: text, required: false }
-
+      - file: content/contact.json
+        label: Liên hệ
+        name: contact
+        format: json
+        fields:
+          - { label: Tiêu đề, name: title, widget: string }
+          - { label: Bản đồ embed, name: map, widget: text, required: false }
           - <<: *sections_config
 
       # ABOUT
