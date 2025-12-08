@@ -426,10 +426,7 @@ collections:
               - { label: Mô tả ngắn, name: summary, widget: text }
               - { label: Mô tả ngắn (EN), name: summary_en, widget: text, required: false }
               - { label: Ảnh, name: image, widget: image, required: false }
-
           - <<: *sections_config
-# --- NEWS ---
-      # --- NEWS (Bắt đầu phần Tin tức - Cần thẳng hàng với các file trên) ---
       - file: content/news.json
         label: Tin tức
         name: news
@@ -457,11 +454,7 @@ collections:
               - { label: Ngày đăng, name: date, widget: datetime, format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
               - { label: Nội dung bài viết, name: body, widget: markdown }
               - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
-              
-              # Import cấu hình Section dùng chung
-              - <<: *sections_config
           - <<: *sections_config
-      # --- CONTACT ---
       - file: content/contact.json
         label: Liên hệ
         name: contact
@@ -478,6 +471,5 @@ collections:
           - { label: Map iframe, name: mapEmbed, widget: text }
           - { label: Facebook URL, name: facebook, widget: string, required: false }
           - { label: Zalo URL, name: zalo, widget: string, required: false }
-
-          - <<: *sections_config
+        - <<: *sections_config
       
