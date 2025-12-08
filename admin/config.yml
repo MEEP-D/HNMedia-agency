@@ -160,7 +160,7 @@ collections:
               - { label: Màu phụ, name: accent, widget: string }
 
   - name: seo
-    label: 🔍 SEO
+    label: SEO
     files:
       - file: content/seo.json
         label: SEO các trang
