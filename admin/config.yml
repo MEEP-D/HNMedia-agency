@@ -429,6 +429,7 @@ collections:
 
           - <<: *sections_config
 # --- NEWS ---
+      # --- NEWS (Bắt đầu phần Tin tức - Cần thẳng hàng với các file trên) ---
       - file: content/news.json
         label: Tin tức
         name: news
@@ -446,22 +447,21 @@ collections:
             collapsed: true
             summary: '{{fields.title}} - {{fields.date}}'
             fields:
-              - { label: Slug (URL), name: slug, widget: string, hint: "Viết liền không dấu, gạch ngang. VD: khai-truong-chi-nhanh" }
+              - { label: Slug (URL), name: slug, widget: string, hint: "Viết liền không dấu. VD: tin-tuc-moi" }
               - { label: Tiêu đề, name: title, widget: string }
               - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
-              - { label: Tóm tắt, name: summary, widget: text, hint: "Hiện ở danh sách bên ngoài" }
+              - { label: Tóm tắt, name: summary, widget: text }
               - { label: Tóm tắt (EN), name: summary_en, widget: text, required: false }
               - { label: Ảnh đại diện, name: image, widget: image }
               - { label: Tác giả, name: author, widget: string, default: "Admin", required: false }
               - { label: Ngày đăng, name: date, widget: datetime, format: "DD/MM/YYYY", date_format: "DD/MM/YYYY", time_format: false }
-              
               - { label: Nội dung bài viết, name: body, widget: markdown }
               - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
               
-              # Cho phép chèn Section vào cuối trang chi tiết bài viết (VD: CTA, Banner)
+              # Import cấu hình Section dùng chung
               - <<: *sections_config
 
-          # Cho phép chèn Section vào trang danh sách tin tức chính
+          # Import cấu hình Section cho trang danh sách
           - <<: *sections_config
       # --- CONTACT ---
       - file: content/contact.json
