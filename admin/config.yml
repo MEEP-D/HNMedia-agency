@@ -477,5 +477,5 @@ collections:
           - { label: Facebook URL, name: facebook, widget: string, required: false }
           - { label: Zalo URL, name: zalo, widget: string, required: false }
 
-          - <<: *sections_config
+        - <<: *sections_config
       
