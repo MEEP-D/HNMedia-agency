@@ -269,18 +269,16 @@ collections:
             name: partners
             widget: list
             collapsed: true
-            # Hiển thị dấu sao ⭐ bên cạnh tên nếu là đối tác chiến lược để dễ quản lý
             summary: '{{fields.name}} {{fields.is_strategic ? "(⭐ Chiến lược)" : ""}}'
             fields:
               - { label: Tên đối tác, name: name, widget: string }
               - { label: Logo, name: image, widget: image }
-              # Thêm dòng này để bật tắt chế độ Chiến lược
               - { label: Là đối tác chiến lược?, name: is_strategic, widget: boolean, default: false, required: false }
 
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
 
-          # GỌI LẠI CẤU TRÚC SECTION ĐÃ ĐỊNH NGHĨA Ở TRÊN
+          # GỌI LẠI CẤU TRÚC SECTION (Chỉ hoạt động nếu phần 2 bên trên tồn tại)
           - <<: *sections_config
 
       # --- ABOUT ---
