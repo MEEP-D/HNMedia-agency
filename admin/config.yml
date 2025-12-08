@@ -457,11 +457,6 @@ collections:
               
               - { label: Nội dung bài viết, name: body, widget: markdown }
               - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
-              
-              # Cho phép chèn Section vào cuối trang chi tiết bài viết (VD: CTA, Banner)
-              - <<: *sections_config
-
-          # Cho phép chèn Section vào trang danh sách tin tức chính
           - <<: *sections_config
       # --- CONTACT ---
       - file: content/contact.json
