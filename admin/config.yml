@@ -169,34 +169,36 @@ collections:
   # FOOTER
   # ------------------------------------------------------------
   - name: footer
-    label: Chân trang (Footer)
+    label: "Chân trang (Footer)"
     files:
-      - file: content/footer.json
-        label: Chân trang (Footer)
+      - file: "content/footer.json"
+        label: "Chân trang (Footer)"
         name: footer
         format: json
         fields:
-          - { label: Tên hiển thị (Brand Name), name: brand_name, widget: string, required: false, default: "Media Agency" }
-          - { label: Logo Footer, name: logo, widget: image, required: false }
-          - { label: Mô tả ngắn, name: description, widget: text, required: false }
-          - { label: Địa chỉ hiển thị, name: address, widget: string, required: false }
-          - { label: Số điện thoại, name: phone, widget: string, required: false }
-          - { label: Email liên hệ, name: email, widget: string, required: false }
-          - { label: Dòng bản quyền, name: copyright, widget: string, required: false }
+          - { label: "Tên hiển thị (Brand Name)", name: brand_name, widget: string, required: false, default: "Media Agency" }
+          - { label: "Logo Footer", name: logo, widget: image, required: false }
+          - { label: "Mô tả ngắn", name: description, widget: text, required: false }
+          - { label: "Địa chỉ hiển thị", name: address, widget: string, required: false }
+          - { label: "Số điện thoại", name: phone, widget: string, required: false }
+          - { label: "Email liên hệ", name: email, widget: string, required: false }
+          - { label: "Dòng bản quyền", name: copyright, widget: string, required: false }
 
-          - label: Cột liên kết
+          - label: "Cột liên kết"
             name: columns
             widget: list
             fields:
-              - { label: Tiêu đề cột, name: title, widget: string }
-              - { label: Tiêu đề cột (EN), name: title_en, widget: string, required: false }
-              - label: Danh sách đường dẫn
+              - { label: "Tiêu đề cột", name: title, widget: string }
+              - { label: "Tiêu đề cột (EN)", name: title_en, widget: string, required: false }
+
+              - label: "Danh sách đường dẫn"
                 name: links
                 widget: list
                 fields:
-                  - { label: Tên link, name: text, widget: string }
-                  - { label: Tên link (EN), name: text_en, widget: string, required: false }
-                  - { label: Đường dẫn (URL), name: url, widget: string }
+                  - { label: "Tên link", name: text, widget: string }
+                  - { label: "Tên link (EN)", name: text_en, widget: string, required: false }
+                  - { label: "Đường dẫn (URL)", name: url, widget: string }
+
 
   - name: seo
     label: 🔍 SEO
