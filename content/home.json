@@ -33,7 +33,7 @@
     {
       "name": "Thể thao Đỉnh cao Sportify",
       "image": "/images/download.png",
-      "is_strategic": true
+      "is_strategic": false
     },
     {
       "image": "/images/joola_logo.webp",
