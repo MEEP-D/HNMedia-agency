@@ -5,7 +5,7 @@ backend:
   name: github
   repo: "MEEP-D/HNMedia-agency"
   branch: "main"
-  base_url: "https://hn-media-agency.vercel.app/api"
+  base_url: "https://digitalhnmedia.com/api"
   auth_endpoint: auth
 
 # Chế độ biên tập & Localhost
