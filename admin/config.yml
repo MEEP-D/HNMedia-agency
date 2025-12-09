@@ -186,7 +186,7 @@ collections:
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
 
-            <<: *sections_config
+          <<: *sections_config
 
       # --- ABOUT ---
       - file: content/about.json
