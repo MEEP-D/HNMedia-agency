@@ -1,3 +1,6 @@
+# ============================================================
+# 1. CẤU HÌNH HỆ THỐNG
+# ============================================================
 backend:
   name: github
   repo: "MEEP-D/HNMedia-agency"
@@ -5,17 +8,22 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
+# Cấu hình môi trường
+local_backend: true
 publish_mode: editorial_workflow
+
+# Thư mục chứa ảnh
 media_folder: "public/images"
 public_folder: "/images"
 
+# Cấu hình đường dẫn
 slug:
   encoding: "ascii"
   clean_accents: true
   sanitize_replacement: "-"
 
 # ============================================================
-# ĐỊNH NGHĨA SECTION DÙNG CHUNG
+# 2. ĐỊNH NGHĨA SECTION DÙNG CHUNG
 # ============================================================
 x-sections_config: &sections_config
   label: Các khối nội dung (Sections)
@@ -24,6 +32,7 @@ x-sections_config: &sections_config
   collapsed: true
   summary: '{{fields.title}} [{{fields.type}}]'
   fields:
+    # --- Loại & Tiêu đề ---
     - label: Loại Section
       name: type
       widget: select
@@ -39,7 +48,7 @@ x-sections_config: &sections_config
     - { label: Mô tả phụ, name: subtitle, widget: text, required: false }
     - { label: Mô tả phụ (EN), name: subtitle_en, widget: text, required: false }
 
-    # Cấu hình hiển thị
+    # --- Cấu hình hiển thị ---
     - label: Cấu hình hiển thị
       name: display_config
       widget: object
@@ -50,11 +59,11 @@ x-sections_config: &sections_config
         - { label: Màu nền (Hex), name: bg_color, widget: string, required: false }
         - { label: Ảnh nền, name: bg_image, widget: image, required: false }
 
-    # Nội dung
+    # --- Nội dung chi tiết ---
     - { label: Nội dung (Text), name: body, widget: markdown, required: false }
     - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
 
-    # Items & Images
+    # --- Items (Dùng cho Grid/CTA) ---
     - label: Danh sách Items (Grid/CTA)
       name: items
       widget: list
@@ -66,6 +75,7 @@ x-sections_config: &sections_config
         - { label: Ảnh/Icon, name: image, widget: image, required: false }
         - { label: Link, name: link, widget: string, required: false }
 
+    # --- Images (Dùng cho Gallery) ---
     - label: Danh sách Ảnh (Gallery)
       name: images
       widget: list
@@ -75,16 +85,16 @@ x-sections_config: &sections_config
         - { label: Ảnh, name: image, widget: image }
         - { label: Caption, name: caption, widget: string, required: false }
 
-    # CTA Button
+    # --- Nút CTA ---
     - { label: Text Nút CTA, name: ctaText, widget: string, required: false }
     - { label: Link Nút CTA, name: ctaLink, widget: string, required: false }
 
 # ============================================================
-# DANH MỤC QUẢN LÝ (COLLECTIONS)
+# 3. DANH MỤC QUẢN LÝ (COLLECTIONS)
 # ============================================================
 collections:
   # -----------------------------------------------------------
-  # 1. SETTINGS
+  # COLLECTION 0: SETTINGS
   # -----------------------------------------------------------
   - name: settings
     label: ⚙️ Cài đặt
@@ -137,7 +147,7 @@ collections:
             fields: [{label: Title, name: title, widget: string}, {label: Desc, name: description, widget: text}]
 
   # -----------------------------------------------------------
-  # 2. PAGES (NỘI DUNG TRANG)
+  # COLLECTION 1: PAGES (NỘI DUNG TRANG)
   # -----------------------------------------------------------
   - name: pages
     label: 📄 Nội dung Trang
@@ -308,7 +318,7 @@ collections:
 
           - <<: *sections_config
 
-      # --- NEWS (ĐÃ SỬA CHUẨN THỤT LỀ) ---
+      # --- NEWS ---
       - file: content/news.json
         label: Tin tức
         name: news
@@ -320,7 +330,6 @@ collections:
           - { label: Mô tả Trang (EN), name: description_en, widget: text, required: false }
           - { label: Ảnh cover, name: cover, widget: image, required: false }
 
-          # (Chú ý: Dòng này có dấu gạch ngang, các dòng con bên trong KHÔNG CÓ dấu gạch ngang)
           - label: Danh sách Bài viết
             name: items
             widget: list
