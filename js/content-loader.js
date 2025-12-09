@@ -220,7 +220,7 @@
   // Render Section Thống kê
   function renderStats(){
     const stats = [
-        { num: '500+', label: TR('Dự án hoàn thành','Projects Completed'), icon: 'check-circle' },
+        { num: '100+', label: TR('Dự án hoàn thành','Projects Completed'), icon: 'check-circle' },
         { num: '98%', label: TR('Khách hàng hài lòng','Happy Clients'), icon: 'heart' },
         { num: '50+', label: TR('Đối tác chiến lược','Strategic Partners'), icon: 'users' },
         { num: '10+', label: TR('Năm kinh nghiệm','Years Experience'), icon: 'award' }
