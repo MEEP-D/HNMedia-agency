@@ -13,7 +13,7 @@ publish_mode: editorial_workflow
 local_backend: true
 
 # Thư mục ảnh
-media_folder: "public/images"
+media_folder: "/images"
 public_folder: "/images"
 
 # Cấu hình đường dẫn
