@@ -33,7 +33,7 @@
     {
       "name": "Thể thao Đỉnh cao Sportify",
       "image": "/images/download.png",
-      "is_strategic": true
+      "is_strategic": false
     },
     {
       "image": "/images/joola_logo.webp",
@@ -54,6 +54,11 @@
       "is_strategic": true,
       "name": "Thai An",
       "image": "/images/thaian-logo-final.png"
+    },
+    {
+      "is_strategic": false,
+      "name": "vtv",
+      "image": "/images/vietnam_television_logo_from_2013.svg"
     }
   ],
   "featured_partner_logo": "/images/logo-thuong-hieu-elle-viet-nam-5.jpg"
