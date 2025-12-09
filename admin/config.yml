@@ -31,19 +31,18 @@ x-sections_config: &sections_config
     - label: Loại Section
       name: type
       widget: select
-      options: 
+      options:
         - { label: "Lưới (Grid)", value: "grid" }
         - { label: "Bộ sưu tập (Gallery)", value: "gallery" }
         - { label: "Văn bản (Text)", value: "text" }
         - { label: "Kêu gọi hành động (CTA)", value: "cta" }
       default: text
-    
+
     - { label: Tiêu đề Khối, name: title, widget: string, required: false }
     - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
     - { label: Mô tả phụ, name: subtitle, widget: text, required: false }
     - { label: Mô tả phụ (EN), name: subtitle_en, widget: text, required: false }
 
-    # Cấu hình hiển thị
     - label: Cấu hình hiển thị
       name: display_config
       widget: object
@@ -54,11 +53,9 @@ x-sections_config: &sections_config
         - { label: Màu nền (Hex), name: bg_color, widget: string, required: false }
         - { label: Ảnh nền, name: bg_image, widget: image, required: false }
 
-    # Nội dung
     - { label: Nội dung (Text), name: body, widget: markdown, required: false }
     - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
 
-    # Items & Images
     - label: Danh sách Items (Grid/CTA)
       name: items
       widget: list
@@ -79,7 +76,6 @@ x-sections_config: &sections_config
         - { label: Ảnh, name: image, widget: image }
         - { label: Caption, name: caption, widget: string, required: false }
 
-    # CTA Button
     - { label: Text Nút CTA, name: ctaText, widget: string, required: false }
     - { label: Link Nút CTA, name: ctaLink, widget: string, required: false }
 
@@ -107,8 +103,8 @@ collections:
               - { label: Tagline, name: tagline, widget: string }
               - { label: Logo, name: logo, widget: image }
 
-        # ------------------------------------------------------------
-  # FOOTER
+  # ------------------------------------------------------------
+  # FOOTER (files)
   # ------------------------------------------------------------
   - name: footer
     label: Chân trang (Footer)
@@ -140,7 +136,12 @@ collections:
                   - { label: Tên link (EN), name: text_en, widget: string, required: false }
                   - { label: Đường dẫn (URL), name: url, widget: string }
 
-
+  # ------------------------------------------------------------
+  # SEO (separate files collection)
+  # ------------------------------------------------------------
+  - name: seo
+    label: 🔍 SEO
+    files:
       - file: content/seo.json
         label: SEO
         name: seo
@@ -149,7 +150,9 @@ collections:
           - label: Trang chủ
             name: index
             widget: object
-            fields: [{label: Title, name: title, widget: string}, {label: Desc, name: description, widget: text}]
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Desc, name: description, widget: text }
 
   # -----------------------------------------------------------
   # COLLECTION 2: PAGES (NỘI DUNG TRANG)
@@ -183,7 +186,7 @@ collections:
               - { label: Bố cục Media, name: layout_style, widget: select, options: [content_left_media_right, media_full_width, media_center_small], default: content_left_media_right }
 
           - { label: Logo Đối tác Nổi bật, name: featured_partner_logo, widget: image, required: false }
-          
+
           - label: Danh sách Đối tác
             name: partners
             widget: list
@@ -197,7 +200,7 @@ collections:
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
 
-          <<: *sections_config
+          - <<: *sections_config
 
       # --- ABOUT ---
       - file: content/about.json
@@ -212,7 +215,7 @@ collections:
           - { label: Tầm nhìn (EN), name: vision_en, widget: text, required: false }
           - { label: Sứ mệnh, name: mission, widget: text }
           - { label: Sứ mệnh (EN), name: mission_en, widget: text, required: false }
-          
+
           - label: Team
             name: team
             widget: list
@@ -230,7 +233,7 @@ collections:
               - { label: Năm, name: year, widget: string }
               - { label: Sự kiện, name: event, widget: string }
 
-           <<: *sections_config
+          - <<: *sections_config
 
       # --- SERVICES ---
       - file: content/services.json
@@ -241,7 +244,7 @@ collections:
           - { label: Tiêu đề, name: title, widget: string }
           - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
           - { label: Ảnh cover, name: cover, widget: image, required: false }
-          
+
           - label: Danh sách dịch vụ
             name: items
             widget: list
@@ -251,7 +254,7 @@ collections:
               - { label: Mô tả, name: description, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-          <<: *sections_config
+          - <<: *sections_config
 
       # --- COURSES ---
       - file: content/courses.json
@@ -262,7 +265,7 @@ collections:
           - { label: Tiêu đề, name: title, widget: string }
           - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
           - { label: Ảnh cover, name: cover, widget: image, required: false }
-          
+
           - label: Danh sách khóa học
             name: items
             widget: list
@@ -276,9 +279,10 @@ collections:
               - label: Nội dung học
                 name: curriculum
                 widget: list
-                fields: [{ label: Mục, name: item, widget: string }]
+                fields:
+                  - { label: Mục, name: item, widget: string }
 
-            <<: *sections_config
+          - <<: *sections_config
 
       # --- PORTFOLIO ---
       - file: content/portfolio.json
@@ -289,7 +293,7 @@ collections:
           - { label: Tiêu đề, name: title, widget: string }
           - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
           - { label: Ảnh cover, name: cover, widget: image, required: false }
-          
+
           - label: Case studies
             name: items
             widget: list
@@ -299,7 +303,7 @@ collections:
               - { label: Kết quả, name: result, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-           <<: *sections_config
+          - <<: *sections_config
 
       # --- CAREERS ---
       - file: content/careers.json
@@ -310,7 +314,7 @@ collections:
           - { label: Tiêu đề, name: title, widget: string }
           - { label: Tiêu đề (EN), name: title_en, widget: string, required: false }
           - { label: Ảnh cover, name: cover, widget: image, required: false }
-          
+
           - label: Vị trí
             name: positions
             widget: list
@@ -321,7 +325,7 @@ collections:
               - { label: Mô tả ngắn, name: summary, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-          <<: *sections_config
+          - <<: *sections_config
 
       # --- NEWS (JSON FILE) ---
       - file: content/news.json
@@ -365,4 +369,5 @@ collections:
           - { label: Map iframe, name: mapEmbed, widget: text }
           - { label: Facebook URL, name: facebook, widget: string, required: false }
           - { label: Zalo URL, name: zalo, widget: string, required: false }
-          <<: *sections_config
+
+          - <<: *sections_config
