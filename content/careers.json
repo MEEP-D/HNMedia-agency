@@ -2,17 +2,24 @@
   "title": "Tuyển dụng",
   "positions": [
     {
-      "title": "Account Manager",
-      "location": "TP.HCM",
-      "summary": "Quản lý quan hệ khách hàng",
+      "title": "Kỹ thuật vận hành sàn Thương Mại Điện Tử",
+      "location": "HN Media",
+      "summary": "Phụ trách thiết lập, vận hành và tối ưu gian hàng trên các sàn TMDT (Shopee, Lazada, TikTok Shop). Theo dõi đơn hàng, xử lý lỗi kỹ thuật cơ bản, tối ưu hình ảnh – mô tả sản phẩm, phối hợp với team vận hành để đảm bảo quy trình hoạt động trơn tru.",
       "image": "/images/picture1.png"
     },
     {
-      "title": "Media Planner",
-      "location": "Hà Nội",
-      "summary": "Lập kế hoạch media",
+      "title": "Nhân viên Livestream",
+      "location": "HN Media",
+      "summary": "Tham gia livestream bán hàng hoặc truyền thông hình ảnh thương hiệu theo kịch bản được xây dựng sẵn. Chuẩn bị nội dung, giới thiệu sản phẩm, tương tác với người xem và duy trì năng lượng tích cực trong suốt buổi live. Ưu tiên các bạn tự tin nói trước camera.",
+      "image": "/images/picture1.png"
+    },
+    {
+      "title": "Trợ lý cá nhân",
+      "location": "HN Media",
+      "summary": "Hỗ trợ quản lý lịch trình, theo dõi tiến độ công việc, sắp xếp tài liệu và hỗ trợ điều phối các dự án nội bộ. Là cầu nối giữa các bộ phận, chuẩn bị họp, ghi chú và hỗ trợ công việc đột xuất khi được phân công. Cần sự nhanh nhẹn và chủ động cao.",
       "image": "/images/picture1.png"
     }
   ],
+  "benefits": "🌐 Hỗ trợ ăn ở cho các bạn ở xa muốn đồng hành cùng HN Media.",
   "cover": "/images/penci_ai_image_1764864075816.jpg"
 }
