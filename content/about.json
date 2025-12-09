@@ -1,39 +1,35 @@
 {
-  "title": "Giới thiệu",
   "vision": "Trở thành đối tác truyền thông đáng tin cậy cho doanh nghiệp Việt.",
   "mission": "Tạo ra giá trị thực bằng nội dung sáng tạo và đo lường hiệu quả.",
-  "team": [
-    {
-      "name": "Nguyễn An",
-      "role": "CEO",
-      "photo": "/images/picture1.png"
-    },
-    {
-      "name": "Trần Bình",
-      "role": "Head of Strategy",
-      "photo": "/images/picture1.png"
-    },
-    {
-      "name": "Lê Chi",
-      "role": "Creative Lead",
-      "photo": "/images/picture1.png"
-    }
-  ],
+  "sections": [],
+  "title_en": "Dạy Bạn Cách Live - Trao Bạn Cách Thắng",
   "history": [
     {
-      "year": "2019",
+      "year": "2020",
       "event": "Thành lập công ty"
     },
     {
-      "year": "2021",
+      "year": "2022",
       "event": "Mở rộng dịch vụ Digital"
     },
     {
-      "year": "2024",
+      "year": "2025",
       "event": "Đạt 100+ khách hàng"
     }
   ],
   "cover": "/images/thiết-kế-chưa-có-tên-1-.png",
-  "sections": [],
-  "title_en": "Dạy Bạn Cách Live - Trao Bạn Cách Thắng"
+  "title": "Giới thiệu",
+  "description": "HN Media là đơn vị chuyên cung cấp giải pháp truyền thông tổng thể, kết hợp giữa sáng tạo nội dung, sản xuất media chuyên nghiệp và ứng dụng công nghệ để mang đến hiệu quả truyền thông tối ưu cho doanh nghiệp. Với đội ngũ trẻ, nhiệt huyết và giàu kinh nghiệm thực chiến, HN Media đảm nhận trọn vẹn các hoạt động từ lên ý tưởng, quay dựng, chụp hình, livestream, xây dựng thương hiệu đến triển khai chiến dịch marketing đa nền tảng.",
+  "team": [
+    {
+      "name": "Hoài Nam",
+      "role": "CEO & CounFounder",
+      "photo": "/images/3374825268217454051.jpg"
+    },
+    {
+      "name": "Đức Dương ",
+      "role": "Head of technical department",
+      "photo": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
+    }
+  ]
 }
