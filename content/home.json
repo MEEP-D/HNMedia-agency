@@ -22,7 +22,7 @@
     },
     {
       "name": "Việt Nhật Solar",
-      "image": "/images/logo-viet-nhat-solar.png",
+      "image": "/images/download.png",
       "is_strategic": true
     },
     {
@@ -32,7 +32,8 @@
     },
     {
       "name": "Thể thao Đỉnh cao Sportify",
-      "image": "/images/download.png"
+      "image": "/images/download.png",
+      "is_strategic": true
     },
     {
       "image": "/images/joola_logo.webp",
