@@ -8,22 +8,24 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
-# Cấu hình môi trường
-local_backend: true
+# Bật chế độ lưu nháp (Hiện nút Save màu xám, sau đó mới Publish)
 publish_mode: editorial_workflow
+
+# Cho phép chạy trên localhost
+local_backend: true
 
 # Thư mục chứa ảnh
 media_folder: "public/images"
 public_folder: "/images"
 
-# Cấu hình đường dẫn
+# Cấu hình đường dẫn (Slug)
 slug:
   encoding: "ascii"
   clean_accents: true
   sanitize_replacement: "-"
 
 # ============================================================
-# 2. ĐỊNH NGHĨA SECTION DÙNG CHUNG
+# 2. ĐỊNH NGHĨA SECTION DÙNG CHUNG (Neo YAML)
 # ============================================================
 x-sections_config: &sections_config
   label: Các khối nội dung (Sections)
@@ -94,7 +96,7 @@ x-sections_config: &sections_config
 # ============================================================
 collections:
   # -----------------------------------------------------------
-  # COLLECTION 0: SETTINGS
+  # COLLECTION 1: SETTINGS
   # -----------------------------------------------------------
   - name: settings
     label: ⚙️ Cài đặt
@@ -147,7 +149,7 @@ collections:
             fields: [{label: Title, name: title, widget: string}, {label: Desc, name: description, widget: text}]
 
   # -----------------------------------------------------------
-  # COLLECTION 1: PAGES (NỘI DUNG TRANG)
+  # COLLECTION 2: PAGES (NỘI DUNG TRANG)
   # -----------------------------------------------------------
   - name: pages
     label: 📄 Nội dung Trang
