@@ -1,14 +1,17 @@
 {
-  "title": "Case studies",
+  "title": "Các Dự Án Tiêu Biểu",
   "items": [
     {
       "title": "Chiến dịch ra mắt sản phẩm A",
-      "result": "Tăng 200% nhận diện thương hiệu"
+      "result": "Tăng 200% nhận diện thương hiệu",
+      "image": "/images/penci_ai_image_1764864234613.jpg"
     },
     {
       "title": "Tối ưu quảng cáo B",
-      "result": "Giảm 30% CPA, tăng 50% chuyển đổi"
+      "result": "Giảm 30% CPA, tăng 50% chuyển đổi",
+      "image": "/images/penci_ai_image_1764864234613.jpg"
     }
   ],
-  "cover": "/images/beautyplus-image-enhancer-1764864089943.jpg"
+  "cover": "/images/beautyplus-image-enhancer-1764864089943.jpg",
+  "description": "Các dự án tiêu biểu của HN Media thể hiện năng lực sáng tạo, tư duy chiến lược và khả năng triển khai thực tế trong nhiều lĩnh vực khác nhau. Chúng tôi luôn đặt mục tiêu mang đến những sản phẩm truyền thông chất lượng cao, hiệu quả và phù hợp với nhu cầu của từng khách hàng. Dưới đây là những dự án nổi bật đã góp phần khẳng định uy tín và giá trị của HN Media trên thị trường."
 }
