@@ -107,28 +107,39 @@ collections:
               - { label: Tagline, name: tagline, widget: string }
               - { label: Logo, name: logo, widget: image }
 
+        # ------------------------------------------------------------
+  # FOOTER
+  # ------------------------------------------------------------
+  - name: footer
+    label: Chân trang (Footer)
+    files:
       - file: content/footer.json
         label: Chân trang (Footer)
         name: footer
         format: json
         fields:
+          - { label: Tên hiển thị (Brand Name), name: brand_name, widget: string, required: false, default: "Media Agency" }
           - { label: Logo Footer, name: logo, widget: image, required: false }
           - { label: Mô tả ngắn, name: description, widget: text, required: false }
-          - { label: Địa chỉ, name: address, widget: string }
-          - { label: Hotline, name: phone, widget: string }
-          - { label: Email, name: email, widget: string }
-          - { label: Copyright, name: copyright, widget: string }
+          - { label: Địa chỉ hiển thị, name: address, widget: string, required: false }
+          - { label: Số điện thoại, name: phone, widget: string, required: false }
+          - { label: Email liên hệ, name: email, widget: string, required: false }
+          - { label: Dòng bản quyền, name: copyright, widget: string, required: false }
+
           - label: Cột liên kết
             name: columns
             widget: list
             fields:
               - { label: Tiêu đề cột, name: title, widget: string }
-              - label: Links
+              - { label: Tiêu đề cột (EN), name: title_en, widget: string, required: false }
+              - label: Danh sách đường dẫn
                 name: links
                 widget: list
                 fields:
                   - { label: Tên link, name: text, widget: string }
-                  - { label: URL, name: url, widget: string }
+                  - { label: Tên link (EN), name: text_en, widget: string, required: false }
+                  - { label: Đường dẫn (URL), name: url, widget: string }
+
 
       - file: content/seo.json
         label: SEO
