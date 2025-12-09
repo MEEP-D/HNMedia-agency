@@ -1,12 +1,15 @@
 {
   "hero": {
-    "slogan": "Kiến tạo di sản số qua lăng kính điện ảnh",
-    "title": "Đánh thức tiềm năng thương hiệu bằng nghệ thuật kể chuyện đỉnh cao",
+    "slogan_en": "Dạy bạn cách Live - Trao bạn cách thắng ",
+    "ctaText_en": "Explore the creative journey",
+    "subtitle_en": "We don't just produce content, we bring brands to life, turning raw ideas into visual experiences that stir emotions and drive action.",
     "subtitle": "Chúng tôi không chỉ sản xuất nội dung, chúng tôi thổi hồn vào thương hiệu, biến những ý tưởng sơ khai thành những trải nghiệm thị giác lay động cảm xúc và thúc đẩy hành động.",
-    "ctaText": "Khám phá hành trình sáng tạo",
+    "title": "Đánh thức tiềm năng thương hiệu bằng nghệ thuật kể chuyện đỉnh cao",
     "image": "/images/a1-1-.jpg",
     "fullscreen": true,
-    "layout_style": "media_full_width"
+    "layout_style": "media_full_width",
+    "ctaText": "Khám phá hành trình sáng tạo",
+    "slogan": "Kiến tạo di sản số qua lăng kính điện ảnh"
   },
   "intro": "Trong kỷ nguyên số, sự chú ý là tài sản quý giá nhất. Chúng tôi ở đây để giúp doanh nghiệp của bạn không chỉ được nhìn thấy mà còn được ghi nhớ. Bằng sự kết hợp giữa tư duy chiến lược sắc bén và công nghệ sản xuất hiện đại, chúng tôi tạo ra những chiến dịch truyền thông mang tính biểu tượng, kiến tạo giá trị bền vững và sự tăng trưởng đột phá.",
   "sections": [],
@@ -52,5 +55,5 @@
       "image": "/images/thaian-logo-final.png"
     }
   ],
-  "featured_partner_logo": "/images/picture1.png"
+  "featured_partner_logo": "/images/logo-thuong-hieu-elle-viet-nam-5.jpg"
 }
