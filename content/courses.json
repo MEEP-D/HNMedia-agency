@@ -8,7 +8,12 @@
       "description": "Khóa học tập trung vào nghiên cứu insight, xây dựng chiến lược nội dung và tối ưu hiệu suất.",
       "duration": "6 buổi",
       "format": "Online/Offline",
-      "curriculum": ["Nghiên cứu khách hàng", "Lập kế hoạch nội dung", "Đo lường KPI"]
+      "curriculum": [
+        "Nghiên cứu khách hàng",
+        "Lập kế hoạch nội dung",
+        "Đo lường KPI"
+      ],
+      "image": "/images/penci_ai_image_1764864234613.jpg"
     },
     {
       "slug": "performance-ads",
@@ -17,7 +22,14 @@
       "description": "Thực hành trên các nền tảng lớn, tối ưu chuyển đổi và chi phí.",
       "duration": "8 buổi",
       "format": "Online",
-      "curriculum": ["Thiết lập chiến dịch", "A/B Testing", "Báo cáo hiệu quả"]
+      "curriculum": [
+        "Thiết lập chiến dịch",
+        "A/B Testing",
+        "Báo cáo hiệu quả"
+      ],
+      "image": "/images/penci_ai_image_1764864234613.jpg"
     }
-  ]
+  ],
+  "cover": "/images/penci_ai_image_1764864234613.jpg",
+  "description": "Mỗi khóa học được thiết kế với lộ trình rõ ràng, bài giảng trực quan, ví dụ thực tiễn và hướng dẫn chi tiết nhằm giúp học viên nắm bắt kiến thức nhanh chóng, ứng dụng ngay vào công việc. Ngoài ra, HN Media còn cung cấp các khóa coaching 1:1, workshop theo chủ đề và chương trình đào tạo dành riêng cho đội nhóm/doanh nghiệp."
 }
