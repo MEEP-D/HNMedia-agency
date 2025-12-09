@@ -9,104 +9,47 @@
     "layout_style": "media_full_width"
   },
   "intro": "Trong kỷ nguyên số, sự chú ý là tài sản quý giá nhất. Chúng tôi ở đây để giúp doanh nghiệp của bạn không chỉ được nhìn thấy mà còn được ghi nhớ. Bằng sự kết hợp giữa tư duy chiến lược sắc bén và công nghệ sản xuất hiện đại, chúng tôi tạo ra những chiến dịch truyền thông mang tính biểu tượng, kiến tạo giá trị bền vững và sự tăng trưởng đột phá.",
-  "sections": [
-    {
-      "grid_content": {
-        "items": [
-          {
-            "title": "Sản xuất TVC & Phim Doanh Nghiệp",
-            "description": "Quy trình sản xuất chuẩn quốc tế từ khâu kịch bản, tiền kỳ đến hậu kỳ kỹ xảo, tạo ra những thước phim mãn nhãn khẳng định đẳng cấp và vị thế độc tôn của thương hiệu trên thị trường.",
-            "link": "/dich-vu/san-xuat-phim",
-            "image": "/images/picture1.png"
-          }
-        ]
-      },
-      "items": [
-        {
-          "title": "Chiến lược Thương hiệu & Định vị Đa nền tảng",
-          "title_en": "Brand Strategy & Multi-platform Positioning",
-          "description": "Xây dựng bản sắc riêng biệt cho doanh nghiệp trên mọi điểm chạm số, từ mạng xã hội đến website, đảm bảo sự đồng nhất tuyệt đối và khắc sâu vào tâm trí khách hàng mục tiêu.",
-          "description_en": "Building a distinct identity for businesses across all digital touchpoints, from social media to websites, ensuring absolute consistency and deep impression in the target customers' minds.",
-          "link": "/dich-vu/chien-luoc",
-          "image": "/images/penci_ai_image_1764864234613.jpg"
-        }
-      ],
-      "body": "Sự sáng tạo không giới hạn là kim chỉ nam cho mọi hoạt động của chúng tôi. Mỗi dự án là một tác phẩm nghệ thuật được chăm chút tỉ mỉ từng chi tiết, từ ánh sáng, góc máy cho đến âm thanh và màu sắc. Chúng tôi tin rằng, một sản phẩm truyền thông xuất sắc là sự giao thoa hoàn hảo giữa cảm xúc nghệ thuật thăng hoa và hiệu quả thương mại thực tế.",
-      "animation": {
-        "type": "blur-in",
-        "delay": 2,
-        "duration": 2
-      },
-      "body_en": "Unlimited creativity is the guiding principle for all our activities. Each project is a work of art meticulously cared for in every detail, from lighting and camera angles to sound and color grading. We believe that an excellent media product is the perfect intersection of soaring artistic emotion and practical commercial effectiveness.",
-      "text_content": {
-        "body": "Đằng sau mỗi khung hình là sự cống hiến không ngừng nghỉ của đội ngũ chuyên gia hàng đầu. Chúng tôi lắng nghe nhịp đập của thị trường và thấu hiểu khao khát của doanh nghiệp để đưa ra những giải pháp đột phá nhất.",
-        "body_en": "Behind every frame is the relentless dedication of a team of leading experts. We listen to the pulse of the market and understand the aspirations of businesses to provide the most breakthrough solutions."
-      },
-      "cta_content": {
-        "ctaText": "Hợp tác cùng phát triển",
-        "ctaText_en": "Partner for Growth",
-        "ctaLink": "/lien-he"
-      },
-      "ctaLink": "/lien-he-tu-van",
-      "ctaText_en": "Start Your Project",
-      "gallery_content": {
-        "images": [
-          {
-            "image": "/images/picture1.png",
-            "caption": "Khoảnh khắc sáng tạo tại trường quay",
-            "alt_text": "Hậu trường sản xuất media chuyên nghiệp"
-          }
-        ]
-      },
-      "background": {
-        "type": "image",
-        "color": "blue",
-        "image": "/images/picture1.png",
-        "gradient": "54BAE3"
-      },
-      "subtitle_en": "Vision & Mission",
-      "title_en": "Pioneering Creative Solutions",
-      "subtitle": "Tầm nhìn và Sứ mệnh",
-      "title": "Tiên phong dẫn lối giải pháp sáng tạo toàn diện",
-      "images": [
-        "/images/penci_ai_image_1764864234613.jpg"
-      ],
-      "type": "cta",
-      "ctaText": "Liên hệ tư vấn ngay"
-    }
-  ],
+  "sections": [],
   "intro_en": "In the digital era, attention is the most valuable asset. We are here to help your business not only be seen but be remembered. By combining sharp strategic thinking with modern production technology, we create iconic media campaigns, building sustainable value and breakthrough growth.",
   "partners": [
     {
-      "name": "Tập đoàn Thực phẩm Sunrise",
+      "name": "Bánh Tráng Phú Cường",
       "image": "/images/1667009420681.jpg",
       "is_strategic": true
     },
     {
-      "name": "Hệ thống Chiếu sáng FutureLight",
-      "image": "/images/3374825268217454051.jpg"
+      "name": "Việt Nhật Solar",
+      "image": "/images/logo-viet-nhat-solar.png",
+      "is_strategic": true
     },
     {
-      "name": "Công nghệ Màn hình VisualTech",
-      "image": "/images/picture1.png"
+      "name": "Uni Beuty",
+      "image": "/images/logo-1376082399-1670506004-a70eb87b1c6175a2d8cf51397e7f094d1670506004.png",
+      "is_strategic": true
     },
     {
       "name": "Thể thao Đỉnh cao Sportify",
-      "image": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
+      "image": "/images/download.png"
     },
     {
-      "image": "/images/picture1.png",
+      "image": "/images/joola_logo.webp",
       "name": "Đối tác Chiến lược Global",
       "is_strategic": true
     },
     {
-      "name": "Sáng tạo Nghệ thuật ArtSpace",
-      "image": "/images/picture1.png"
+      "name": "jianyi sport",
+      "image": "/images/z7114400381970_cb288c1e78bd215c0f92738331c5d586.jpg",
+      "is_strategic": true
     },
     {
-      "name": "23123123",
-      "image": "/images/thiết-kế-chưa-có-tên-1-.png",
+      "name": "Huy Dương",
+      "image": "/images/logohuyduong-1.png",
       "is_strategic": true
+    },
+    {
+      "is_strategic": true,
+      "name": "Thai An",
+      "image": "/images/thaian-logo-final.png"
     }
   ],
   "featured_partner_logo": "/images/picture1.png"
