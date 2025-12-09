@@ -8,15 +8,11 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
-# Chế độ làm việc
-publish_mode: editorial_workflow # Hiện nút Save (nháp) trước khi Publish
-local_backend: true              # Cho phép chạy trên localhost
+publish_mode: editorial_workflow
+local_backend: true
+media_folder: "public/images"
+public_folder: "/images"
 
-# Thư mục chứa ảnh
-media_folder: "public/images"    # Nơi lưu ảnh tải lên
-public_folder: "/images"         # Đường dẫn ảnh hiển thị trên web
-
-# Xử lý đường dẫn tiếng Việt
 slug:
   encoding: "ascii"
   clean_accents: true
