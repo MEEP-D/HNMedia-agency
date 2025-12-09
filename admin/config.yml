@@ -313,7 +313,7 @@ collections:
             <<: *sections_config
 
       # --- NEWS (JSON FILE) ---
-      - file: content/news.json
+        - file: content/news.json
         label: Tin tức
         name: news
         format: json
@@ -324,7 +324,18 @@ collections:
           - { label: Mô tả Trang (EN), name: description_en, widget: text, required: false }
           - { label: Ảnh cover, name: cover, widget: image, required: false }
 
-          <<: *sections_config
+          - label: Danh sách Bài viết
+            name: items
+            widget: list
+            collapsed: true
+            summary: '{{fields.title}} - {{fields.date}}'
+            fields:
+              - { label: Slug (URL), name: slug, widget: string }
+              - { label: Tiêu đề, name: title, widget: string }
+              - { label: Ngày, name: date, widget: datetime }
+              - { label: Ảnh đại diện, name: image, widget: image, required: false }
+              - { label: Mô tả ngắn, name: excerpt, widget: text }
+              - { label: Nội dung, name: body, widget: markdown }
 
       # --- CONTACT ---
       - file: content/contact.json
