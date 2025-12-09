@@ -8,24 +8,22 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
-# Bật chế độ lưu nháp (Hiện nút Save màu xám, sau đó mới Publish)
-publish_mode: editorial_workflow
-
-# Cho phép chạy trên localhost
-local_backend: true
+# Chế độ làm việc
+publish_mode: editorial_workflow # Hiện nút Save (nháp) trước khi Publish
+local_backend: true              # Cho phép chạy trên localhost
 
 # Thư mục chứa ảnh
-media_folder: "public/images"
-public_folder: "/images"
+media_folder: "public/images"    # Nơi lưu ảnh tải lên
+public_folder: "/images"         # Đường dẫn ảnh hiển thị trên web
 
-# Cấu hình đường dẫn (Slug)
+# Xử lý đường dẫn tiếng Việt
 slug:
   encoding: "ascii"
   clean_accents: true
   sanitize_replacement: "-"
 
 # ============================================================
-# 2. ĐỊNH NGHĨA SECTION DÙNG CHUNG (Neo YAML)
+# 2. ĐỊNH NGHĨA SECTION DÙNG CHUNG (ANCHOR)
 # ============================================================
 x-sections_config: &sections_config
   label: Các khối nội dung (Sections)
@@ -34,7 +32,6 @@ x-sections_config: &sections_config
   collapsed: true
   summary: '{{fields.title}} [{{fields.type}}]'
   fields:
-    # --- Loại & Tiêu đề ---
     - label: Loại Section
       name: type
       widget: select
@@ -50,7 +47,7 @@ x-sections_config: &sections_config
     - { label: Mô tả phụ, name: subtitle, widget: text, required: false }
     - { label: Mô tả phụ (EN), name: subtitle_en, widget: text, required: false }
 
-    # --- Cấu hình hiển thị ---
+    # Cấu hình hiển thị
     - label: Cấu hình hiển thị
       name: display_config
       widget: object
@@ -61,11 +58,11 @@ x-sections_config: &sections_config
         - { label: Màu nền (Hex), name: bg_color, widget: string, required: false }
         - { label: Ảnh nền, name: bg_image, widget: image, required: false }
 
-    # --- Nội dung chi tiết ---
+    # Nội dung
     - { label: Nội dung (Text), name: body, widget: markdown, required: false }
     - { label: Nội dung (EN), name: body_en, widget: markdown, required: false }
 
-    # --- Items (Dùng cho Grid/CTA) ---
+    # Items & Images
     - label: Danh sách Items (Grid/CTA)
       name: items
       widget: list
@@ -77,7 +74,6 @@ x-sections_config: &sections_config
         - { label: Ảnh/Icon, name: image, widget: image, required: false }
         - { label: Link, name: link, widget: string, required: false }
 
-    # --- Images (Dùng cho Gallery) ---
     - label: Danh sách Ảnh (Gallery)
       name: images
       widget: list
@@ -87,7 +83,7 @@ x-sections_config: &sections_config
         - { label: Ảnh, name: image, widget: image }
         - { label: Caption, name: caption, widget: string, required: false }
 
-    # --- Nút CTA ---
+    # CTA Button
     - { label: Text Nút CTA, name: ctaText, widget: string, required: false }
     - { label: Link Nút CTA, name: ctaLink, widget: string, required: false }
 
@@ -320,7 +316,7 @@ collections:
 
           - <<: *sections_config
 
-      # --- NEWS ---
+      # --- NEWS (JSON FILE) ---
       - file: content/news.json
         label: Tin tức
         name: news
