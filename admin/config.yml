@@ -230,7 +230,7 @@ collections:
               - { label: Năm, name: year, widget: string }
               - { label: Sự kiện, name: event, widget: string }
 
-            <<: *sections_config
+           <<: *sections_config
 
       # --- SERVICES ---
       - file: content/services.json
@@ -251,7 +251,7 @@ collections:
               - { label: Mô tả, name: description, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-            <<: *sections_config
+          <<: *sections_config
 
       # --- COURSES ---
       - file: content/courses.json
@@ -299,7 +299,7 @@ collections:
               - { label: Kết quả, name: result, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-            <<: *sections_config
+           <<: *sections_config
 
       # --- CAREERS ---
       - file: content/careers.json
@@ -321,7 +321,7 @@ collections:
               - { label: Mô tả ngắn, name: summary, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-            <<: *sections_config
+          <<: *sections_config
 
       # --- NEWS (JSON FILE) ---
       - file: content/news.json
@@ -365,4 +365,4 @@ collections:
           - { label: Map iframe, name: mapEmbed, widget: text }
           - { label: Facebook URL, name: facebook, widget: string, required: false }
           - { label: Zalo URL, name: zalo, widget: string, required: false }
-            <<: *sections_config
+          <<: *sections_config
