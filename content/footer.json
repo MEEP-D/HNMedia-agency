@@ -1,24 +1,36 @@
 {
-  "brand_name": "Tên Công Ty",
+  "brand_name": "HN Media",
   "logo": "images/logo.png",
-  "description": "Mô tả ngắn gọn về công ty đặt ở chân trang.",
-  "address": "Số 123, Đường ABC, TP.HCM",
-  "phone": "0909 123 456",
-  "email": "contact@example.com",
-  "copyright": "© 2025 Bản quyền thuộc về Công ty ABC.",
+  "description": "HN Media Agency – Đơn vị truyền thông sáng tạo cung cấp giải pháp Marketing tổng thể, sản xuất video, quản lý KOL/KOC và triển khai chiến dịch đa nền tảng. Chúng tôi đồng hành cùng doanh nghiệp trong hành trình xây dựng thương hiệu và bứt phá trong kỷ nguyên số.",
+  "address": "Chung cư THE WESTERIA Kim Chung Hoài Đức Hà Nội, Việt Nam",
+  "phone": "0766 041 234",
+  "email": "hnmedia665668@gmail.com",
+  "copyright": "© 2025 Bản quyền thuộc về Công ty HN Media.",
   "columns": [
     {
       "title": "Về chúng tôi",
       "links": [
-        { "text": "Giới thiệu", "url": "?page=about" },
-        { "text": "Tuyển dụng", "url": "?page=careers" }
+        {
+          "text": "Giới thiệu",
+          "url": "?page=about"
+        },
+        {
+          "text": "Tuyển dụng",
+          "url": "?page=careers"
+        }
       ]
     },
     {
       "title": "Dịch vụ",
       "links": [
-        { "text": "Marketing", "url": "#" },
-        { "text": "Thiết kế", "url": "#" }
+        {
+          "text": "Marketing",
+          "url": "#"
+        },
+        {
+          "text": "Thiết kế",
+          "url": "#"
+        }
       ]
     }
   ]
