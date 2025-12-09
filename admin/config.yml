@@ -186,7 +186,7 @@ collections:
           - { label: Giới thiệu nhanh, name: intro, widget: text }
           - { label: Giới thiệu nhanh (EN), name: intro_en, widget: text, required: false }
 
-          - <<: *sections_config
+            <<: *sections_config
 
       # --- ABOUT ---
       - file: content/about.json
@@ -219,7 +219,7 @@ collections:
               - { label: Năm, name: year, widget: string }
               - { label: Sự kiện, name: event, widget: string }
 
-          - <<: *sections_config
+            <<: *sections_config
 
       # --- SERVICES ---
       - file: content/services.json
@@ -240,7 +240,7 @@ collections:
               - { label: Mô tả, name: description, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-          - <<: *sections_config
+            <<: *sections_config
 
       # --- COURSES ---
       - file: content/courses.json
@@ -267,7 +267,7 @@ collections:
                 widget: list
                 fields: [{ label: Mục, name: item, widget: string }]
 
-          - <<: *sections_config
+            <<: *sections_config
 
       # --- PORTFOLIO ---
       - file: content/portfolio.json
@@ -288,7 +288,7 @@ collections:
               - { label: Kết quả, name: result, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-          - <<: *sections_config
+            <<: *sections_config
 
       # --- CAREERS ---
       - file: content/careers.json
@@ -310,7 +310,7 @@ collections:
               - { label: Mô tả ngắn, name: summary, widget: text }
               - { label: Ảnh, name: image, widget: image, required: false }
 
-          - <<: *sections_config
+            <<: *sections_config
 
       # --- NEWS (JSON FILE) ---
       - file: content/news.json
@@ -341,7 +341,7 @@ collections:
               - { label: Nội dung bài viết, name: body, widget: markdown }
               - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
 
-          - <<: *sections_config
+            <<: *sections_config
 
       # --- CONTACT ---
       - file: content/contact.json
@@ -359,4 +359,4 @@ collections:
           - { label: Map iframe, name: mapEmbed, widget: text }
           - { label: Facebook URL, name: facebook, widget: string, required: false }
           - { label: Zalo URL, name: zalo, widget: string, required: false }
-          - <<: *sections_config
+            <<: *sections_config
