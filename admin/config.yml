@@ -448,7 +448,7 @@ collections:
               - { label: Nội dung bài viết (EN), name: body_en, widget: markdown, required: false }
           
           # (Quan trọng: Dòng này cũng phải thụt vào trong 'fields')
-          - <<: *sections_config
+            - <<: *sections_config
 
       - file: content/contact.json
         label: Liên hệ
