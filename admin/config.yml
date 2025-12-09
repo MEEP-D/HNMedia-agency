@@ -8,7 +8,7 @@ backend:
   base_url: "https://hn-media-agency.vercel.app/api"
   auth_endpoint: auth
 
-# Chế độ hiển thị
+# Chế độ biên tập & Localhost
 publish_mode: editorial_workflow
 local_backend: true
 
@@ -27,32 +27,34 @@ slug:
 # ============================================================
 collections:
   # -----------------------------------------------------------
-  # 1. CÀI ĐẶT (SETTINGS)
+  # 1. CÀI ĐẶT CHUNG (Settings) - Gộp Config, Footer, SEO vào đây
   # -----------------------------------------------------------
   - name: settings
-    label: ⚙️ Cài đặt
+    label: ⚙️ Cài đặt & Cấu hình
     files:
+      # --- File 1: Thông tin chung ---
       - file: content/config.json
-        label: Cấu hình chung
-        name: site
+        label: Thông tin Website
+        name: config
         format: json
         fields:
-          - { label: Tên website, name: siteName, widget: string }
+          - { label: Tên Website, name: siteName, widget: string }
           - label: Thương hiệu
             name: brand
             widget: object
             fields:
-              - { label: Tên thương hiệu, name: name, widget: string }
-              - { label: Khẩu hiệu (Tagline), name: tagline, widget: string }
+              - { label: Tên công ty, name: name, widget: string }
+              - { label: Slogan, name: tagline, widget: string }
               - { label: Logo, name: logo, widget: image }
               - { label: Mô tả ngắn, name: description, widget: text }
-          - label: Intro (Màn hình chờ)
+          - label: Màn hình chờ (Intro)
             name: intro
             widget: object
             fields:
               - { label: Bật Intro, name: enable, widget: boolean, default: true }
               - { label: Thời gian (giây), name: duration, widget: number, default: 2 }
 
+      # --- File 2: Footer (Chân trang) ---
       - file: content/footer.json
         label: Chân trang (Footer)
         name: footer
@@ -60,9 +62,9 @@ collections:
         fields:
           - { label: Tên hiển thị, name: brand_name, widget: string }
           - { label: Logo Footer, name: logo, widget: image, required: false }
-          - { label: Mô tả ngắn, name: description, widget: text }
+          - { label: Mô tả footer, name: description, widget: text }
           - { label: Địa chỉ, name: address, widget: string }
-          - { label: Số điện thoại, name: phone, widget: string }
+          - { label: Hotline, name: phone, widget: string }
           - { label: Email, name: email, widget: string }
           - { label: Copyright, name: copyright, widget: string }
           - label: Cột liên kết
@@ -77,15 +79,16 @@ collections:
                   - { label: Tên link, name: text, widget: string }
                   - { label: Đường dẫn (URL), name: url, widget: string }
 
+      # --- File 3: SEO ---
       - file: content/seo.json
-        label: SEO
+        label: Cấu hình SEO
         name: seo
         format: json
         fields:
           - label: Trang chủ
             name: index
             widget: object
-            fields: [{label: Title, name: title, widget: string}, {label: Desc, name: description, widget: text}]
+            fields: [{label: Title, name: title, widget: string}, {label: Description, name: description, widget: text}]
 
   # -----------------------------------------------------------
   # 2. NỘI DUNG TRANG (PAGES)
@@ -104,12 +107,12 @@ collections:
             widget: object
             collapsed: false
             fields:
-              - { label: Slogan, name: slogan, widget: string }
+              - { label: Slogan nhỏ, name: slogan, widget: string }
               - { label: Tiêu đề lớn, name: title, widget: string }
               - { label: Mô tả, name: subtitle, widget: text }
-              - { label: Text Nút bấm, name: ctaText, widget: string }
+              - { label: Text nút bấm, name: ctaText, widget: string }
               - { label: Ảnh Hero, name: image, widget: image }
-              - { label: Video nền (Tùy chọn), name: video, widget: string, required: false }
+              - { label: Video nền, name: video, widget: string, required: false }
               - { label: Full màn hình, name: fullscreen, widget: boolean, default: false }
 
           - { label: Logo Đối tác Nổi bật, name: featured_partner_logo, widget: image, required: false }
@@ -137,15 +140,15 @@ collections:
                 default: grid
               - { label: Tiêu đề, name: title, widget: string, required: false }
               - { label: Mô tả phụ, name: subtitle, widget: text, required: false }
-              - { label: Nội dung (Markdown), name: body, widget: markdown, required: false }
-              - label: Items (Cho Grid)
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - label: Items (Dùng cho Grid)
                 name: items
                 widget: list
                 required: false
                 fields:
                   - { label: Tiêu đề, name: title, widget: string }
                   - { label: Mô tả, name: description, widget: text, required: false }
-                  - { label: Ảnh/Icon, name: image, widget: image, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
 
       # --- ABOUT ---
       - file: content/about.json
