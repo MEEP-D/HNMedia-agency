@@ -1197,20 +1197,22 @@ window.openJobDetail = function(idx) {
 
     var title = TF(p, 'title');
     
-    // SỬ DỤNG HÀM parseMarkdown VỪA ĐỊNH NGHĨA
+    // Sử dụng hàm parseMarkdown đã có ở bước trước
     var summaryHtml = parseMarkdown(TF(p, 'summary'));
     var reqHtml = parseMarkdown(TF(p, 'requirements'));
     var benHtml = parseMarkdown(TF(p, 'benefits'));
 
+    // --- 1. Tạo giao diện Modal ---
     var modalHtml = `
       <style>
           @keyframes slideUp {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+          /* Đảm bảo font hiển thị tiếng Việt đúng */
+          .job-modal-content { font-family: sans-serif; }
           .job-section-title { font-weight: 800; color: #0f172a; font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
           .job-section-title i { color: #10b981; }
-          .prose ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
-          .prose li { margin-bottom: 0.5rem; }
       </style>
-      <div class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
+      
+      <div class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 job-modal-content">
           <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity" data-close></div>
           
           <div class="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden" style="animation: slideUp 0.4s ease-out forwards">
@@ -1239,7 +1241,7 @@ window.openJobDetail = function(idx) {
                   
                   <div class="mb-8">
                       <div class="job-section-title"><i data-lucide="file-text" class="w-5 h-5"></i> Mô tả công việc</div>
-                      <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 prose prose-slate max-w-none text-sm md:text-base">
+                      <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100 prose prose-slate max-w-none text-sm md:text-base text-slate-700">
                           ${summaryHtml}
                       </div>
                   </div>
@@ -1264,7 +1266,7 @@ window.openJobDetail = function(idx) {
 
               <div class="p-5 border-t border-slate-100 bg-white shrink-0 flex justify-end gap-3">
                   <button class="px-6 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors text-sm" data-close>Đóng lại</button>
-                  <button onclick="document.getElementById('job-detail-modal')?.remove(); window.openApplyModal('${title.replace(/'/g, "\\'")}')" class="px-8 py-3 rounded-xl font-bold bg-slate-900 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 hover:-translate-y-1 transition-all text-sm flex items-center gap-2">
+                  <button id="btn-apply-now" class="px-8 py-3 rounded-xl font-bold bg-slate-900 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 hover:-translate-y-1 transition-all text-sm flex items-center gap-2">
                       <span>Ứng tuyển ngay</span>
                       <i data-lucide="arrow-right" class="w-4 h-4"></i>
                   </button>
@@ -1273,22 +1275,58 @@ window.openJobDetail = function(idx) {
       </div>
     `;
 
+    // --- 2. Xóa modal cũ nếu tồn tại ---
     var old = document.getElementById('job-detail-modal');
     if (old) old.remove();
 
+    // --- 3. Tạo phần tử DOM ---
     var wrap = document.createElement('div');
     wrap.id = 'job-detail-modal';
     wrap.innerHTML = modalHtml;
     document.body.appendChild(wrap);
+    
+    // Khóa cuộn trang chính
     document.body.style.overflow = 'hidden';
+    
+    // Render icon
     if(window.lucide) window.lucide.createIcons();
 
+    // --- 4. HÀM ĐÓNG MODAL CHUẨN (Fix lỗi ESC mất chữ menu) ---
+    function closeModal() {
+        var m = document.getElementById('job-detail-modal');
+        if (m) {
+            m.remove();
+        }
+        // Quan trọng: Trả lại thanh cuộn cho body
+        document.body.style.overflow = ''; 
+        // Gỡ sự kiện ESC để tránh rò rỉ bộ nhớ
+        document.removeEventListener('keydown', onEscKey);
+    }
+
+    // --- 5. Xử lý sự kiện Phím ESC ---
+    function onEscKey(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    }
+    document.addEventListener('keydown', onEscKey);
+
+    // --- 6. Xử lý sự kiện Click ---
     wrap.addEventListener('click', e => {
+        // Đóng khi click nút Close hoặc Overlay
         if (e.target.closest('[data-close]')) {
-            wrap.remove();
-            document.body.style.overflow = '';
+            closeModal();
         }
     });
+    
+    // Xử lý nút Ứng tuyển trong modal
+    var btnApply = wrap.querySelector('#btn-apply-now');
+    if(btnApply) {
+        btnApply.onclick = function() {
+            closeModal(); // Đóng modal chi tiết trước
+            window.openApplyModal(title.replace(/'/g, "\\'")); // Mở modal ứng tuyển
+        };
+    }
 }
   // --- HELPER: Xử lý Markdown sang HTML ---
 function parseMarkdown(text) {
