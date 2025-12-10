@@ -1,21 +1,293 @@
+# ============================================================
+# CẤU HÌNH HỆ THỐNG
+# ============================================================
 backend:
   name: github
   repo: "MEEP-D/HNMedia-agency"
   branch: "main"
-  base_url: "https://hn-media-agency.vercel.app/api"
+  base_url: "https://digitalhnmedia.com/api"
   auth_endpoint: auth
 
-media_folder: "public/images"
+# Chế độ biên tập & Localhost
+publish_mode: editorial_workflow
+local_backend: true
+
+# Thư mục ảnh
+media_folder: "/images"
 public_folder: "/images"
 
+# Cấu hình đường dẫn
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+# ============================================================
+# DANH MỤC QUẢN LÝ (COLLECTIONS)
+# ============================================================
 collections:
-  # --- CHỈ GIỮ LẠI ĐÚNG 1 CÁI ĐỂ TEST ---
+  # -----------------------------------------------------------
+  # 1. CÀI ĐẶT CHUNG (Settings) - Gộp Config, Footer, SEO vào đây
+  # -----------------------------------------------------------
   - name: settings
-    label: Cài đặt
+    label: ⚙️ Cài đặt & Cấu hình
     files:
+      # --- File 1: Thông tin chung ---
       - file: content/config.json
-        label: Cấu hình chung
-        name: site
+        label: Thông tin Website
+        name: config
         format: json
         fields:
-          - { label: Tên website, name: siteName, widget: string }
+          - { label: Tên Website, name: siteName, widget: string }
+          - label: Thương hiệu
+            name: brand
+            widget: object
+            fields:
+              - { label: Tên công ty, name: name, widget: string }
+              - { label: Slogan, name: tagline, widget: string }
+              - { label: Logo, name: logo, widget: image }
+              - { label: Mô tả ngắn, name: description, widget: text }
+          - label: Màn hình chờ (Intro)
+            name: intro
+            widget: object
+            fields:
+              - { label: Bật Intro, name: enable, widget: boolean, default: true }
+              - { label: Thời gian (giây), name: duration, widget: number, default: 2 }
+
+      # --- File 2: Footer (Chân trang) ---
+      - file: content/footer.json
+        label: Chân trang (Footer)
+        name: footer
+        format: json
+        fields:
+          - { label: Tên hiển thị, name: brand_name, widget: string }
+          - { label: Logo Footer, name: logo, widget: image, required: false }
+          - { label: Mô tả footer, name: description, widget: text }
+          - { label: Địa chỉ, name: address, widget: string }
+          - { label: Hotline, name: phone, widget: string }
+          - { label: Email, name: email, widget: string }
+          - { label: Copyright, name: copyright, widget: string }
+          - label: Cột liên kết
+            name: columns
+            widget: list
+            fields:
+              - { label: Tiêu đề cột, name: title, widget: string }
+              - label: Links
+                name: links
+                widget: list
+                fields:
+                  - { label: Tên link, name: text, widget: string }
+                  - { label: Đường dẫn (URL), name: url, widget: string }
+
+      # --- File 3: SEO ---
+      - file: content/seo.json
+        label: Cấu hình SEO
+        name: seo
+        format: json
+        fields:
+          - label: Trang chủ
+            name: index
+            widget: object
+            fields: [{label: Title, name: title, widget: string}, {label: Description, name: description, widget: text}]
+
+  # -----------------------------------------------------------
+  # 2. NỘI DUNG TRANG (PAGES)
+  # -----------------------------------------------------------
+  - name: pages
+    label: 📄 Nội dung Trang
+    files:
+      # --- HOME ---
+      - file: content/home.json
+        label: Trang chủ
+        name: home
+        format: json
+        fields:
+          - label: Hero Banner
+            name: hero
+            widget: object
+            collapsed: false
+            fields:
+              - { label: Slogan nhỏ, name: slogan, widget: string }
+              - { label: Tiêu đề lớn, name: title, widget: string }
+              - { label: Mô tả, name: subtitle, widget: text }
+              - { label: Text nút bấm, name: ctaText, widget: string }
+              - { label: Ảnh Hero, name: image, widget: image }
+              - { label: Video nền, name: video, widget: string, required: false }
+              - { label: Full màn hình, name: fullscreen, widget: boolean, default: false }
+
+          - { label: Logo Đối tác Nổi bật, name: featured_partner_logo, widget: image, required: false }
+          
+          - label: Danh sách Đối tác
+            name: partners
+            widget: list
+            collapsed: true
+            fields:
+              - { label: Tên đối tác, name: name, widget: string }
+              - { label: Logo, name: image, widget: image }
+              - { label: Là đối tác chiến lược?, name: is_strategic, widget: boolean, default: false }
+
+          - { label: Giới thiệu ngắn, name: intro, widget: text }
+
+          - label: Các khối nội dung (Sections)
+            name: sections
+            widget: list
+            collapsed: true
+            fields:
+              - label: Loại Section
+                name: type
+                widget: select
+                options: ["grid", "text", "cta", "gallery"]
+                default: grid
+              - { label: Tiêu đề, name: title, widget: string, required: false }
+              - { label: Mô tả phụ, name: subtitle, widget: text, required: false }
+              - { label: Nội dung, name: body, widget: markdown, required: false }
+              - label: Items (Dùng cho Grid)
+                name: items
+                widget: list
+                required: false
+                fields:
+                  - { label: Tiêu đề, name: title, widget: string }
+                  - { label: Mô tả, name: description, widget: text, required: false }
+                  - { label: Ảnh, name: image, widget: image, required: false }
+
+      # --- ABOUT ---
+      - file: content/about.json
+        label: Giới thiệu
+        name: about
+        format: json
+        fields:
+          - { label: Tiêu đề trang, name: title, widget: string }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          - { label: Mô tả chung, name: description, widget: text }
+          - { label: Tầm nhìn, name: vision, widget: text }
+          - { label: Sứ mệnh, name: mission, widget: text }
+          
+          - label: Đội ngũ (Team)
+            name: team
+            widget: list
+            fields:
+              - { label: Tên, name: name, widget: string }
+              - { label: Vai trò, name: role, widget: string }
+              - { label: Ảnh, name: photo, widget: image }
+
+          - label: Lịch sử hình thành
+            name: history
+            widget: list
+            fields:
+              - { label: Năm, name: year, widget: string }
+              - { label: Sự kiện, name: event, widget: string }
+              - { label: Chi tiết, name: description, widget: text, required: false }
+
+      # --- SERVICES ---
+      - file: content/services.json
+        label: Dịch vụ
+        name: services
+        format: json
+        fields:
+          - { label: Tiêu đề trang, name: title, widget: string }
+          - { label: Mô tả chung, name: description, widget: text }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          
+          - label: Danh sách dịch vụ
+            name: items
+            widget: list
+            fields:
+              - { label: Tên dịch vụ, name: title, widget: string }
+              - { label: Mô tả, name: description, widget: text }
+              - { label: Icon/Ảnh, name: image, widget: image, required: false }
+
+      # --- COURSES ---
+      - file: content/courses.json
+        label: Khóa học
+        name: courses
+        format: json
+        fields:
+          - { label: Tiêu đề trang, name: title, widget: string }
+          - { label: Mô tả chung, name: description, widget: text }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          
+          - label: Danh sách khóa học
+            name: items
+            widget: list
+            fields:
+              - { label: Slug (URL), name: slug, widget: string }
+              - { label: Tên khóa học, name: title, widget: string }
+              - { label: Tóm tắt, name: summary, widget: text }
+              - { label: Thời lượng, name: duration, widget: string }
+              - { label: Hình thức, name: format, widget: string }
+              - { label: Ảnh thumbnail, name: image, widget: image }
+              - { label: Chi tiết khóa học, name: description, widget: markdown }
+
+      # --- PORTFOLIO ---
+      - file: content/portfolio.json
+        label: Thành tựu / Dự án
+        name: portfolio
+        format: json
+        fields:
+          - { label: Tiêu đề trang, name: title, widget: string }
+          - { label: Mô tả chung, name: description, widget: text }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          
+          - label: Danh sách dự án
+            name: items
+            widget: list
+            fields:
+              - { label: Tên dự án, name: title, widget: string }
+              - { label: Kết quả/Mô tả, name: result, widget: text }
+              - { label: Ảnh minh họa, name: image, widget: image }
+
+      # --- CAREERS ---
+      - file: content/careers.json
+        label: Tuyển dụng
+        name: careers
+        format: json
+        fields:
+          - { label: Tiêu đề trang, name: title, widget: string }
+          - { label: Mô tả chung, name: description, widget: text }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+          
+          - label: Vị trí tuyển dụng
+            name: positions
+            widget: list
+            fields:
+              - { label: Chức danh, name: title, widget: string }
+              - { label: Địa điểm, name: location, widget: string }
+              - { label: Mô tả công việc, name: summary, widget: text }
+
+      # --- NEWS (TIN TỨC) ---
+      - file: content/news.json
+        label: Tin tức
+        name: news
+        format: json
+        fields:
+          - { label: Tiêu đề trang, name: title, widget: string }
+          - { label: Mô tả trang, name: description, widget: text }
+          - { label: Ảnh cover, name: cover, widget: image, required: false }
+
+          - label: Danh sách Bài viết
+            name: items
+            widget: list
+            summary: '{{fields.title}}'
+            fields:
+              - { label: Slug (URL), name: slug, widget: string, hint: "Viết liền không dấu, gạch ngang" }
+              - { label: Tiêu đề bài viết, name: title, widget: string }
+              - { label: Tóm tắt, name: summary, widget: text }
+              - { label: Ảnh đại diện, name: image, widget: image }
+              - { label: Tác giả, name: author, widget: string, default: "Admin" }
+              - { label: Ngày đăng, name: date, widget: datetime, format: "DD/MM/YYYY" }
+              - { label: Nội dung chi tiết, name: body, widget: markdown }
+
+      # --- CONTACT ---
+      - file: content/contact.json
+        label: Liên hệ
+        name: contact
+        format: json
+        fields:
+          - { label: Tiêu đề trang, name: title, widget: string }
+          - { label: Ảnh cover, name: image, widget: image, required: false }
+          - { label: Email, name: email, widget: string }
+          - { label: Điện thoại, name: phone, widget: string }
+          - { label: Địa chỉ, name: address, widget: string }
+          - { label: Facebook, name: facebook, widget: string, required: false }
+          - { label: Zalo, name: zalo, widget: string, required: false }
+          - { label: Mã nhúng bản đồ (Iframe), name: mapEmbed, widget: text }
