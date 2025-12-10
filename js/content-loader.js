@@ -2132,13 +2132,29 @@ function renderContact(el, data) {
         }
     }, 100);
   }
+  // --- 9. MAIN LOAD LOGIC (ĐÃ SỬA: CHỈ HIỆN INTRO TAB MỚI) ---
   window.initContent = async function(){ 
     setupNavigation();
     
     // 1. Lấy thông tin cấu hình trước
     var cfg = await fetchJson('content/config.json');
-    // Tính thời gian intro (nếu có bật)
-    var introTime = (cfg && cfg.intro && cfg.intro.enable) ? (cfg.intro.duration * 1000) : 0;
+
+    // --- LOGIC MỚI BẮT ĐẦU ---
+    // Kiểm tra trong sessionStorage xem đã đánh dấu là "đã xem intro" chưa
+    var hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
+
+    var introTime = 0;
+
+    // Điều kiện: Config có bật Intro VÀ chưa xem lần nào trong phiên này (Tab mới)
+    if (cfg && cfg.intro && cfg.intro.enable && !hasSeenIntro) {
+        introTime = cfg.intro.duration * 1000;
+        // Đánh dấu ngay lập tức là đã xem để lần sau F5 sẽ không vào đây nữa
+        sessionStorage.setItem('hasSeenIntro', 'true');
+    } else {
+        // Nếu đã xem rồi (Reload) hoặc tắt config -> Thời gian chờ = 0
+        introTime = 0;
+    }
+    // --- LOGIC MỚI KẾT THÚC ---
     
     var loadingScreen = document.getElementById('loading-screen');
     var appElement = document.getElementById('app');
@@ -2147,10 +2163,9 @@ function renderContact(el, data) {
     var startTime = Date.now();
     
     // 3. Tải và render nội dung chính (Đây là việc nặng nhất)
-    // Hàm này giờ đây là async và chúng ta sẽ 'await' nó
     await loadAndRenderContent();
 
-    // 4. Tính toán thời gian còn lại cần chờ (để đảm bảo chạy đủ thời gian intro)
+    // 4. Tính toán thời gian còn lại cần chờ
     var elapsedTime = Date.now() - startTime;
     var remainingTime = Math.max(0, introTime - elapsedTime);
 
