@@ -1191,14 +1191,13 @@ function renderAbout(el, data) {
   // [UPDATED] CAREERS PAGE RENDERER
   // ============================================================
   // --- [NEW] JOB DETAIL MODAL ---
-  window.openJobDetail = function(idx) {
+window.openJobDetail = function(idx) {
     var p = window._careerData && window._careerData[idx];
     if (!p) return;
 
     var title = TF(p, 'title');
     
-    // Lấy dữ liệu từ các trường mới trong CMS
-    // Sử dụng hàm parseMarkdown để hiển thị đẹp
+    // SỬ DỤNG HÀM parseMarkdown VỪA ĐỊNH NGHĨA
     var summaryHtml = parseMarkdown(TF(p, 'summary'));
     var reqHtml = parseMarkdown(TF(p, 'requirements'));
     var benHtml = parseMarkdown(TF(p, 'benefits'));
@@ -1208,7 +1207,6 @@ function renderAbout(el, data) {
           @keyframes slideUp {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
           .job-section-title { font-weight: 800; color: #0f172a; font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
           .job-section-title i { color: #10b981; }
-          /* Style cho list trong markdown */
           .prose ul { list-style-type: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
           .prose li { margin-bottom: 0.5rem; }
       </style>
@@ -1275,7 +1273,6 @@ function renderAbout(el, data) {
       </div>
     `;
 
-    // Xóa modal cũ nếu có
     var old = document.getElementById('job-detail-modal');
     if (old) old.remove();
 
@@ -1292,6 +1289,46 @@ function renderAbout(el, data) {
             document.body.style.overflow = '';
         }
     });
+}
+  // --- HELPER: Xử lý Markdown sang HTML ---
+function parseMarkdown(text) {
+    if (!text) return '';
+    
+    // 1. Nếu trang web có thư viện 'marked' (thường có sẵn trong template), dùng nó
+    if (window.marked) return window.marked.parse(text);
+
+    // 2. Fallback: Tự xử lý thủ công nếu không có thư viện
+    // Chuyển ký tự xuống dòng \n thành <br>
+    let html = text.replace(/\n/g, '<br>'); 
+    
+    // Xử lý gạch đầu dòng (- hoặc • hoặc +)
+    if (html.includes('- ') || html.includes('• ') || html.includes('+ ')) {
+        // Tách theo dòng
+        let lines = text.split('\n');
+        let listItems = '';
+        let otherText = '';
+        
+        lines.forEach(line => {
+            line = line.trim();
+            if (line.startsWith('-') || line.startsWith('•') || line.startsWith('+')) {
+                // Đây là dòng list
+                listItems += `<li>${line.substring(1).trim()}</li>`;
+            } else if (line) {
+                // Đây là dòng thường
+                otherText += `<p class="mb-2">${line}</p>`;
+            }
+        });
+        
+        return `
+            ${otherText}
+            <ul class="list-disc pl-5 space-y-1 text-slate-600 mb-4">
+                ${listItems}
+            </ul>
+        `;
+    }
+    
+    // Trả về text thường nếu không có gì đặc biệt
+    return `<div class="whitespace-pre-line text-slate-600">${text}</div>`;
 }
   // --- HELPER: FORMAT TEXT ĐỂ KHÔNG BỊ DỒN ---
 function formatText(text) {
@@ -1316,7 +1353,10 @@ function formatText(text) {
     // Nếu là đoạn văn thường, dùng white-space để tôn trọng xuống dòng
     return `<div class="whitespace-pre-line text-slate-600 leading-relaxed">${text}</div>`;
 }
- function renderCareers(el, data) {
+ // ============================================================
+// [UPDATED] CAREERS PAGE RENDERER (CÓ QUY TRÌNH TUYỂN DỤNG)
+// ============================================================
+function renderCareers(el, data) {
     // Lưu data vào biến global
     window._careerData = data.positions || [];
 
@@ -1355,18 +1395,21 @@ function formatText(text) {
       </section>
     `;
 
-    // --- 2. PERKS ---
+    // --- 2. PERKS (QUYỀN LỢI) ---
     var perks = [
-        { title: TR('Thu nhập hấp dẫn','Competitive Salary'), desc: TR('Lương thưởng cạnh tranh, đánh giá tăng lương định kỳ.','Competitive salary and bonus, regular salary review.'), icon: 'banknote', bg: 'bg-emerald-50', color: 'text-emerald-600' },
-        { title: TR('Đào tạo chuyên sâu','Training & Growth'), desc: TR('Được tài trợ khóa học và mentoring từ chuyên gia.','Sponsored courses and mentoring from experts.'), icon: 'book-open', bg: 'bg-blue-50', color: 'text-blue-600' },
-        { title: TR('Môi trường mở','Open Environment'), desc: TR('Văn phòng hiện đại, tôn trọng sự khác biệt.','Modern office, respect for differences.'), icon: 'smile', bg: 'bg-yellow-50', color: 'text-yellow-600' },
-        { title: TR('Chăm sóc sức khỏe','Health Care'), desc: TR('Bảo hiểm sức khỏe cao cấp, khám sức khỏe định kỳ.','Premium health insurance, annual check-up.'), icon: 'heart', bg: 'bg-red-50', color: 'text-red-600' }
+        { title: TR('Thu nhập hấp dẫn','Competitive Salary'), desc: TR('Lương thưởng cạnh tranh, review lương định kỳ 2 lần/năm.','Competitive salary and bonus, salary review twice a year.'), icon: 'banknote', bg: 'bg-emerald-50', color: 'text-emerald-600' },
+        { title: TR('Đào tạo chuyên sâu','Training & Growth'), desc: TR('Được tài trợ khóa học và mentoring 1:1 từ chuyên gia.','Sponsored courses and 1:1 mentoring from experts.'), icon: 'book-open', bg: 'bg-blue-50', color: 'text-blue-600' },
+        { title: TR('Môi trường mở','Open Environment'), desc: TR('Văn phòng hiện đại, tôn trọng sự khác biệt của từng cá nhân.','Modern office, respect for individual differences.'), icon: 'smile', bg: 'bg-yellow-50', color: 'text-yellow-600' },
+        { title: TR('Chăm sóc sức khỏe','Health Care'), desc: TR('Bảo hiểm sức khỏe cao cấp, khám sức khỏe tổng quát hàng năm.','Premium health insurance, annual general health check-up.'), icon: 'heart', bg: 'bg-red-50', color: 'text-red-600' }
     ];
+
     var perksHtml = `
       <section class="py-20 bg-white">
          <div class="max-w-6xl mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-down">
+                <span class="text-orange-600 font-bold text-xs uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full mb-4 inline-block">${TR('Văn hóa & Phúc lợi','Culture & Benefits')}</span>
                 <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">${TR('Tại sao chọn chúng tôi?','Why Choose Us?')}</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">${TR('Chúng tôi không chỉ mang đến một công việc, mà là một sự nghiệp bền vững.','We don\'t just offer a job, but a sustainable career.')}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 ${perks.map((p, i) => `
@@ -1383,11 +1426,47 @@ function formatText(text) {
       </section>
     `;
 
-    // --- 3. POSITIONS LIST ---
+    // --- 3. [NEW] HIRING PROCESS (QUY TRÌNH TUYỂN DỤNG) ---
+    var steps = [
+        { num: '01', title: TR('Ứng tuyển','Apply'), desc: TR('Gửi CV qua website hoặc email.','Send CV via website or email.'), icon: 'send' },
+        { num: '02', title: TR('Sơ loại','Screening'), desc: TR('Đánh giá hồ sơ & Test năng lực.','Profile review & Competency test.'), icon: 'file-search' },
+        { num: '03', title: TR('Phỏng vấn','Interview'), desc: TR('Trao đổi trực tiếp với quản lý.','Direct interview with manager.'), icon: 'message-circle' },
+        { num: '04', title: TR('Tiếp nhận','Onboarding'), desc: TR('Nhận Offer và bắt đầu làm việc.','Receive Offer and start working.'), icon: 'check-circle' }
+    ];
+
+    var processHtml = `
+        <section class="py-20 bg-slate-50 relative border-y border-slate-200">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16" data-aos="fade-down">
+                    <span class="text-slate-500 font-bold text-xs uppercase tracking-widest border border-slate-200 bg-white px-3 py-1 rounded-full mb-4 inline-block">${TR('Lộ trình','Roadmap')}</span>
+                    <h2 class="text-3xl font-bold text-slate-900">${TR('Quy trình tuyển dụng','Hiring Process')}</h2>
+                </div>
+                
+                <div class="relative grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="hidden md:block absolute top-10 left-0 w-full h-0.5 bg-slate-200 -z-0"></div>
+                    
+                    ${steps.map((s, i) => `
+                        <div class="relative z-10 text-center group" data-aos="fade-up" data-aos-delay="${i * 150}">
+                            <div class="w-20 h-20 mx-auto bg-white border-4 border-slate-100 rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:border-orange-500 group-hover:scale-110 transition-all duration-300 relative">
+                                <i data-lucide="${s.icon}" class="w-8 h-8 text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+                                <div class="absolute -top-2 -right-2 w-8 h-8 bg-slate-900 text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-white shadow-md">
+                                    ${s.num}
+                                </div>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-2">${s.title}</h3>
+                            <p class="text-sm text-slate-500 px-4">${s.desc}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </section>
+    `;
+
+    // --- 4. POSITIONS LIST (DANH SÁCH VIỆC LÀM) ---
     var listHtml = '';
     if(data.positions && data.positions.length > 0) {
         listHtml = `
-        <section id="positions" class="py-24 bg-white border-t border-slate-100">
+        <section id="positions" class="py-24 bg-white">
              <div class="max-w-6xl mx-auto px-4">
                 <div class="text-center mb-12">
                      <h2 class="text-3xl font-bold text-slate-900 mb-2">${TR('Vị trí đang tuyển','Open Positions')}</h2>
@@ -1397,7 +1476,6 @@ function formatText(text) {
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     ${data.positions.map((p, i) => {
                         var jobTitle = (TF(p,'title') || '').replace(/'/g, "\\'");
-                        
                         return `
                         <div class="group flex flex-col bg-white rounded-2xl border border-slate-200 p-6 hover:border-orange-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full cursor-pointer" onclick="window.openJobDetail(${i})" data-aos="fade-up" data-aos-delay="${i * 50}">
                             
@@ -1422,9 +1500,9 @@ function formatText(text) {
                                     <i data-lucide="dollar-sign" class="w-3.5 h-3.5 text-emerald-500"></i> ${p.salary || 'Thỏa thuận'}
                                 </span>
                             </div>
-                            
+
                             <div class="grid grid-cols-2 gap-3 mt-auto">
-                                <button type="button" onclick="event.stopPropagation(); window.openJobDetail(${i})" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 text-slate-600 text-sm font-bold px-3 py-3 hover:border-orange-500 hover:text-orange-600 hover:bg-orange-50 transition-colors">
+                                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 text-slate-600 text-sm font-bold px-3 py-3 hover:border-orange-500 hover:text-orange-600 hover:bg-orange-50 transition-colors">
                                     ${TR('Chi tiết','Details')}
                                 </button>
                                 <button type="button" onclick="event.stopPropagation(); window.openApplyModal('${jobTitle}')" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-sm font-bold px-3 py-3 hover:bg-orange-600 transition-colors shadow-md z-10">
@@ -1441,7 +1519,7 @@ function formatText(text) {
         listHtml = `<div class="py-24 text-center text-slate-500">${TR('Hiện chưa có vị trí nào đang mở.','No open positions at the moment.')}</div>`;
     }
 
-    // --- 4. CTA ---
+    // --- 5. CTA ---
     var ctaHtml = `
       <section class="py-20 bg-slate-900 relative overflow-hidden text-center text-white">
          <div class="max-w-3xl mx-auto px-4 relative z-10" data-aos="zoom-in">
@@ -1455,7 +1533,8 @@ function formatText(text) {
       </section>
     `;
 
-    el.innerHTML = hero + perksHtml + listHtml + ctaHtml + renderSections(data.sections || []);
+    // Gộp tất cả các phần lại
+    el.innerHTML = hero + perksHtml + processHtml + listHtml + ctaHtml + renderSections(data.sections || []);
 }
   // ============================================================
   // [NEW] CONTACT PAGE RENDERER (UPGRADED)
