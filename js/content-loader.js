@@ -615,7 +615,7 @@ window.openApplyModal = function(pos) {
   // --- 8. PAGE RENDERERS ---
 
   function renderHome(el, home, svc, crs, port){
-    // 1. Hero (Giữ nguyên logic cũ của bạn)
+    // --- 1. HERO (Giữ nguyên) ---
     var hero;
     var heroImg = (home.hero && home.hero.image) || 'images/hero/placeholder.jpg';
     if(home.hero && home.hero.fullscreen){
@@ -637,33 +637,41 @@ window.openApplyModal = function(pos) {
       hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg shadow-slate-200 hover:bg-emerald-600 hover:shadow-emerald-200 transition-all hover:-translate-y-1" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
     }
 
-    // --- [PHẦN SỬA ĐỔI] XỬ LÝ MEDIA CHO INTRO ---
+    // --- [PHẦN SỬA LẠI: INTRO MEDIA] ---
     
-    // 1. Lấy dữ liệu Text
-    var introText = `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed mb-8">${TF(home||{},'intro')}</p>`;
+    // 1. Debug: In ra console để xem dữ liệu (Bấm F12 -> Console để xem)
+    console.log("DEBUG HOME DATA:", home);
+
+    // 2. Tìm biến chứa Video hoặc Ảnh (Thử nhiều tên biến khác nhau phòng khi CMS đặt tên lạ)
+    var useVideo = home.intro_video || home.video_intro || home.video || '';
+    var useImage = home.intro_image || home.image_intro || home.intro_gif || home.gif_intro || '';
     
-    // 2. Lấy dữ liệu Media (Ưu tiên video, sau đó đến ảnh/gif)
-    // Giả định CMS trả về home.intro_video hoặc home.intro_image
+    // NẾU CẢ 2 ĐỀU RỖNG -> Log cảnh báo để bạn biết
+    if (!useVideo && !useImage) {
+        console.warn("Không tìm thấy ảnh/video intro trong biến 'home'. Kiểm tra lại CMS.");
+    }
+
     var introMediaHTML = '';
-    
-    if (home.intro_video) {
-        // Nếu có video: Render thẻ video autoplay
+
+    if (useVideo) {
+        // Có Video -> Render Video
         introMediaHTML = `
             <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl mt-8 bg-slate-100">
-                <video src="${home.intro_video}" class="w-full h-auto object-cover" autoplay muted loop playsinline controlsList="nodownload"></video>
+                <video src="${useVideo}" class="w-full h-auto object-cover" autoplay muted loop playsinline controlsList="nodownload"></video>
             </div>`;
-    } else if (home.intro_image) {
-        // Nếu là ảnh (bao gồm cả GIF): Render thẻ img
+    } else if (useImage) {
+        // Có Ảnh -> Render Ảnh (Chỉ khi biến useImage có dữ liệu thì mới hiện, tránh hiện Logo)
         introMediaHTML = `
             <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl mt-8 group hover:shadow-2xl transition-all">
-                <img src="${home.intro_image}" class="w-full h-auto object-cover" alt="Intro Image" loading="lazy">
+                <img src="${useImage}" class="w-full h-auto object-cover" alt="Intro Media" loading="lazy">
             </div>`;
     }
 
-    // 3. Gộp Text và Media vào biến intro
+    // 3. Render Intro Section
+    var introText = `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed mb-8">${TF(home||{},'intro')}</p>`;
     var intro = section(TR('Giới thiệu','Intro'), introText + introMediaHTML, '', '');
     
-    // --- [KẾT THÚC PHẦN SỬA ĐỔI] ---
+    // --- [KẾT THÚC PHẦN SỬA] ---
 
     var stats = renderStats();
     var features = renderWhyChooseUs();
