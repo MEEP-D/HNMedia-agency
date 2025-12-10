@@ -613,9 +613,8 @@ window.openApplyModal = function(pos) {
   }
 
   // --- 8. PAGE RENDERERS ---
-
-  function renderHome(el, home, svc, crs, port){
-    // --- 1. HERO (Giữ nguyên) ---
+function renderHome(el, home, svc, crs, port){
+    // 1. Hero
     var hero;
     var heroImg = (home.hero && home.hero.image) || 'images/hero/placeholder.jpg';
     if(home.hero && home.hero.fullscreen){
@@ -637,46 +636,17 @@ window.openApplyModal = function(pos) {
       hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg shadow-slate-200 hover:bg-emerald-600 hover:shadow-emerald-200 transition-all hover:-translate-y-1" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
     }
 
-    // --- [PHẦN SỬA LẠI: INTRO MEDIA] ---
-    
-    // 1. Debug: In ra console để xem dữ liệu (Bấm F12 -> Console để xem)
-    console.log("DEBUG HOME DATA:", home);
-
-    // 2. Tìm biến chứa Video hoặc Ảnh (Thử nhiều tên biến khác nhau phòng khi CMS đặt tên lạ)
-    var useVideo = home.intro_video || home.video_intro || home.video || '';
-    var useImage = home.intro_image || home.image_intro || home.intro_gif || home.gif_intro || '';
-    
-    // NẾU CẢ 2 ĐỀU RỖNG -> Log cảnh báo để bạn biết
-    if (!useVideo && !useImage) {
-        console.warn("Không tìm thấy ảnh/video intro trong biến 'home'. Kiểm tra lại CMS.");
+    // 2. Intro Text (Chỉ hiển thị Text vì Home JSON chỉ có text)
+    // Dữ liệu video intro đã được xử lý ở Global Splash Screen
+    var intro = '';
+    if(home.intro) {
+        intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home,'intro')}</p>`, '', '');
     }
-
-    var introMediaHTML = '';
-
-    if (useVideo) {
-        // Có Video -> Render Video
-        introMediaHTML = `
-            <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl mt-8 bg-slate-100">
-                <video src="${useVideo}" class="w-full h-auto object-cover" autoplay muted loop playsinline controlsList="nodownload"></video>
-            </div>`;
-    } else if (useImage) {
-        // Có Ảnh -> Render Ảnh (Chỉ khi biến useImage có dữ liệu thì mới hiện, tránh hiện Logo)
-        introMediaHTML = `
-            <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl mt-8 group hover:shadow-2xl transition-all">
-                <img src="${useImage}" class="w-full h-auto object-cover" alt="Intro Media" loading="lazy">
-            </div>`;
-    }
-
-    // 3. Render Intro Section
-    var introText = `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed mb-8">${TF(home||{},'intro')}</p>`;
-    var intro = section(TR('Giới thiệu','Intro'), introText + introMediaHTML, '', '');
     
-    // --- [KẾT THÚC PHẦN SỬA] ---
-
     var stats = renderStats();
     var features = renderWhyChooseUs();
 
-    // 4. Chips Nav
+    // 3. Chips Nav
     var chips = `<div class="sticky top-16 z-30 pointer-events-none w-full"><div class="max-w-6xl mx-auto px-4 flex justify-center"><div class="pointer-events-auto inline-flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-full shadow-lg px-6" data-aos="fade-in"><button onclick="document.querySelector('[data-section=\\'services\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dịch vụ','Services')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'portfolio\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dự án','Projects')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'courses\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Đào tạo','Academy')}</button></div></div></div>`;
     
     var newServices = renderHomeServices(svc);
@@ -687,6 +657,42 @@ window.openApplyModal = function(pos) {
     el.innerHTML = hero + renderPartners(home) + intro + stats + features + chips + 
                    `<div class="pt-10">` + newServices + newPortfolio + newCourses + `</div>` + 
                    renderSections(home.sections||[]);
+}
+  // --- [NEW] HÀM XỬ LÝ MÀN HÌNH CHỜ (INTRO) TỪ CONFIG ---
+function setupSplashScreen(cfg) {
+    const loader = document.getElementById('loading-screen');
+    if (!loader || !cfg || !cfg.intro || !cfg.intro.enable) return;
+
+    const { type, image_source, video_source } = cfg.intro;
+    let content = '';
+
+    // Logic hiển thị theo type trong config.yml
+    if (type === 'video' && video_source) {
+        // Render Video
+        content = `
+            <video class="absolute inset-0 w-full h-full object-cover z-50" autoplay muted playsinline>
+                <source src="${video_source}" type="video/mp4">
+            </video>
+        `;
+    } else if (image_source) {
+        // Render Ảnh (GIF/JPG/PNG)
+        // class object-cover: full màn hình | object-contain: giữ nguyên tỉ lệ ở giữa
+        content = `
+            <div class="absolute inset-0 z-50 flex items-center justify-center bg-white">
+                <img src="${image_source}" class="w-full h-full object-cover animate-fade-in" alt="Intro">
+            </div>
+        `;
+    }
+
+    // Nếu có nội dung media thì thay thế loader mặc định
+    if (content) {
+        loader.innerHTML = content;
+        // Đảm bảo video tự chạy nếu trình duyệt chặn
+        const vid = loader.querySelector('video');
+        if(vid) {
+            vid.play().catch(() => { /* Bỏ qua lỗi nếu user chưa tương tác */ });
+        }
+    }
 }
 
   function renderGeneric(el, data, type){
@@ -2165,61 +2171,60 @@ function renderContact(el, data) {
     }, 100);
   }
   // --- 9. MAIN LOAD LOGIC (ĐÃ SỬA: CHỈ HIỆN INTRO TAB MỚI) ---
-  window.initContent = async function(){ 
+  // --- 9. MAIN LOAD LOGIC ---
+window.initContent = async function(){ 
     setupNavigation();
     
-    // 1. Lấy thông tin cấu hình trước
+    // 1. Lấy thông tin cấu hình trước (Quan trọng: Global Config)
     var cfg = await fetchJson('content/config.json');
 
-    // --- LOGIC MỚI BẮT ĐẦU ---
-    // Kiểm tra trong sessionStorage xem đã đánh dấu là "đã xem intro" chưa
+    // --- LOGIC MỚI: XỬ LÝ INTRO SPLASH SCREEN ---
+    // Kiểm tra session xem đã xem intro chưa
     var hasSeenIntro = sessionStorage.getItem('hasSeenIntro');
-
     var introTime = 0;
 
-    // Điều kiện: Config có bật Intro VÀ chưa xem lần nào trong phiên này (Tab mới)
+    // Chỉ chạy Intro khi: Config bật VÀ chưa xem lần nào trong phiên
     if (cfg && cfg.intro && cfg.intro.enable && !hasSeenIntro) {
-        introTime = cfg.intro.duration * 1000;
-        // Đánh dấu ngay lập tức là đã xem để lần sau F5 sẽ không vào đây nữa
+        introTime = (cfg.intro.duration || 2) * 1000;
+        
+        // [QUAN TRỌNG] Gọi hàm setup để render ảnh/video vào loading screen
+        setupSplashScreen(cfg);
+
+        // Đánh dấu đã xem
         sessionStorage.setItem('hasSeenIntro', 'true');
     } else {
-        // Nếu đã xem rồi (Reload) hoặc tắt config -> Thời gian chờ = 0
-        introTime = 0;
+        introTime = 0; // Skip intro nếu đã xem
     }
-    // --- LOGIC MỚI KẾT THÚC ---
+    // --- KẾT THÚC LOGIC INTRO ---
     
     var loadingScreen = document.getElementById('loading-screen');
     var appElement = document.getElementById('app');
 
-    // 2. Bắt đầu tính giờ
     var startTime = Date.now();
     
-    // 3. Tải và render nội dung chính (Đây là việc nặng nhất)
+    // Tải nội dung chính
     await loadAndRenderContent();
 
-    // 4. Tính toán thời gian còn lại cần chờ
+    // Tính toán thời gian chờ còn lại
     var elapsedTime = Date.now() - startTime;
     var remainingTime = Math.max(0, introTime - elapsedTime);
 
-    // 5. Đợi nốt thời gian còn lại, sau đó mới hiện trang web
+    // Đợi hết introTime rồi mới hiển thị Web
     setTimeout(() => {
-        // a. Hiện nội dung chính lên (Fade-in mượt mà)
         if (appElement) appElement.classList.add('loaded');
-        
-        // b. Refresh lại AOS một lần nữa để chắc chắn vị trí các phần tử đã đúng
         if(window.AOS) window.AOS.refresh();
 
-        // c. Tắt màn hình chờ (Loading Screen)
         if(loadingScreen){ 
             loadingScreen.style.opacity = '0'; 
-            loadingScreen.style.transition = 'opacity 0.5s ease';
-            // Đợi hiệu ứng mờ dần kết thúc rồi mới ẩn hoàn toàn
+            loadingScreen.style.transition = 'opacity 0.8s ease'; // Fade out chậm hơn chút cho mượt
             setTimeout(()=> {
                 loadingScreen.style.display = 'none';
-            }, 500); 
+                // Xóa nội dung video để giải phóng bộ nhớ
+                loadingScreen.innerHTML = ''; 
+            }, 800); 
         }
     }, remainingTime);
-  };
+};
 
   // Sự kiện để bắt đầu chạy script
   if (document.readyState !== 'loading') { 
