@@ -1192,84 +1192,125 @@ function renderAbout(el, data) {
   // ============================================================
   // --- [NEW] JOB DETAIL MODAL ---
   window.openJobDetail = function(idx) {
-      var p = window._careerData && window._careerData[idx];
-      if (!p) return;
+    var p = window._careerData && window._careerData[idx];
+    if (!p) return;
 
-      // Helper lấy nội dung text
-      var title = TF(p, 'title');
-      var loc = TF(p, 'location') || 'Hanoi';
-      var sal = TF(p, 'salary') || 'Thỏa thuận'; // Cần thêm trường salary trong JSON hoặc để default
-      var time = TF(p, 'type') || 'Full-time';
-      
-      // Xử lý nội dung chi tiết (Markdown hoặc Text)
-      // Ưu tiên hiển thị body_en/vi, nếu không có thì dùng requirements/benefits riêng lẻ, cuối cùng là summary
-      var descHtml = '';
-      if(p.body || p.body_en) {
-          descHtml = window.marked ? marked.parse(TF(p, 'body')) : TF(p, 'body');
-      } else {
-          // Fallback nếu JSON chia nhỏ trường
-          var req = TF(p, 'requirements');
-          var ben = TF(p, 'benefits');
-          descHtml = `
-            <div class="mb-4">
-                <h4 class="font-bold text-slate-900 mb-2">Mô tả công việc</h4>
-                <p>${TF(p, 'summary')}</p>
-            </div>
-            ${req ? `<div class="mb-4"><h4 class="font-bold text-slate-900 mb-2">Yêu cầu</h4><div class="prose-sm">${req}</div></div>` : ''}
-            ${ben ? `<div class="mb-4"><h4 class="font-bold text-slate-900 mb-2">Quyền lợi</h4><div class="prose-sm">${ben}</div></div>` : ''}
-          `;
-      }
+    var title = TF(p, 'title');
+    // Format nội dung bằng hàm helper phía trên
+    var summaryHtml = formatText(TF(p, 'summary'));
+    var reqHtml = formatText(TF(p, 'requirements') || TF(p, 'description')); // Fallback nếu tên trường khác
+    var benHtml = formatText(TF(p, 'benefits'));
 
-      var modalHtml = `
-        <style>@keyframes pop{0%{opacity:0;transform:scale(0.95)}100%{opacity:1;transform:scale(1)}}</style>
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close></div>
-        <div class="relative z-10 max-w-2xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" style="animation:pop 0.3s ease-out forwards">
-            
-            <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-white sticky top-0 z-20">
-                <div>
-                    <h3 class="font-bold text-slate-900 text-xl leading-snug pr-4">${title}</h3>
-                    <div class="flex flex-wrap gap-3 mt-2 text-xs font-bold text-slate-500 uppercase tracking-wide">
-                        <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> ${loc}</span>
-                        <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${time}</span>
-                        <span class="flex items-center gap-1 text-emerald-600"><i data-lucide="dollar-sign" class="w-3 h-3"></i> ${sal}</span>
-                    </div>
-                </div>
-                <button class="h-8 w-8 shrink-0 inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" data-close>
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
-            </div>
+    var modalHtml = `
+      <style>
+          @keyframes slideUp {from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+          .job-section-title { font-weight: 800; color: #0f172a; font-size: 1.1rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+          .job-section-title i { color: #10b981; }
+      </style>
+      <div class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
+          <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm transition-opacity" data-close></div>
+          
+          <div class="relative z-10 w-full max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden" style="animation: slideUp 0.4s ease-out forwards">
+              
+              <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-start shrink-0">
+                  <div class="pr-8">
+                      <h3 class="text-2xl font-bold text-slate-900 mb-3 leading-tight">${title}</h3>
+                      <div class="flex flex-wrap gap-3">
+                          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold uppercase tracking-wide">
+                              <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${TF(p, 'location') || 'Hanoi'}
+                          </span>
+                          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-orange-600 text-xs font-bold uppercase tracking-wide">
+                              <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${p.type || 'Full-time'}
+                          </span>
+                          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold uppercase tracking-wide">
+                              <i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> ${p.salary || 'Thỏa thuận'}
+                          </span>
+                      </div>
+                  </div>
+                  <button class="w-10 h-10 rounded-full bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors" data-close>
+                      <i data-lucide="x" class="w-5 h-5"></i>
+                  </button>
+              </div>
 
-            <div class="p-6 overflow-y-auto bg-slate-50">
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-slate-600 leading-relaxed text-sm md:text-base prose prose-slate max-w-none">
-                    ${descHtml}
-                </div>
-            </div>
+              <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar bg-white">
+                  
+                  <div class="mb-8">
+                      <div class="job-section-title"><i data-lucide="file-text" class="w-5 h-5"></i> Mô tả công việc</div>
+                      <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                          ${summaryHtml}
+                      </div>
+                  </div>
 
-            <div class="p-4 border-t border-slate-100 bg-white sticky bottom-0 z-20">
-                <button type="button" onclick="document.getElementById('job-detail-modal').remove(); window.openApplyModal('${title.replace(/'/g, "\\'")}')" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-base font-bold px-6 py-3.5 hover:bg-emerald-600 transition-all shadow-lg hover:shadow-emerald-500/30 cursor-pointer">
-                    <span>Ứng tuyển ngay</span>
-                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                </button>
-            </div>
-        </div>
-      `;
+                  ${TF(p, 'requirements') ? `
+                  <div class="mb-8">
+                      <div class="job-section-title"><i data-lucide="check-circle-2" class="w-5 h-5"></i> Yêu cầu ứng viên</div>
+                      <div class="text-slate-600">
+                          ${reqHtml}
+                      </div>
+                  </div>` : ''}
 
-      var wrap = document.createElement('div');
-      wrap.id = 'job-detail-modal';
-      wrap.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
-      wrap.innerHTML = modalHtml;
-      document.body.appendChild(wrap);
-      document.body.style.overflow = 'hidden';
-      
-      if(window.lucide) window.lucide.createIcons();
-      
-      wrap.addEventListener('click', e => {
-          if (e.target.closest('[data-close]')) {
-              wrap.remove();
-              document.body.style.overflow = '';
-          }
-      });
-  }
+                  ${TF(p, 'benefits') ? `
+                  <div class="mb-6">
+                      <div class="job-section-title"><i data-lucide="gift" class="w-5 h-5"></i> Quyền lợi được hưởng</div>
+                      <div class="text-slate-600">
+                          ${benHtml}
+                      </div>
+                  </div>` : ''}
+                  
+              </div>
+
+              <div class="p-5 border-t border-slate-100 bg-white shrink-0 flex justify-end gap-3">
+                  <button class="px-6 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors text-sm" data-close>Đóng lại</button>
+                  <button onclick="document.getElementById('job-detail-modal')?.remove(); window.openApplyModal('${title.replace(/'/g, "\\'")}')" class="px-8 py-3 rounded-xl font-bold bg-slate-900 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/20 hover:-translate-y-1 transition-all text-sm flex items-center gap-2">
+                      <span>Ứng tuyển ngay</span>
+                      <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </button>
+              </div>
+          </div>
+      </div>
+    `;
+
+    // Remove modal cũ nếu có
+    var old = document.getElementById('job-detail-modal');
+    if (old) old.remove();
+
+    var wrap = document.createElement('div');
+    wrap.id = 'job-detail-modal';
+    wrap.innerHTML = modalHtml;
+    document.body.appendChild(wrap);
+    document.body.style.overflow = 'hidden';
+    if(window.lucide) window.lucide.createIcons();
+
+    wrap.addEventListener('click', e => {
+        if (e.target.closest('[data-close]')) {
+            wrap.remove();
+            document.body.style.overflow = '';
+        }
+    });
+}
+  // --- HELPER: FORMAT TEXT ĐỂ KHÔNG BỊ DỒN ---
+function formatText(text) {
+    if (!text) return '';
+    
+    // Bước 1: Nếu văn bản có chứa ký tự xuống dòng \n, ưu tiên xử lý nó trước
+    // Bước 2: Thay thế các dấu "- " hoặc "+ " thành thẻ <li> để tạo danh sách
+    // Bước 3: Nếu không phải danh sách, để trong thẻ <p>
+    
+    // Tạm thời thay thế các dấu gạch đầu dòng phổ biến (- , + , • ) thành một token dễ xử lý
+    let formatted = text.replace(/([.?!])\s*(?=-)/g, "$1<br>"); // Xuống dòng trước dấu gạch ngang nếu chưa có
+    
+    // Tách chuỗi dựa trên dấu gạch đầu dòng
+    if (formatted.includes('- ') || formatted.includes('+ ')) {
+        return '<ul class="list-disc pl-5 space-y-2 text-slate-600 leading-relaxed">' + 
+            formatted.split(/(?:^|\s)[-+•]\s/).filter(t => t.trim()).map(item => {
+                return `<li>${item.trim()}</li>`;
+            }).join('') + 
+            '</ul>';
+    }
+    
+    // Nếu là đoạn văn thường, dùng white-space để tôn trọng xuống dòng
+    return `<div class="whitespace-pre-line text-slate-600 leading-relaxed">${text}</div>`;
+}
   function renderCareers(el, data) {
     // Lưu data vào biến global để Modal truy cập
     window._careerData = data.positions || [];
