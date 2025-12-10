@@ -139,8 +139,203 @@
 
   // --- 5. MODAL FORM ---
   function applyForm(pos){ const cls="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all"; return `<form name="apply" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data"><input type="hidden" name="form-name" value="apply"><input type="hidden" name="position" value="${pos||''}"><div class="space-y-4"><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Họ tên</label><input class="${cls}" type="text" name="name" required></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Email</label><input class="${cls}" type="email" name="email" required></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">SĐT</label><input class="${cls}" type="tel" name="phone" required></div></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">CV</label><input class="${cls}" type="file" name="cv" accept=".pdf,.doc,.docx" required></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Portfolio</label><input class="${cls}" type="url" name="resume"></div><div><label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Giới thiệu</label><textarea class="${cls}" name="message" rows="3" required></textarea></div><button class="w-full rounded-xl bg-emerald-600 text-white font-bold text-sm px-6 py-3.5 hover:bg-emerald-700 transition-all shadow-lg mt-2" type="submit">Gửi hồ sơ</button></div></form>`; }
-  window.openApplyModal = function(pos){ var m=document.getElementById('apply-modal'); if(m) m.remove(); var wrap=document.createElement('div'); wrap.id='apply-modal'; wrap.className='fixed inset-0 z-[9999] flex items-center justify-center p-4'; wrap.innerHTML=`<style>@keyframes pop{0%{opacity:0;transform:scale(0.95)}100%{opacity:1;transform:scale(1)}}</style><div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close></div><div class="relative z-10 max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" style="animation:pop 0.3s ease-out forwards"><div class="p-5 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-20"><div class="font-bold text-slate-800 text-lg">Ứng tuyển: ${pos||'Vị trí'}</div><button class="h-8 w-8 inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" data-close><i data-lucide="x" class="w-4 h-4"></i></button></div><div class="p-6 overflow-y-auto bg-white">${applyForm(pos)}</div></div>`; document.body.appendChild(wrap); document.body.style.overflow='hidden'; if(window.lucide) window.lucide.createIcons(); wrap.addEventListener('click',e=>{if(e.target.closest('[data-close]')){wrap.remove();document.body.style.overflow='';}}); }
+// ============================================================
+// CẤU HÌNH KẾT NỐI GOOGLE SHEET
+// ============================================================
+// 1. Thay link bên dưới bằng link Web App bạn vừa Deploy xong
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWQ3bMTvc7mQFZhV52I0Mooo90lLjST1s-6AexNSSSuD6tWNnPB4wNbWh1zHU6SnHgGg/exec';
 
+// 2. Token bảo mật (Phải khớp với biến TOKEN trong file code.gs)
+const API_TOKEN = "HNMEDIA_FORM_2025"; 
+
+// ============================================================
+// HÀM MỞ MODAL & XỬ LÝ GỬI FORM
+// ============================================================
+window.openApplyModal = function(pos) {
+    // 1. Xóa modal cũ nếu có để tránh trùng lặp
+    var m = document.getElementById('apply-modal');
+    if (m) m.remove();
+
+    // 2. Tạo khung Modal
+    var wrap = document.createElement('div');
+    wrap.id = 'apply-modal';
+    wrap.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
+    
+    // 3. Nội dung Modal (HTML)
+    wrap.innerHTML = `
+      <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close></div>
+      <div class="relative z-10 max-w-md w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-pop">
+          
+          <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-20">
+              <div class="font-bold text-slate-800 text-lg">Ứng tuyển: <span class="text-emerald-600">${pos || 'Vị trí'}</span></div>
+              <button class="h-8 w-8 inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" data-close>
+                  <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+          </div>
+
+          <div class="p-6 overflow-y-auto bg-white relative min-h-[300px]">
+              
+              <form id="form-apply" class="space-y-4 transition-all duration-300">
+                  <input type="hidden" name="position" value="${pos || ''}">
+                  
+                  <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Họ tên <span class="text-red-500">*</span></label>
+                      <input class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all" type="text" name="name" required placeholder="Nguyễn Văn A">
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-4">
+                      <div>
+                          <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Email <span class="text-red-500">*</span></label>
+                          <input class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all" type="email" name="email" required placeholder="email@example.com">
+                      </div>
+                      <div>
+                          <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">SĐT <span class="text-red-500">*</span></label>
+                          <input class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all" type="tel" name="phone" required placeholder="0912345678">
+                      </div>
+                  </div>
+
+                  <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">CV (PDF/DOC) <span class="text-red-500">*</span></label>
+                      <div class="relative">
+                          <input class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" type="file" name="cv" accept=".pdf,.doc,.docx" required id="cv-upload">
+                      </div>
+                      <p class="text-[10px] text-slate-400 mt-1 italic">File không quá 5MB.</p>
+                  </div>
+
+                  <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase">Giới thiệu bản thân</label>
+                      <textarea class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 transition-all" name="message" rows="3" placeholder="Đôi nét về kinh nghiệm của bạn..."></textarea>
+                  </div>
+
+                  <button id="btn-submit" class="w-full rounded-xl bg-slate-900 text-white font-bold text-sm px-6 py-4 hover:bg-emerald-600 transition-all shadow-lg mt-2 flex items-center justify-center gap-2" type="submit">
+                      <span>Gửi hồ sơ ứng tuyển</span>
+                  </button>
+              </form>
+
+              <div id="success-view" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center text-center p-6" style="animation: fadeIn 0.5s">
+                  <div class="success-checkmark">
+                      <div class="check-icon">
+                          <span class="icon-line line-tip"></span>
+                          <span class="icon-line line-long"></span>
+                          <div class="icon-circle"></div>
+                          <div class="icon-fix"></div>
+                      </div>
+                  </div>
+                  
+                  <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">Gửi thành công!</h3>
+                  <p class="text-slate-500 text-sm mb-6">Hồ sơ của bạn đã được lưu vào hệ thống. Bộ phận tuyển dụng sẽ liên hệ sớm nhất.</p>
+                  <button class="px-6 py-2 bg-slate-100 text-slate-600 font-bold rounded-full hover:bg-slate-200 transition-colors text-sm" data-close>Đóng</button>
+              </div>
+
+          </div>
+      </div>
+    `;
+
+    // 4. Thêm Modal vào trang
+    document.body.appendChild(wrap);
+    document.body.style.overflow = 'hidden'; // Khóa cuộn trang chính
+    if (window.lucide) window.lucide.createIcons();
+
+    // ============================================================
+    // XỬ LÝ LOGIC GỬI DỮ LIỆU
+    // ============================================================
+    const form = document.getElementById('form-apply');
+    const successView = document.getElementById('success-view');
+    const btnSubmit = document.getElementById('btn-submit');
+    const fileInput = document.getElementById('cv-upload');
+
+    // Helper: Đọc file thành Base64
+    const getBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    };
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // A. Hiệu ứng Loading
+        const originalBtnText = btnSubmit.innerHTML;
+        btnSubmit.innerHTML = '<div class="loader"></div> Đang gửi...';
+        btnSubmit.disabled = true;
+        btnSubmit.classList.add('opacity-75', 'cursor-not-allowed');
+
+        try {
+            const formData = new FormData(form);
+            
+            // B. Chuẩn bị dữ liệu để gửi đi
+            // Cấu trúc này PHẢI KHỚP với file code.gs
+            const payload = {
+                token: API_TOKEN, // Quan trọng: Phải có token
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                position: formData.get('position'),
+                message: formData.get('message'),
+                fileData: null // Mặc định là null
+            };
+            
+            // C. Xử lý File (nếu có)
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                if (file.size > 5 * 1024 * 1024) { // Giới hạn 5MB
+                    throw new Error("File quá lớn (Max 5MB)");
+                }
+                
+                const base64Raw = await getBase64(file);
+                // Quan trọng: Cắt bỏ phần header "data:application/pdf;base64," để chỉ lấy nội dung mã hóa
+                const content = base64Raw.split(',')[1]; 
+
+                payload.fileData = {
+                    name: file.name,
+                    type: file.type,
+                    content: content
+                };
+            }
+
+            // D. Gửi Request lên Google Script
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: { "Content-Type": "text/plain;charset=utf-8" } // Dùng text/plain để tránh lỗi CORS
+            });
+
+            const result = await response.json();
+
+            // E. Kiểm tra kết quả trả về từ Google Script
+            if (result.result === "success") {
+                // Thành công: Ẩn form, hiện tích xanh
+                form.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    form.style.display = 'none';
+                    successView.classList.remove('hidden');
+                }, 300);
+            } else {
+                throw new Error(result.message || "Lỗi không xác định từ Server");
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert('Lỗi: ' + error.message);
+            
+            // Reset nút bấm nếu lỗi
+            btnSubmit.innerHTML = originalBtnText;
+            btnSubmit.disabled = false;
+            btnSubmit.classList.remove('opacity-75', 'cursor-not-allowed');
+        }
+    });
+
+    // Sự kiện đóng Modal
+    wrap.addEventListener('click', e => {
+        if (e.target.closest('[data-close]')) {
+            wrap.remove();
+            document.body.style.overflow = '';
+        }
+    });
+};
   // --- 6. RENDERERS (Generic Sections) ---
   function renderSections(sections){ if(!sections||!sections.length) return ''; return sections.map(renderSection).join(''); }
    
