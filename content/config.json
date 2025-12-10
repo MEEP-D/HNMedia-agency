@@ -13,10 +13,11 @@
   },
   "intro": {
     "enable": true,
-    "type": "video",
+    "type": "image",
     "duration": 6,
     "video": "images/tạo_video_tết_iot_tinh_tế.mp4",
     "gif": "/images/8ake.gif",
-    "video_source": "/images/tao_intro_logo_d_chuyen_nghiep-1-.mp4"
+    "video_source": "",
+    "image_source": "/images/tao_intro_logo_d_chuyen_nghiep-_1_.gif"
   }
 }
