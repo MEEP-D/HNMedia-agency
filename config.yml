@@ -237,6 +237,7 @@ collections:
               - { label: Ảnh minh họa, name: image, widget: image }
 
       # --- CAREERS ---
+     # --- CAREERS ---
       - file: content/careers.json
         label: Tuyển dụng
         name: careers
@@ -251,9 +252,13 @@ collections:
             widget: list
             fields:
               - { label: Chức danh, name: title, widget: string }
-              - { label: Địa điểm, name: location, widget: string }
-              - { label: Mô tả công việc, name: summary, widget: text }
-
+              - { label: Địa điểm, name: location, widget: string, default: "Hanoi" }
+              - { label: Hình thức, name: type, widget: select, options: ["Full-time", "Part-time", "Freelance", "Remote"], default: "Full-time" }
+              - { label: Mức lương, name: salary, widget: string, default: "Thỏa thuận" }
+              # Dùng widget markdown để admin có thể gõ danh sách gạch đầu dòng dễ dàng
+              - { label: Mô tả công việc, name: summary, widget: markdown } 
+              - { label: Yêu cầu ứng viên, name: requirements, widget: markdown }
+              - { label: Quyền lợi, name: benefits, widget: markdown }
       # --- NEWS (TIN TỨC) ---
       - file: content/news.json
         label: Tin tức
