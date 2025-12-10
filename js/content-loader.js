@@ -615,7 +615,7 @@ window.openApplyModal = function(pos) {
   // --- 8. PAGE RENDERERS ---
 
   function renderHome(el, home, svc, crs, port){
-    // 1. Hero
+    // 1. Hero (Giữ nguyên logic cũ của bạn)
     var hero;
     var heroImg = (home.hero && home.hero.image) || 'images/hero/placeholder.jpg';
     if(home.hero && home.hero.fullscreen){
@@ -637,16 +637,40 @@ window.openApplyModal = function(pos) {
       hero = `<section class="py-12 md:py-20 reveal" data-aos="fade-down"><div class="max-w-6xl mx-auto px-4"><div class="relative rounded-3xl border border-slate-200 bg-white p-8 md:p-16 shadow-2xl overflow-hidden"><div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10"><div class="text-center md:text-left"><div class="inline-block text-emerald-600 font-bold text-xs uppercase tracking-widest mb-4 border border-emerald-100 bg-emerald-50 px-3 py-1 rounded-full">${home.hero?.slogan||'Agency'}</div><h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">${home.hero?.title||''}</h1><p class="text-base text-slate-500 mb-8 leading-relaxed">${home.hero?.subtitle||''}</p>${home.hero?.ctaText?`<a class="inline-flex items-center gap-2 rounded-full bg-slate-900 text-white text-sm font-bold px-8 py-3.5 shadow-lg shadow-slate-200 hover:bg-emerald-600 hover:shadow-emerald-200 transition-all hover:-translate-y-1" href="contact.html"><span>${home.hero.ctaText}</span><i data-lucide="arrow-right" class="w-4 h-4"></i></a>`:''}</div><div data-aos="fade-left" class="relative group"><img class="relative rounded-2xl border border-slate-100 shadow-xl w-full object-cover aspect-[4/3]" src="${heroImg}" alt="Hero"></div></div></div></div></section>`;
     }
 
-    var intro = section(TR('Giới thiệu','Intro'), `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed">${TF(home||{},'intro')}</p>`, '', '');
+    // --- [PHẦN SỬA ĐỔI] XỬ LÝ MEDIA CHO INTRO ---
     
+    // 1. Lấy dữ liệu Text
+    var introText = `<p class="text-lg text-slate-600 text-center max-w-3xl mx-auto font-light leading-relaxed mb-8">${TF(home||{},'intro')}</p>`;
+    
+    // 2. Lấy dữ liệu Media (Ưu tiên video, sau đó đến ảnh/gif)
+    // Giả định CMS trả về home.intro_video hoặc home.intro_image
+    var introMediaHTML = '';
+    
+    if (home.intro_video) {
+        // Nếu có video: Render thẻ video autoplay
+        introMediaHTML = `
+            <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-2xl mt-8 bg-slate-100">
+                <video src="${home.intro_video}" class="w-full h-auto object-cover" autoplay muted loop playsinline controlsList="nodownload"></video>
+            </div>`;
+    } else if (home.intro_image) {
+        // Nếu là ảnh (bao gồm cả GIF): Render thẻ img
+        introMediaHTML = `
+            <div class="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl mt-8 group hover:shadow-2xl transition-all">
+                <img src="${home.intro_image}" class="w-full h-auto object-cover" alt="Intro Image" loading="lazy">
+            </div>`;
+    }
+
+    // 3. Gộp Text và Media vào biến intro
+    var intro = section(TR('Giới thiệu','Intro'), introText + introMediaHTML, '', '');
+    
+    // --- [KẾT THÚC PHẦN SỬA ĐỔI] ---
+
     var stats = renderStats();
     var features = renderWhyChooseUs();
 
-    // [FIX] CĂN GIỮA CHIPS (QUICK NAV)
-    // Sửa "absolute" thành Flexbox container để đảm bảo luôn ở giữa
+    // 4. Chips Nav
     var chips = `<div class="sticky top-16 z-30 pointer-events-none w-full"><div class="max-w-6xl mx-auto px-4 flex justify-center"><div class="pointer-events-auto inline-flex items-center justify-center gap-3 mb-10 overflow-x-auto py-3 bg-white/80 backdrop-blur-md border border-slate-100 rounded-full shadow-lg px-6" data-aos="fade-in"><button onclick="document.querySelector('[data-section=\\'services\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dịch vụ','Services')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'portfolio\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Dự án','Projects')}</button><span class="text-slate-300">|</span><button onclick="document.querySelector('[data-section=\\'courses\\']').scrollIntoView({behavior:'smooth'})" class="shrink-0 text-slate-600 hover:text-emerald-600 text-xs font-bold transition-colors uppercase tracking-wider">${TR('Đào tạo','Academy')}</button></div></div></div>`;
     
-    // 5. Gọi các hàm render mới
     var newServices = renderHomeServices(svc);
     var newPortfolio = renderHomePortfolio(port);
     var newCourses = renderHomeCourses(crs);
@@ -655,7 +679,7 @@ window.openApplyModal = function(pos) {
     el.innerHTML = hero + renderPartners(home) + intro + stats + features + chips + 
                    `<div class="pt-10">` + newServices + newPortfolio + newCourses + `</div>` + 
                    renderSections(home.sections||[]);
-  }
+}
 
   function renderGeneric(el, data, type){
     var wrapperStart = `<div class="max-w-6xl mx-auto px-4 py-8">`;
