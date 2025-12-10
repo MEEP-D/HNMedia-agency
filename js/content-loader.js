@@ -163,7 +163,7 @@
 // CẤU HÌNH KẾT NỐI GOOGLE SHEET
 // ============================================================
 // 1. Thay link bên dưới bằng link Web App bạn vừa Deploy xong
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWQ3bMTvc7mQFZhV52I0Mooo90lLjST1s-6AexNSSSuD6tWNnPB4wNbWh1zHU6SnHgGg/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7nzaePl2RwA62NZJQLa8plPzc5ZGd8oIu9UwRy2rZCTbSeorcWOpWM3tJkg0NZi25_A/exec';
 
 // 2. Token bảo mật (Phải khớp với biến TOKEN trong file code.gs)
 const API_TOKEN = "HNMEDIA_FORM_2025"; 
