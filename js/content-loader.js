@@ -1187,11 +1187,94 @@ function renderAbout(el, data) {
     // Combine
     el.innerHTML = hero + featuredHtml + gridHtml + newsletterHtml + renderSections(data.sections || []);
   }
+ // ============================================================
+  // [UPDATED] CAREERS PAGE RENDERER
   // ============================================================
-  // [NEW] CAREERS PAGE RENDERER (UPGRADED)
-  // ============================================================
+  // --- [NEW] JOB DETAIL MODAL ---
+  window.openJobDetail = function(idx) {
+      var p = window._careerData && window._careerData[idx];
+      if (!p) return;
+
+      // Helper lấy nội dung text
+      var title = TF(p, 'title');
+      var loc = TF(p, 'location') || 'Hanoi';
+      var sal = TF(p, 'salary') || 'Thỏa thuận'; // Cần thêm trường salary trong JSON hoặc để default
+      var time = TF(p, 'type') || 'Full-time';
+      
+      // Xử lý nội dung chi tiết (Markdown hoặc Text)
+      // Ưu tiên hiển thị body_en/vi, nếu không có thì dùng requirements/benefits riêng lẻ, cuối cùng là summary
+      var descHtml = '';
+      if(p.body || p.body_en) {
+          descHtml = window.marked ? marked.parse(TF(p, 'body')) : TF(p, 'body');
+      } else {
+          // Fallback nếu JSON chia nhỏ trường
+          var req = TF(p, 'requirements');
+          var ben = TF(p, 'benefits');
+          descHtml = `
+            <div class="mb-4">
+                <h4 class="font-bold text-slate-900 mb-2">Mô tả công việc</h4>
+                <p>${TF(p, 'summary')}</p>
+            </div>
+            ${req ? `<div class="mb-4"><h4 class="font-bold text-slate-900 mb-2">Yêu cầu</h4><div class="prose-sm">${req}</div></div>` : ''}
+            ${ben ? `<div class="mb-4"><h4 class="font-bold text-slate-900 mb-2">Quyền lợi</h4><div class="prose-sm">${ben}</div></div>` : ''}
+          `;
+      }
+
+      var modalHtml = `
+        <style>@keyframes pop{0%{opacity:0;transform:scale(0.95)}100%{opacity:1;transform:scale(1)}}</style>
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" data-close></div>
+        <div class="relative z-10 max-w-2xl w-full bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" style="animation:pop 0.3s ease-out forwards">
+            
+            <div class="p-5 border-b border-slate-100 flex items-start justify-between bg-white sticky top-0 z-20">
+                <div>
+                    <h3 class="font-bold text-slate-900 text-xl leading-snug pr-4">${title}</h3>
+                    <div class="flex flex-wrap gap-3 mt-2 text-xs font-bold text-slate-500 uppercase tracking-wide">
+                        <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> ${loc}</span>
+                        <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${time}</span>
+                        <span class="flex items-center gap-1 text-emerald-600"><i data-lucide="dollar-sign" class="w-3 h-3"></i> ${sal}</span>
+                    </div>
+                </div>
+                <button class="h-8 w-8 shrink-0 inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-colors" data-close>
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto bg-slate-50">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-slate-600 leading-relaxed text-sm md:text-base prose prose-slate max-w-none">
+                    ${descHtml}
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-100 bg-white sticky bottom-0 z-20">
+                <button type="button" onclick="document.getElementById('job-detail-modal').remove(); window.openApplyModal('${title.replace(/'/g, "\\'")}')" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-base font-bold px-6 py-3.5 hover:bg-emerald-600 transition-all shadow-lg hover:shadow-emerald-500/30 cursor-pointer">
+                    <span>Ứng tuyển ngay</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+      `;
+
+      var wrap = document.createElement('div');
+      wrap.id = 'job-detail-modal';
+      wrap.className = 'fixed inset-0 z-[9999] flex items-center justify-center p-4';
+      wrap.innerHTML = modalHtml;
+      document.body.appendChild(wrap);
+      document.body.style.overflow = 'hidden';
+      
+      if(window.lucide) window.lucide.createIcons();
+      
+      wrap.addEventListener('click', e => {
+          if (e.target.closest('[data-close]')) {
+              wrap.remove();
+              document.body.style.overflow = '';
+          }
+      });
+  }
   function renderCareers(el, data) {
-    // 1. HERO SECTION (Culture Focused)
+    // Lưu data vào biến global để Modal truy cập
+    window._careerData = data.positions || [];
+
+    // 1. HERO SECTION
     var coverImg = data.cover || 'images/hero/careers-placeholder.jpg';
     var hero = `
       <section class="py-16 md:py-24 bg-orange-50 overflow-hidden relative">
@@ -1206,7 +1289,7 @@ function renderAbout(el, data) {
                         ${TF(data, 'title')}
                     </h1>
                     <div class="prose prose-lg text-slate-600 mb-8 leading-relaxed">
-                        ${TF(data, 'description') || TR('Tìm kiếm cơ hội phát triển sự nghiệp tại môi trường làm việc năng động, sáng tạo và đầy thử thách thú vị.','Find career development opportunities in a dynamic, creative and challenging work environment.')}
+                        ${TF(data, 'description') || TR('Tìm kiếm cơ hội phát triển sự nghiệp tại môi trường làm việc năng động.','Find career development opportunities in a dynamic environment.')}
                     </div>
                     <div class="flex gap-4">
                         <button onclick="document.getElementById('positions').scrollIntoView({behavior:'smooth'})" class="px-8 py-3.5 bg-slate-900 text-white rounded-full font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-slate-900/20 flex items-center gap-2">
@@ -1226,12 +1309,12 @@ function renderAbout(el, data) {
       </section>
     `;
 
-    // 2. PERKS & BENEFITS
+    // 2. PERKS & BENEFITS (Giữ nguyên)
     var perks = [
-        { title: TR('Thu nhập hấp dẫn','Competitive Salary'), desc: TR('Lương thưởng cạnh tranh, đánh giá tăng lương định kỳ 2 lần/năm.','Competitive salary and bonus, salary review twice a year.'), icon: 'banknote', bg: 'bg-emerald-50', color: 'text-emerald-600' },
-        { title: TR('Đào tạo chuyên sâu','Training & Growth'), desc: TR('Được tài trợ khóa học, tham gia hội thảo và mentoring từ chuyên gia.','Sponsored courses, workshops and mentoring from experts.'), icon: 'book-open', bg: 'bg-blue-50', color: 'text-blue-600' },
-        { title: TR('Môi trường mở','Open Environment'), desc: TR('Văn phòng hiện đại, đồng nghiệp thân thiện, tôn trọng sự khác biệt.','Modern office, friendly colleagues, respect for differences.'), icon: 'smile', bg: 'bg-yellow-50', color: 'text-yellow-600' },
-        { title: TR('Chăm sóc sức khỏe','Health Care'), desc: TR('Bảo hiểm sức khỏe cao cấp, khám sức khỏe định kỳ hàng năm.','Premium health insurance, annual health check-up.'), icon: 'heart', bg: 'bg-red-50', color: 'text-red-600' }
+        { title: TR('Thu nhập hấp dẫn','Competitive Salary'), desc: TR('Lương thưởng cạnh tranh, review lương định kỳ.','Competitive salary and bonus, regular salary review.'), icon: 'banknote', bg: 'bg-emerald-50', color: 'text-emerald-600' },
+        { title: TR('Đào tạo chuyên sâu','Training & Growth'), desc: TR('Được tài trợ khóa học và mentoring từ chuyên gia.','Sponsored courses and mentoring from experts.'), icon: 'book-open', bg: 'bg-blue-50', color: 'text-blue-600' },
+        { title: TR('Môi trường mở','Open Environment'), desc: TR('Văn phòng hiện đại, tôn trọng sự khác biệt.','Modern office, respect for differences.'), icon: 'smile', bg: 'bg-yellow-50', color: 'text-yellow-600' },
+        { title: TR('Chăm sóc sức khỏe','Health Care'), desc: TR('Bảo hiểm sức khỏe cao cấp, khám định kỳ.','Premium health insurance, annual check-up.'), icon: 'heart', bg: 'bg-red-50', color: 'text-red-600' }
     ];
 
     var perksHtml = `
@@ -1239,7 +1322,6 @@ function renderAbout(el, data) {
          <div class="max-w-6xl mx-auto px-4">
             <div class="text-center mb-16" data-aos="fade-down">
                 <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">${TR('Tại sao chọn chúng tôi?','Why Choose Us?')}</h2>
-                <p class="text-slate-500 max-w-2xl mx-auto">${TR('Chúng tôi cam kết mang lại cuộc sống tốt đẹp nhất cho nhân viên.','We are committed to providing the best life for our employees.')}</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 ${perks.map((p, i) => `
@@ -1256,79 +1338,51 @@ function renderAbout(el, data) {
       </section>
     `;
 
-    // 3. HIRING PROCESS (Timeline Horizontal)
-    var steps = [
-        { step: '01', title: 'Ứng tuyển' },
-        { step: '02', title: 'Sơ loại' },
-        { step: '03', title: 'Phỏng vấn' },
-        { step: '04', title: 'Tiếp nhận' }
-    ];
-    var processHtml = `
-      <section class="py-16 bg-slate-50 border-y border-slate-200">
-         <div class="max-w-4xl mx-auto px-4">
-            <div class="text-center mb-10"><h3 class="font-bold text-xl uppercase tracking-widest text-slate-400">${TR('Quy trình tuyển dụng','Hiring Process')}</h3></div>
-            <div class="flex flex-col md:flex-row justify-between items-center relative gap-8 md:gap-0">
-                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-200 -z-0 -translate-y-1/2 rounded-full"></div>
-                ${steps.map((s,i) => `
-                    <div class="relative z-10 flex flex-col items-center bg-slate-50 px-4" data-aos="zoom-in" data-aos-delay="${i*100}">
-                        <div class="w-12 h-12 bg-white border-4 border-slate-200 text-slate-400 rounded-full flex items-center justify-center font-bold mb-3 shadow-sm group-hover:border-orange-500 group-hover:text-orange-500 transition-colors">
-                            ${s.step}
-                        </div>
-                        <div class="font-bold text-slate-800">${s.title}</div>
-                    </div>
-                `).join('')}
-            </div>
-         </div>
-      </section>
-    `;
-
-    // 4. POSITIONS LIST
+    // 3. POSITIONS LIST (Đã sửa lỗi layout)
     var listHtml = '';
     if(data.positions && data.positions.length > 0) {
         listHtml = `
-        <section id="positions" class="py-24 bg-white">
+        <section id="positions" class="py-24 bg-white border-t border-slate-100">
              <div class="max-w-6xl mx-auto px-4">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-                    <div>
-                        <h2 class="text-3xl font-bold text-slate-900 mb-2">${TR('Vị trí đang tuyển','Open Positions')}</h2>
-                        <p class="text-slate-500">${TR('Hãy tìm vị trí phù hợp và gửi CV cho chúng tôi ngay hôm nay.','Find a suitable position and send us your CV today.')}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <span class="px-4 py-2 bg-slate-100 rounded-full text-xs font-bold text-slate-600 cursor-pointer hover:bg-slate-200">All</span>
-                        <span class="px-4 py-2 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-400 cursor-pointer hover:border-slate-900 hover:text-slate-900">Developer</span>
-                        <span class="px-4 py-2 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-400 cursor-pointer hover:border-slate-900 hover:text-slate-900">Design</span>
-                    </div>
+                <div class="text-center mb-12">
+                     <h2 class="text-3xl font-bold text-slate-900 mb-2">${TR('Vị trí đang tuyển','Open Positions')}</h2>
+                     <p class="text-slate-500">${TR('Hãy tìm vị trí phù hợp và gửi CV cho chúng tôi ngay hôm nay.','Find a suitable position and send us your CV today.')}</p>
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     ${data.positions.map((p, i) => {
                         var jobTitle = (TF(p,'title') || '').replace(/'/g, "\\'");
+                        // Thêm flex-wrap để tránh vỡ layout trên mobile
                         return `
-                        <div class="group flex flex-col bg-white rounded-2xl border border-slate-200 p-6 hover:border-orange-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="${i * 50}">
+                        <div class="group flex flex-col bg-white rounded-2xl border border-slate-200 p-6 hover:border-orange-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative" data-aos="fade-up" data-aos-delay="${i * 50}">
                             <div class="flex justify-between items-start mb-4">
-                                <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center">
+                                <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center shrink-0">
                                     <i data-lucide="briefcase" class="w-5 h-5"></i>
                                 </div>
-                                <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                                <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide whitespace-nowrap">
                                     ${TF(p, 'location') || 'Hanoi'}
                                 </span>
                             </div>
                             
-                            <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">${TF(p, 'title')}</h3>
+                            <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-600 transition-colors cursor-pointer" onclick="window.openJobDetail(${i})">${TF(p, 'title')}</h3>
                             
-                            <div class="flex items-center gap-4 text-xs text-slate-500 font-medium mb-4">
-                                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Full-time</span>
-                                <span class="flex items-center gap-1"><i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> Negotiable</span>
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 font-medium mb-4">
+                                <span class="flex items-center gap-1 shrink-0"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${p.type || 'Full-time'}</span>
+                                <span class="flex items-center gap-1 shrink-0"><i data-lucide="dollar-sign" class="w-3.5 h-3.5"></i> ${p.salary || 'Negotiable'}</span>
                             </div>
 
                             <p class="text-slate-500 text-sm line-clamp-3 mb-6 flex-1 leading-relaxed border-t border-slate-50 pt-3">
                                 ${TF(p, 'summary')}
                             </p>
                             
-                            <button type="button" onclick="window.openApplyModal('${jobTitle}')" class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-sm font-bold px-4 py-3 hover:bg-orange-600 transition-all shadow-md">
-                                <span>${TR('Ứng tuyển ngay','Apply Now')}</span>
-                                <i data-lucide="send" class="w-4 h-4"></i>
-                            </button>
+                            <div class="grid grid-cols-2 gap-3 mt-auto">
+                                <button type="button" onclick="window.openJobDetail(${i})" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 text-slate-600 text-sm font-bold px-3 py-3 hover:border-orange-500 hover:text-orange-600 transition-colors">
+                                    ${TR('Chi tiết','Details')}
+                                </button>
+                                <button type="button" onclick="window.openApplyModal('${jobTitle}')" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white text-sm font-bold px-3 py-3 hover:bg-orange-600 transition-colors shadow-md">
+                                    ${TR('Ứng tuyển','Apply')}
+                                </button>
+                            </div>
                         </div>
                         `;
                     }).join('')}
@@ -1339,12 +1393,12 @@ function renderAbout(el, data) {
         listHtml = `<div class="py-24 text-center text-slate-500">${TR('Hiện chưa có vị trí nào đang mở.','No open positions at the moment.')}</div>`;
     }
 
-    // 5. CTA TALENT POOL
+    // 4. CTA TALENT POOL
     var ctaHtml = `
       <section class="py-20 bg-slate-900 relative overflow-hidden text-center text-white">
          <div class="max-w-3xl mx-auto px-4 relative z-10" data-aos="zoom-in">
              <h2 class="text-2xl md:text-3xl font-bold mb-4">${TR('Chưa tìm thấy vị trí phù hợp?','Did not find a suitable role?')}</h2>
-             <p class="text-slate-400 mb-8">${TR('Đừng lo, hãy gửi CV của bạn vào Kho nhân tài. Chúng tôi sẽ liên hệ ngay khi có cơ hội phù hợp.','Don\'t worry, submit your CV to our Talent Pool. We will contact you as soon as a suitable opportunity arises.')}</p>
+             <p class="text-slate-400 mb-8">${TR('Đừng lo, hãy gửi CV của bạn vào Kho nhân tài. Chúng tôi sẽ liên hệ ngay khi có cơ hội phù hợp.','Don\'t worry, submit your CV to our Talent Pool.')}</p>
              <button onclick="window.openApplyModal('Talent Pool')" class="inline-flex items-center gap-2 bg-white text-slate-900 font-bold px-8 py-3.5 rounded-full hover:bg-orange-500 hover:text-white transition-all shadow-lg">
                 <span>${TR('Gửi CV của tôi','Submit my CV')}</span>
                 <i data-lucide="upload-cloud" class="w-4 h-4"></i>
@@ -1354,7 +1408,7 @@ function renderAbout(el, data) {
     `;
 
     // Combine
-    el.innerHTML = hero + perksHtml + processHtml + listHtml + ctaHtml + renderSections(data.sections || []);
+    el.innerHTML = hero + perksHtml + listHtml + ctaHtml + renderSections(data.sections || []);
   }
   // ============================================================
   // [NEW] CONTACT PAGE RENDERER (UPGRADED)
