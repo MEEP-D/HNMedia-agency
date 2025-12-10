@@ -4,17 +4,19 @@
   "brand": {
     "name": "HN Media",
     "tagline": "Giải pháp truyền thông tăng trưởng",
-    "logo": "/images/picture1.png"
+    "logo": "/images/picture1.png",
+    "description": "Đỉnh cao của LiveStream"
   },
   "theme": {
     "primary": "#16A34A",
     "accent": "#22C55E"
   },
   "intro": {
-    "enable": false,
-    "type": "gif",
-    "duration": 4,
+    "enable": true,
+    "type": "video",
+    "duration": 6,
     "video": "images/tạo_video_tết_iot_tinh_tế.mp4",
-    "gif": "/images/8ake.gif"
+    "gif": "/images/8ake.gif",
+    "video_source": "/images/tao_intro_logo_d_chuyen_nghiep-1-.mp4"
   }
 }
