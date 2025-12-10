@@ -53,7 +53,23 @@ collections:
             fields:
               - { label: Bật Intro, name: enable, widget: boolean, default: true }
               - { label: Thời gian (giây), name: duration, widget: number, default: 2 }
-
+              - label: Loại hiển thị
+                name: type
+                widget: select
+                options: 
+                  - { label: "Ảnh / GIF", value: "image" }
+                  - { label: "Video (MP4)", value: "video" }
+                default: "image"
+              - label: Upload Ảnh hoặc GIF
+                name: image_source
+                widget: image
+                required: false
+                hint: "Sử dụng nếu chọn Loại hiển thị là Ảnh/GIF"
+              - label: Upload Video
+                name: video_source
+                widget: file
+                required: false
+                hint: "Sử dụng nếu chọn Loại hiển thị là Video. Khuyến nghị file .mp4 nhẹ (<5MB) để load nhanh."
       # --- File 2: Footer (Chân trang) ---
       - file: content/footer.json
         label: Chân trang (Footer)
