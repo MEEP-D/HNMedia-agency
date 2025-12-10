@@ -14,7 +14,7 @@
   "intro": {
     "enable": true,
     "type": "image",
-    "duration": 3,
+    "duration": 6,
     "video": "images/tạo_video_tết_iot_tinh_tế.mp4",
     "gif": "/images/8ake.gif",
     "video_source": "",
