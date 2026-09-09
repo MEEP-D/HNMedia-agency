@@ -4,7 +4,7 @@
   "brand": {
     "name": "HN Media",
     "tagline": "Giải pháp truyền thông tăng trưởng",
-    "logo": "/images/tao_intro_logo_d_chuyen_nghiep-_1_.gif",
+    "logo": "/images/thiet-ke-chua-co-ten-1-.png",
     "description": "Đỉnh cao của LiveStream"
   },
   "theme": {
@@ -18,6 +18,6 @@
     "video": "images/tạo_video_tết_iot_tinh_tế.mp4",
     "gif": "/images/8ake.gif",
     "video_source": "",
-    "image_source": "/images/tao_intro_logo_d_chuyen_nghiep-_1_.gif"
+    "image_source": ""
   }
 }
