@@ -3,63 +3,28 @@
     "slogan_en": "Dạy bạn cách Live - Trao bạn cách thắng ",
     "ctaText_en": "Explore the creative journey",
     "subtitle_en": "We don't just produce content, we bring brands to life, turning raw ideas into visual experiences that stir emotions and drive action.",
-    "subtitle": "Chúng tôi không chỉ sản xuất nội dung, chúng tôi thổi hồn vào thương hiệu, biến những ý tưởng sơ khai thành những trải nghiệm thị giác lay động cảm xúc và thúc đẩy hành động.",
-    "title": "Đánh thức tiềm năng thương hiệu bằng nghệ thuật kể chuyện đỉnh cao",
-    "image": "/images/a1-1-.jpg",
+    "subtitle": "Đào Tạo 1:1 Cung Cấp Dịch Vụ Mạng Xã Hội Livestream, Xây Dựng Thương Hiệu Cá Nhân Quảng Cáo Đa Nền Tảng Facebook, Tiktok, Shopee.\nHotline: 0329 668 886 - 076 604 1234",
+    "title": "Video Ngắn, Livestream, Video AI, Xây Dựng Thương Hiệu Cá Nhân",
+    "image": "/images/1789528440707_2207937780551185593_3567842372658265246_04465bfdb0859b7205cbb41d04daa632.jpg",
     "fullscreen": true,
     "layout_style": "media_full_width",
-    "ctaText": "Khám phá hành trình sáng tạo",
-    "slogan": "Kiến tạo di sản số qua lăng kính điện ảnh"
+    "ctaText": "Kiến Tạo Thương Hiệu - Dẫn Đầu Xu Hướng",
+    "slogan": "Kiến Tạo Thương Hiệu - Dẫn Đầu Xu Hướng"
   },
   "intro": "Trong kỷ nguyên số, sự chú ý là tài sản quý giá nhất. Chúng tôi ở đây để giúp doanh nghiệp của bạn không chỉ được nhìn thấy mà còn được ghi nhớ. Bằng sự kết hợp giữa tư duy chiến lược sắc bén và công nghệ sản xuất hiện đại, chúng tôi tạo ra những chiến dịch truyền thông mang tính biểu tượng, kiến tạo giá trị bền vững và sự tăng trưởng đột phá.",
   "sections": [],
   "intro_en": "In the digital era, attention is the most valuable asset. We are here to help your business not only be seen but be remembered. By combining sharp strategic thinking with modern production technology, we create iconic media campaigns, building sustainable value and breakthrough growth.",
   "partners": [
     {
-      "name": "Bánh Tráng Phú Cường",
-      "image": "/images/1667009420681.jpg",
-      "is_strategic": true
-    },
-    {
-      "name": "Việt Nhật Solar",
-      "image": "/images/download.png",
-      "is_strategic": true
-    },
-    {
-      "name": "Uni Beuty",
-      "image": "/images/logo-1376082399-1670506004-a70eb87b1c6175a2d8cf51397e7f094d1670506004.png",
-      "is_strategic": true
-    },
-    {
-      "name": "Thể thao Đỉnh cao Sportify",
-      "image": "/images/download.png",
-      "is_strategic": false
-    },
-    {
-      "image": "/images/joola_logo.webp",
-      "name": "Đối tác Chiến lược Global",
-      "is_strategic": true
-    },
-    {
-      "name": "jianyi sport",
-      "image": "/images/z7114400381970_cb288c1e78bd215c0f92738331c5d586.jpg",
-      "is_strategic": true
-    },
-    {
-      "name": "Huy Dương",
-      "image": "/images/logohuyduong-1.png",
-      "is_strategic": true
-    },
-    {
       "is_strategic": true,
-      "name": "Thai An",
-      "image": "/images/thaian-logo-final.png"
+      "name": "Xưởng IN88",
+      "image": "/images/images-1-.jfif"
     },
     {
       "is_strategic": false,
-      "name": "vtv",
-      "image": "/images/vietnam_television_logo_from_2013.svg"
+      "name": "Jangmi Clinic",
+      "image": "/images/images-2-.jfif"
     }
   ],
-  "featured_partner_logo": "/images/logo-thuong-hieu-elle-viet-nam-5.jpg"
+  "featured_partner_logo": "/images/images.jfif"
 }
