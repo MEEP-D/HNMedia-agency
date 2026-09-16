@@ -27,9 +27,14 @@
       "photo": "/images/3374825268217454051.jpg"
     },
     {
-      "name": "Đức Dương ",
-      "role": "Head of technical department",
-      "photo": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
+      "name": "Nguyễn Huy",
+      "role": "Giám Đốc Marketing",
+      "photo": "/images/1789531048583_4411010186773185578_4411010186773185578_ba4900f79bc3c6261b69ae80138f3ecc.jpg"
+    },
+    {
+      "name": "Thiên Phong",
+      "role": "Giám Đốc Vận Hành",
+      "photo": "/images/1789531989810_2207937780551185593_3567842372658265246_5296dae8cef02444bed647de5efd8019.jpg"
     }
   ]
 }
