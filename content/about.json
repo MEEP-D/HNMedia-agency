@@ -5,19 +5,19 @@
   "title_en": "Dạy Bạn Cách Live - Trao Bạn Cách Thắng",
   "history": [
     {
-      "year": "2020",
+      "year": "2024",
       "event": "Thành lập công ty"
     },
     {
-      "year": "2022",
+      "year": "2025",
       "event": "Mở rộng dịch vụ Digital"
     },
     {
-      "year": "2025",
+      "year": "2026",
       "event": "Đạt 100+ khách hàng"
     }
   ],
-  "cover": "/images/thiết-kế-chưa-có-tên-1-.png",
+  "cover": "/images/untitled-900-x-900-px-.png",
   "title": "Giới thiệu",
   "description": "HN Media là đơn vị chuyên cung cấp giải pháp truyền thông tổng thể, kết hợp giữa sáng tạo nội dung, sản xuất media chuyên nghiệp và ứng dụng công nghệ để mang đến hiệu quả truyền thông tối ưu cho doanh nghiệp. Với đội ngũ trẻ, nhiệt huyết và giàu kinh nghiệm thực chiến, HN Media đảm nhận trọn vẹn các hoạt động từ lên ý tưởng, quay dựng, chụp hình, livestream, xây dựng thương hiệu đến triển khai chiến dịch marketing đa nền tảng.",
   "team": [
@@ -27,9 +27,14 @@
       "photo": "/images/3374825268217454051.jpg"
     },
     {
-      "name": "Đức Dương ",
-      "role": "Head of technical department",
-      "photo": "/images/7dc7a6fd-daef-4af1-bec0-9751b45b5624.jpg"
+      "name": "Nguyễn Huy",
+      "role": "Giám Đốc Marketing",
+      "photo": "/images/1789531048583_4411010186773185578_4411010186773185578_ba4900f79bc3c6261b69ae80138f3ecc.jpg"
+    },
+    {
+      "name": "Thiên Phong",
+      "role": "Giám Đốc Vận Hành",
+      "photo": "/images/1789531989810_2207937780551185593_3567842372658265246_5296dae8cef02444bed647de5efd8019.jpg"
     }
   ]
 }
