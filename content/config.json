@@ -1,11 +1,11 @@
 {
-  "siteName": "HN Media",
+  "siteName": "HN MEDIA",
   "siteUrl": "https://example.com",
   "brand": {
-    "name": "HN Media",
-    "tagline": "Giải pháp truyền thông tăng trưởng",
+    "name": "HN MEDIA",
+    "tagline": "Kiến Tạo Thương Hiệu - Dẫn Đầu Xu Hướng",
     "logo": "/images/thiet-ke-chua-co-ten-1-.png",
-    "description": "Đỉnh cao của LiveStream"
+    "description": "Đào Tạo 1:1 Cung Cấp Dịch Vụ Mạng Xã Hội Livestream, Xây Dựng Thương Hiệu Cá Nhân Quảng Cáo Đa Nền Tảng Facebook, Tiktok, Shopee.\nHotline: 0329 668 886 - 076 604 1234"
   },
   "theme": {
     "primary": "#16A34A",
@@ -14,7 +14,7 @@
   "intro": {
     "enable": false,
     "type": "image",
-    "duration": 6,
+    "duration": 3,
     "video": "images/tạo_video_tết_iot_tinh_tế.mp4",
     "gif": "/images/8ake.gif",
     "video_source": "",
