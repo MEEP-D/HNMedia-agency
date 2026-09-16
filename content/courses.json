@@ -2,34 +2,20 @@
   "title": "Khóa học",
   "items": [
     {
-      "slug": "content-marketing",
-      "title": "Content Marketing",
-      "summary": "Xây dựng chiến lược nội dung tăng trưởng",
-      "description": "Khóa học tập trung vào nghiên cứu insight, xây dựng chiến lược nội dung và tối ưu hiệu suất.",
-      "duration": "6 buổi",
-      "format": "Online/Offline",
+      "slug": "Đào Tạo Làm Video AI Thực Chiến",
+      "title": "Đào Tạo Làm Video AI Thực Chiến",
+      "summary": "Đào tạo 2 buổi Zoom làm Video AI cầm tay chỉ việc đến khi biết làm. Bán hàng affiliate hiệu quả đẩy video chạy GMV MAX.",
+      "description": "C﻿ầm tay chỉ việc từ A-Z.",
+      "duration": "4 buổi",
+      "format": "Online",
       "curriculum": [
         "Nghiên cứu khách hàng",
         "Lập kế hoạch nội dung",
         "Đo lường KPI"
       ],
-      "image": "/images/penci_ai_image_1764864234613.jpg"
-    },
-    {
-      "slug": "performance-ads",
-      "title": "Performance Ads",
-      "summary": "Thiết lập và tối ưu quảng cáo",
-      "description": "Thực hành trên các nền tảng lớn, tối ưu chuyển đổi và chi phí.",
-      "duration": "8 buổi",
-      "format": "Online",
-      "curriculum": [
-        "Thiết lập chiến dịch",
-        "A/B Testing",
-        "Báo cáo hiệu quả"
-      ],
-      "image": "/images/penci_ai_image_1764864234613.jpg"
+      "image": "/images/chatgpt-image-18_07_58-11-thg-9-2026.png"
     }
   ],
-  "cover": "/images/penci_ai_image_1764864234613.jpg",
+  "cover": "/images/untitled-900-x-900-px-.png",
   "description": "Mỗi khóa học được thiết kế với lộ trình rõ ràng, bài giảng trực quan, ví dụ thực tiễn và hướng dẫn chi tiết nhằm giúp học viên nắm bắt kiến thức nhanh chóng, ứng dụng ngay vào công việc. Ngoài ra, HN Media còn cung cấp các khóa coaching 1:1, workshop theo chủ đề và chương trình đào tạo dành riêng cho đội nhóm/doanh nghiệp."
 }
