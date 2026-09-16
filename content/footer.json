@@ -1,37 +1,10 @@
 {
-  "brand_name": "HN Media",
-  "logo": "images/logo.png",
+  "brand_name": "HN MEDIA",
+  "logo": "/images/1788402530067_5372792510983670674_g6655420090415566401_ba05607b498c0b46af06fbea280bd62d.jpg",
   "description": "HN Media Agency – Đơn vị truyền thông sáng tạo cung cấp giải pháp Marketing tổng thể, sản xuất video, quản lý KOL/KOC và triển khai chiến dịch đa nền tảng. Chúng tôi đồng hành cùng doanh nghiệp trong hành trình xây dựng thương hiệu và bứt phá trong kỷ nguyên số.",
-  "address": "Chung cư THE WESTERIA Kim Chung Hoài Đức Hà Nội, Việt Nam",
-  "phone": "0766 041 234",
+  "address": "Kim Chung, Hoài Đức, Hà Nội, Việt Nam",
+  "phone": "0329 668 886",
   "email": "hnmedia665668@gmail.com",
-  "copyright": "© 2025 Bản quyền thuộc về Công ty HN Media.",
-  "columns": [
-    {
-      "title": "Về chúng tôi",
-      "links": [
-        {
-          "text": "Giới thiệu",
-          "url": "?page=about"
-        },
-        {
-          "text": "Tuyển dụng",
-          "url": "?page=careers"
-        }
-      ]
-    },
-    {
-      "title": "Dịch vụ",
-      "links": [
-        {
-          "text": "Marketing",
-          "url": "#"
-        },
-        {
-          "text": "Thiết kế",
-          "url": "#"
-        }
-      ]
-    }
-  ]
+  "copyright": "© 2026 Bản quyền thuộc về Công ty HN Media.",
+  "columns": []
 }
